@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BotLens</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="icons/icon48.png" alt="BotLens Logo">
+      <h1>BotLens</h1>
+    </header>
+
+    <div id="verdict" class="verdict-card animate-in">
+      <div id="score-circle" class="score-container">
+        <svg viewBox="0 0 36 36" class="circular-chart">
+          <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <path id="score-path" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <text x="18" y="20.35" id="score-text" class="percentage">--</text>
+        </svg>
+      </div>
+      <div class="verdict-title">Analyzing...</div>
+      <div class="verdict-desc">Inspecting AI signals</div>
+    </div>
+
+    <div class="section animate-in" style="animation-delay: 0.1s;">
+      <div class="section-title">Technical Signals</div>
+      
+      <div id="robots-signal" class="signal-item">
+        <i class="ph ph-robot signal-icon"></i>
+        <div class="signal-content">
+          <div class="signal-name">robots.txt & Meta</div>
+          <div id="robots-value" class="signal-value">Fetching...</div>
+        </div>
+        <div id="robots-status" class="signal-status-dot" style="margin-left: auto;"></div>
+      </div>
+
+      <div id="semantic-signal" class="signal-item">
+        <i class="ph ph-tree-structure signal-icon"></i>
+        <div class="signal-content">
+          <div class="signal-name">Content Structure</div>
+          <div id="semantic-value" class="signal-value">Analyzing DOM...</div>
+        </div>
+        <div id="semantic-status" class="signal-status-dot" style="margin-left: auto;"></div>
+      </div>
+
+      <div id="js-signal" class="signal-item">
+        <i class="ph ph-file-js signal-icon"></i>
+        <div class="signal-content">
+          <div class="signal-name">JS Rendering</div>
+          <div id="js-value" class="signal-value">Checking payload...</div>
+        </div>
+        <div id="js-status" class="signal-status-dot" style="margin-left: auto;"></div>
+      </div>
+    </div>
+
+    <div class="footer animate-in" style="animation-delay: 0.2s;">
+      <button id="refresh" class="refresh-btn">Re-analyze</button>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

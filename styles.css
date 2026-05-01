@@ -1,0 +1,200 @@
+/* BotLens Styles - Following IAMJARL Design System */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: var(--ij-breakpoint-popup);
+  min-height: 450px;
+  font-family: var(--ij-font-ui);
+  background-color: var(--ij-color-bg-app);
+  color: var(--ij-color-text-primary);
+  padding: var(--ij-spacing-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ij-spacing-lg);
+  flex-grow: 1;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: var(--ij-spacing-md);
+  margin-bottom: var(--ij-spacing-sm);
+}
+
+header img {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ij-radius-sm);
+}
+
+header h1 {
+  font-size: var(--ij-font-size-lg);
+  font-weight: var(--ij-font-weight-bold);
+  letter-spacing: -0.025em;
+  color: var(--ij-color-text-primary);
+}
+
+.verdict-card {
+  background: var(--ij-color-bg-card);
+  border: 1px solid var(--ij-color-border-subtle);
+  border-radius: var(--ij-radius-md);
+  padding: var(--ij-spacing-xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform var(--ij-duration-normal) var(--ij-easing-standard);
+}
+
+.score-container {
+  width: 80px;
+  height: 80px;
+  margin-bottom: var(--ij-spacing-md);
+}
+
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: var(--ij-color-border-subtle);
+  stroke-width: 2.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--ij-duration-slow) var(--ij-easing-standard);
+}
+
+.percentage {
+  fill: var(--ij-color-text-primary);
+  font-family: var(--ij-font-ui);
+  font-size: 0.5rem;
+  font-weight: var(--ij-font-weight-bold);
+  text-anchor: middle;
+}
+
+.score-ok { stroke: var(--ij-color-success); }
+.score-warn { stroke: var(--ij-color-warning); }
+.score-error { stroke: var(--ij-color-error); }
+
+.verdict-title {
+  font-size: var(--ij-font-size-base);
+  font-weight: var(--ij-font-weight-semibold);
+  margin-bottom: var(--ij-spacing-xs);
+}
+
+.verdict-desc {
+  font-size: var(--ij-font-size-sm);
+  color: var(--ij-color-text-secondary);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ij-spacing-md);
+}
+
+.section-title {
+  font-size: var(--ij-font-size-xs);
+  font-weight: var(--ij-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ij-color-text-tertiary);
+}
+
+.signal-item {
+  background: var(--ij-color-bg-card);
+  border: 1px solid var(--ij-color-border-subtle);
+  border-radius: var(--ij-radius-sm);
+  padding: var(--ij-spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--ij-spacing-md);
+}
+
+.signal-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  color: var(--ij-color-text-secondary);
+}
+
+.signal-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-ok { background-color: var(--ij-color-success); }
+.status-warn { background-color: var(--ij-color-warning); }
+.status-error { background-color: var(--ij-color-error); }
+
+.signal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.signal-name {
+  font-size: var(--ij-font-size-sm);
+  font-weight: var(--ij-font-weight-semibold);
+}
+
+.signal-value {
+  font-size: var(--ij-font-size-xs);
+  color: var(--ij-color-text-tertiary);
+  word-break: break-all;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: var(--ij-spacing-lg);
+}
+
+.refresh-btn {
+  background-color: var(--ij-color-primary);
+  color: var(--ij-color-on-primary);
+  border: none;
+  border-radius: var(--ij-radius-md);
+  padding: var(--ij-spacing-md) var(--ij-spacing-xl);
+  font-size: var(--ij-font-size-sm);
+  font-weight: var(--ij-font-weight-semibold);
+  cursor: pointer;
+  width: 100%;
+  transition: all var(--ij-duration-fast) var(--ij-easing-standard);
+}
+
+.refresh-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--ij-shadow-md);
+}
+
+.refresh-btn:active {
+  transform: scale(0.98);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeIn var(--ij-duration-normal) var(--ij-easing-standard) forwards;
+}
