@@ -2,6 +2,8 @@
 
 A Chrome Extension that analyzes whether a website can be read and accessed by AI systems (LLMs, crawlers, and bots), and provides a clear, actionable overview.
 
+**Website:** [botlens.iamjarl.com](https://botlens.iamjarl.com)
+
 ---
 
 ## 🎯 Goal
