@@ -1,6 +1,6 @@
 # BotLens 🕵️‍♂️🤖
 
-![BotLens Social Preview](/Users/jarl.l/.gemini/antigravity/brain/83c03203-a8ba-4752-a40a-213a336f3b3f/botlens_social_preview_1777672841146.png)
+![BotLens Social Preview](assets/social-preview.png)
 
 **BotLens** is a Chrome Extension that analyzes whether a website can be read and accessed by AI systems (LLMs, crawlers, and bots). It provides a clear, actionable readability score and a technical breakdown of how bots see your content.
 
