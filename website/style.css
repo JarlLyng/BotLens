@@ -5,10 +5,10 @@
 }
 
 body {
-  font-family: var(--ij-font-ui);
-  background-color: var(--ij-color-bg-app);
-  color: var(--ij-color-text-primary);
-  line-height: var(--ij-line-height-relaxed);
+  font-family: var(--ij-font-ui, system-ui, sans-serif);
+  background-color: var(--ij-color-bg-app, #ffffff);
+  color: var(--ij-color-text-primary, #000000);
+  line-height: var(--ij-line-height-relaxed, 1.5);
 }
 
 /* Navbar */
