@@ -1,0 +1,12 @@
+{
+  "name": "botlens",
+  "version": "1.0.0",
+  "description": "Analyze if a website is readable by AI",
+  "private": true,
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  }
+}

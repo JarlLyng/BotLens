@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+*.log
+website/tokens.css
+# We ignore tokens.css in website because it's copied from root
