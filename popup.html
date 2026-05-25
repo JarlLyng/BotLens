@@ -6,7 +6,6 @@
   <title>BotLens</title>
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
   <div class="container">
@@ -29,18 +28,33 @@
 
     <div class="section animate-in" style="animation-delay: 0.1s;">
       <div class="section-title">Technical Signals</div>
-      
+
       <div id="robots-signal" class="signal-item">
-        <i class="ph ph-robot signal-icon"></i>
+        <svg class="signal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="7" width="16" height="12" rx="2"/>
+          <path d="M12 7V3"/>
+          <circle cx="9" cy="13" r="1.2" fill="currentColor"/>
+          <circle cx="15" cy="13" r="1.2" fill="currentColor"/>
+          <path d="M9 17h6"/>
+          <path d="M2 13h2"/>
+          <path d="M20 13h2"/>
+        </svg>
         <div class="signal-content">
-          <div class="signal-name">robots.txt & Meta</div>
+          <div class="signal-name">robots.txt &amp; Meta</div>
           <div id="robots-value" class="signal-value">Fetching...</div>
         </div>
         <div id="robots-status" class="signal-status-dot" style="margin-left: auto;"></div>
       </div>
 
       <div id="semantic-signal" class="signal-item">
-        <i class="ph ph-tree-structure signal-icon"></i>
+        <svg class="signal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <rect x="3" y="17" width="6" height="4" rx="1"/>
+          <rect x="15" y="17" width="6" height="4" rx="1"/>
+          <path d="M12 7v4"/>
+          <path d="M6 17v-2h12v2"/>
+          <path d="M12 11v4"/>
+        </svg>
         <div class="signal-content">
           <div class="signal-name">Content Structure</div>
           <div id="semantic-value" class="signal-value">Analyzing DOM...</div>
@@ -49,7 +63,11 @@
       </div>
 
       <div id="js-signal" class="signal-item">
-        <i class="ph ph-file-js signal-icon"></i>
+        <svg class="signal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M10 9v6a2 2 0 0 1-2 2H7"/>
+          <path d="M17 9h-3a1.5 1.5 0 0 0 0 3h1.5a1.5 1.5 0 0 1 0 3H12"/>
+        </svg>
         <div class="signal-content">
           <div class="signal-name">JS Rendering</div>
           <div id="js-value" class="signal-value">Checking payload...</div>
@@ -61,7 +79,7 @@
     <div class="footer animate-in" style="animation-delay: 0.2s;">
       <button id="refresh" class="refresh-btn">Re-analyze</button>
       <div class="attribution">
-        Made by <a href="https://iamjarl.com/" target="_blank">iamjarl</a>
+        Made by <a href="https://iamjarl.com/" target="_blank" rel="noopener noreferrer">iamjarl</a>
       </div>
     </div>
   </div>

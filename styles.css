@@ -129,7 +129,8 @@ header h1 {
 }
 
 .signal-icon {
-  font-size: 20px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   color: var(--ij-color-text-secondary);
 }

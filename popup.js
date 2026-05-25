@@ -22,14 +22,19 @@ async function analyze() {
     const url = new URL(tab.url);
     const origin = url.origin;
 
-    // 1. Get Data from Content Script
+    // 1. Inject extractor on demand. Returns whatever the script's last
+    //    expression evaluates to (an IIFE in content.js).
     let pageData;
     try {
-      pageData = await chrome.tabs.sendMessage(tab.id, { action: "analyzePage" });
-      if (!pageData) throw new Error("No data received from page.");
+      const results = await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ['content.js']
+      });
+      pageData = results && results[0] && results[0].result;
+      if (!pageData) throw new Error("Empty result from page extractor.");
     } catch (e) {
-      console.error("Content Script Error:", e);
-      showError("Please refresh the page to enable analysis.");
+      console.error("Injection error:", e);
+      showError("Cannot analyze this page (restricted by browser).");
       return;
     }
 
@@ -86,84 +91,200 @@ async function fetchRawHtml(url) {
   } catch (e) { return ''; }
 }
 
-function parseRobotsTxt(content, currentPath) {
-  if (!content) return { exists: false, rules: [] };
-  const rules = [];
-  const lines = content.split('\n');
-  let currentAgent = null;
+// Known AI / LLM crawler user-agents (lowercase). Keep in sync with calculateEnhancedSignals.
+const AI_BOTS = [
+  'gptbot', 'oai-searchbot', 'chatgpt-user',
+  'claudebot', 'claude-web', 'anthropic-ai',
+  'google-extended', 'googleother',
+  'ccbot', 'perplexitybot', 'perplexity-user',
+  'applebot-extended', 'bytespider',
+  'meta-externalagent', 'meta-externalfetcher', 'facebookbot',
+  'amazonbot', 'cohere-ai', 'diffbot', 'omgilibot', 'imagesiftbot',
+  'youbot', 'mistralai-user', 'duckassistbot'
+];
 
-  for (let line of lines) {
-    line = line.trim().toLowerCase();
-    if (line.startsWith('#') || line === '') continue;
-    if (line.startsWith('user-agent:')) {
-      currentAgent = line.split(':')[1].trim();
-    } else if (line.startsWith('disallow:') && currentAgent) {
-      const path = line.split(':')[1].trim();
-      if (path && (currentPath.startsWith(path) || path === '/')) {
-        rules.push({ agent: currentAgent, disallow: path });
+function parseRobotsTxt(content, currentPath) {
+  if (!content) return { exists: false, blockedBots: [], blockedAll: false };
+
+  const lines = content.split('\n');
+  // Each group: { agents: [], rules: [{ type: 'allow'|'disallow', path }] }
+  const groups = [];
+  let current = null;
+  let lastWasAgent = false;
+
+  for (let raw of lines) {
+    const hashIdx = raw.indexOf('#');
+    const line = (hashIdx >= 0 ? raw.slice(0, hashIdx) : raw).trim();
+    if (!line) continue;
+
+    const colon = line.indexOf(':');
+    if (colon < 0) continue;
+    const field = line.slice(0, colon).trim().toLowerCase();
+    const value = line.slice(colon + 1).trim(); // preserve path case
+
+    if (field === 'user-agent') {
+      if (!lastWasAgent || !current) {
+        current = { agents: [], rules: [] };
+        groups.push(current);
       }
+      current.agents.push(value.toLowerCase());
+      lastWasAgent = true;
+    } else if ((field === 'disallow' || field === 'allow') && current) {
+      current.rules.push({ type: field, path: value });
+      lastWasAgent = false;
+    } else {
+      lastWasAgent = false;
     }
   }
-  return { exists: true, rules };
+
+  // For a given agent, determine whether currentPath is blocked.
+  // Robots spec: longest matching path wins; Allow overrides Disallow at equal length.
+  function isBlockedFor(agent) {
+    const matchingGroup = groups.find(g => g.agents.includes(agent));
+    if (!matchingGroup) return false;
+
+    let best = null; // { type, length }
+    for (const rule of matchingGroup.rules) {
+      if (!rule.path) continue; // Empty disallow = allow all
+      if (!pathMatches(currentPath, rule.path)) continue;
+      const len = rule.path.length;
+      if (!best || len > best.length || (len === best.length && rule.type === 'allow')) {
+        best = { type: rule.type, length: len };
+      }
+    }
+    return best ? best.type === 'disallow' : false;
+  }
+
+  const blockedBots = AI_BOTS.filter(isBlockedFor);
+  const blockedAll = isBlockedFor('*');
+
+  return { exists: true, blockedBots, blockedAll, groups };
+}
+
+function pathMatches(currentPath, pattern) {
+  // Supports * wildcard and $ end-of-string anchor per robots.txt extensions.
+  if (pattern === '/') return true;
+  if (!pattern.includes('*') && !pattern.endsWith('$')) {
+    return currentPath.startsWith(pattern);
+  }
+  const anchored = pattern.endsWith('$');
+  const body = anchored ? pattern.slice(0, -1) : pattern;
+  const escaped = body.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+  const re = new RegExp('^' + escaped + (anchored ? '$' : ''));
+  return re.test(currentPath);
 }
 
 function calculateEnhancedSignals(pageData, robotsRules, rawHtml) {
   let score = 100;
   const meta = pageData.metaTags || {};
   const semantic = pageData.semantic || {};
-  
+  const issues = { robots: [], semantic: [], js: [] };
+
   const signals = {
-    robots: { status: 'ok', value: 'Search engines allowed' },
+    robots: { status: 'ok', value: 'Bots and AI crawlers allowed' },
     semantic: { status: 'ok', value: 'Good semantic structure' },
     js: { status: 'ok', value: 'Content is SEO-friendly' },
     score: 0
   };
 
-  // 1. Robots & Meta (Weight: 50)
+  // 1. Robots.txt & Meta (Weight: 50)
   let techPenalty = 0;
-  if (robotsRules.rules.some(r => r.agent === 'gptbot' || r.agent === '*')) {
+
+  // robots.txt: weight by how many AI bots are blocked
+  if (robotsRules.blockedAll) {
     techPenalty += 25;
-    signals.robots = { status: 'warn', value: 'Some bots restricted in robots.txt' };
+    issues.robots.push('All crawlers blocked (User-agent: *)');
+  } else if (robotsRules.blockedBots && robotsRules.blockedBots.length > 0) {
+    const n = robotsRules.blockedBots.length;
+    techPenalty += Math.min(25, 5 + n * 3);
+    const sample = robotsRules.blockedBots.slice(0, 3).join(', ');
+    issues.robots.push(`${n} AI bot${n > 1 ? 's' : ''} blocked (${sample}${n > 3 ? '…' : ''})`);
   }
-  if (meta['robots'] && meta['robots'].includes('noindex')) {
+
+  // Meta robots: noindex is fatal, nofollow & noai are partial penalties
+  const metaRobots = meta['robots'] || '';
+  if (metaRobots.includes('noindex') || metaRobots.includes('none')) {
     techPenalty += 50;
-    signals.robots = { status: 'error', value: 'Meta noindex found' };
+    issues.robots.push('Meta noindex prevents indexing');
   }
-  score -= techPenalty;
+  if (metaRobots.includes('nofollow')) {
+    techPenalty += 5;
+    issues.robots.push('Meta nofollow set');
+  }
+  if (meta['noai'] || meta['noimageai'] || metaRobots.includes('noai')) {
+    techPenalty += 15;
+    issues.robots.push('AI training opt-out signaled');
+  }
+  // Bot-specific meta (e.g. <meta name="gptbot" content="noindex">)
+  for (const key of Object.keys(meta)) {
+    if (key === 'robots') continue;
+    if (key.endsWith('bot') && (meta[key].includes('noindex') || meta[key].includes('none'))) {
+      techPenalty += 10;
+      issues.robots.push(`${key} blocked via meta`);
+      break;
+    }
+  }
+
+  if (issues.robots.length > 0) {
+    const level = techPenalty >= 40 ? 'error' : 'warn';
+    signals.robots = { status: level, value: issues.robots[0] };
+  }
+  score -= Math.min(50, techPenalty);
 
   // 2. Semantic Analysis (Weight: 30)
   let semanticPenalty = 0;
-  if (semantic.headings.h1 === 0) {
+  if (semantic.headings && semantic.headings.h1 === 0) {
     semanticPenalty += 10;
-    signals.semantic = { status: 'warn', value: 'Missing H1 heading' };
-  } else if (semantic.headings.h1 > 1) {
+    issues.semantic.push('Missing H1 heading');
+  } else if (semantic.headings && semantic.headings.h1 > 1) {
     semanticPenalty += 5;
-    signals.semantic = { status: 'warn', value: 'Multiple H1 headings' };
+    issues.semantic.push('Multiple H1 headings');
   }
-  if (semantic.semanticTags < 2) {
+  if ((semantic.semanticTags || 0) < 2) {
     semanticPenalty += 10;
-    signals.semantic = { status: 'warn', value: 'Poor semantic structure' };
+    issues.semantic.push('Few HTML5 semantic tags');
   }
-  if (semantic.imageAltRatio < 0.5) {
+  if (semantic.imageCount > 0 && semantic.imageAltRatio < 0.5) {
     semanticPenalty += 10;
-    signals.semantic = { status: 'warn', value: 'Missing image alt texts' };
+    issues.semantic.push(`Only ${Math.round(semantic.imageAltRatio * 100)}% of images have alt text`);
   }
-  score -= semanticPenalty;
+  if (!semantic.hasLangAttr) {
+    semanticPenalty += 3;
+    issues.semantic.push('Missing <html lang> attribute');
+  }
+  // Reward structured data (cap recovery so we never exceed 100)
+  if (semantic.hasStructuredData) {
+    semanticPenalty -= 5;
+  }
+  if (issues.semantic.length > 0) {
+    signals.semantic = { status: 'warn', value: issues.semantic[0] };
+  } else if (semantic.hasStructuredData) {
+    signals.semantic = { status: 'ok', value: 'Structured data present' };
+  }
+  score -= Math.max(0, semanticPenalty);
 
   // 3. JS-Heavy Detection (Weight: 20)
-  const renderedSize = pageData.domSize;
+  const renderedSize = pageData.domSize || 0;
   const initialSize = rawHtml.length;
-  const jsRatio = initialSize > 0 ? renderedSize / initialSize : 1;
+  // Heuristic: compare rendered DOM size to initial HTML, but require a meaningful
+  // initial payload so SPAs with empty shells get flagged correctly.
+  if (initialSize > 0) {
+    const jsRatio = renderedSize / initialSize;
+    const shellLikely = initialSize < 5000 && renderedSize > 20000;
 
-  if (jsRatio > 5 && renderedSize > 5000) {
-    score -= 20;
-    signals.js = { status: 'error', value: 'Heavy JS rendering (Hard for bots)' };
-  } else if (jsRatio > 2) {
-    score -= 10;
-    signals.js = { status: 'warn', value: 'Significant client-side rendering' };
+    if (shellLikely || (jsRatio > 5 && renderedSize > 5000)) {
+      score -= 20;
+      signals.js = { status: 'error', value: 'Heavy JS rendering — bots may miss content' };
+    } else if (jsRatio > 2) {
+      score -= 10;
+      signals.js = { status: 'warn', value: 'Significant client-side rendering' };
+    }
+  } else {
+    // Could not fetch raw HTML — note but don't penalize
+    signals.js = { status: 'warn', value: 'Could not verify SSR payload' };
   }
 
-  signals.score = Math.max(0, Math.min(100, score));
+  signals.score = Math.max(0, Math.min(100, Math.round(score)));
   return signals;
 }
 

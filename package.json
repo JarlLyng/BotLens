@@ -4,7 +4,8 @@
   "description": "Analyze if a website is readable by AI",
   "private": true,
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "bash scripts/build.sh"
   },
   "devDependencies": {
     "eslint": "^8.56.0"
