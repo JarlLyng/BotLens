@@ -1,19 +1,20 @@
 ## Description
-<!-- Provide a brief description of the changes in this PR -->
+<!-- What does this PR change and why? -->
 
-## Related Issue
-<!-- Link to the issue being fixed or addressed -->
+## Related issue
+<!-- Link the issue this closes or relates to -->
 Fixes #
 
-## Type of Change
+## Type of change
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
+- [ ] Breaking change (affects manifest, permissions, or public API surface)
+- [ ] Documentation / tooling / CI only
 
 ## Checklist
-- [ ] My code follows the **IAMJARL Design System**.
-- [ ] I have performed a self-review of my own code.
-- [ ] I have commented my code, particularly in hard-to-understand areas.
-- [ ] My changes generate no new warnings.
-- [ ] Any dependent changes have been merged and published in downstream modules.
+- [ ] `npm run lint` passes locally
+- [ ] I loaded the extension unpacked and tested the change on at least one live site
+- [ ] I have not introduced any remote script dependencies (MV3 forbids them)
+- [ ] UI changes use tokens from `tokens.css`, not hardcoded values
+- [ ] If I added a new permission to `manifest.json`, I explained why in the description
+- [ ] I updated the README / docs if user-visible behavior changed
