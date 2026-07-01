@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BotLens — marquee promo</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <style>
+    html, body {
+      width: 1400px;
+      height: 560px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #fff;
+    }
+    body {
+      position: relative;
+      background:
+        radial-gradient(ellipse 900px 700px at 15% 30%, rgba(164, 53, 210, 0.42), transparent 60%),
+        radial-gradient(ellipse 800px 600px at 95% 90%, rgba(208, 255, 0, 0.22), transparent 60%),
+        #0a0a0a;
+    }
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 520px;
+      gap: 60px;
+      padding: 60px 80px;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .brand img { width: 44px; height: 44px; border-radius: 10px; }
+    .brand .name {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #D0FF00;
+      box-shadow: 0 0 12px rgba(208, 255, 0, 0.9);
+    }
+    h1 {
+      font-size: 76px;
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      margin: 0 0 24px 0;
+      max-width: 720px;
+    }
+    h1 .accent { color: #D0FF00; }
+    p.tag {
+      font-size: 22px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.72);
+      margin: 0 0 32px 0;
+      max-width: 620px;
+    }
+    .pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.01em;
+    }
+    .pill.accent {
+      background: rgba(208, 255, 0, 0.10);
+      border-color: rgba(208, 255, 0, 0.30);
+      color: #D0FF00;
+    }
+
+    /* Popup mock on the right */
+    .popup {
+      background: #000;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 15px 40px rgba(0,0,0,0.4);
+      overflow: hidden;
+      position: relative;
+      padding: 44px 28px 28px;
+    }
+    .popup::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 36px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .popup::after {
+      content: "botlens";
+      position: absolute;
+      top: 10px; left: 20px;
+      font-size: 12px; color: rgba(255,255,255,0.4);
+      font-family: ui-monospace, monospace;
+    }
+    .popup-dots {
+      position: absolute;
+      top: 14px; right: 18px;
+      display: flex; gap: 7px;
+    }
+    .popup-dots span {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .circle-wrap { width: 96px; height: 96px; margin: 0 auto 12px; }
+    .circle-wrap svg { width: 100%; height: 100%; display: block; }
+    .card .title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .card .desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+    }
+    .signal {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .signal .icon {
+      width: 18px; height: 18px;
+      color: rgba(255,255,255,0.65);
+      flex-shrink: 0;
+    }
+    .signal .name { font-size: 13px; font-weight: 600; flex: 1; }
+    .signal .status {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4CAF50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="content">
+    <div class="left">
+      <div class="brand">
+        <img src="../../icons/icon128.png" alt="BotLens">
+        <span class="name">BotLens</span>
+        <span class="dot"></span>
+      </div>
+      <h1>See how <span class="accent">AI</span> reads your website.</h1>
+      <p class="tag">One click gives you an AI readability score — from GPTBot and ClaudeBot to Perplexity, Google-Extended, and 15+ more crawlers.</p>
+      <div class="pills">
+        <span class="pill accent">◆ MV3</span>
+        <span class="pill">robots.txt &amp; meta</span>
+        <span class="pill">semantic HTML</span>
+        <span class="pill">JS rendering</span>
+        <span class="pill">privacy-first</span>
+      </div>
+    </div>
+
+    <div class="popup">
+      <div class="popup-dots"><span></span><span></span><span></span></div>
+      <div class="card">
+        <div class="circle-wrap">
+          <svg viewBox="0 0 36 36">
+            <path fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="2.8"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path fill="none" stroke="#D0FF00" stroke-width="2.8" stroke-linecap="round" stroke-dasharray="92, 100"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <text x="18" y="20.5" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="8" font-weight="800">92</text>
+          </svg>
+        </div>
+        <div class="title">AI Friendly</div>
+        <div class="desc">Highly accessible for AI systems.</div>
+      </div>
+
+      <div class="signal">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M12 7V3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/><path d="M9 17h6"/></svg>
+        <span class="name">robots.txt &amp; Meta</span>
+        <span class="status"></span>
+      </div>
+      <div class="signal">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="4" rx="1"/><rect x="3" y="17" width="6" height="4" rx="1"/><rect x="15" y="17" width="6" height="4" rx="1"/><path d="M12 7v4"/><path d="M6 17v-2h12v2"/></svg>
+        <span class="name">Content Structure</span>
+        <span class="status"></span>
+      </div>
+      <div class="signal">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M10 9v6a2 2 0 0 1-2 2H7"/><path d="M17 9h-3a1.5 1.5 0 0 0 0 3h1.5a1.5 1.5 0 0 1 0 3H12"/></svg>
+        <span class="name">JS Rendering</span>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
