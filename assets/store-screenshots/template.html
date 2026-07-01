@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BotLens — screenshot template</title>
+  <link rel="stylesheet" href="../../tokens.css">
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    html, body {
+      width: 1280px;
+      height: 800px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    body.stage {
+      width: 1280px !important;
+      min-height: 800px !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: row !important;
+    }
+    .stage-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 900px 700px at 15% 20%, rgba(164, 53, 210, 0.35), transparent 60%),
+        radial-gradient(ellipse 700px 600px at 90% 90%, rgba(208, 255, 0, 0.20), transparent 60%),
+        #0a0a0a;
+    }
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    }
+    .stage-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      align-items: center;
+      padding: 64px 80px;
+      gap: 64px;
+      box-sizing: border-box;
+    }
+    .stage-copy .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(208, 255, 0, 0.12);
+      border: 1px solid rgba(208, 255, 0, 0.30);
+      color: #D0FF00;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+    }
+    .stage-copy h1 {
+      font-size: 64px;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 0 0 24px 0;
+      color: #fff;
+    }
+    .stage-copy h1 .accent { color: #D0FF00; }
+    .stage-copy p {
+      font-size: 22px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.75);
+      max-width: 560px;
+      margin: 0 0 32px 0;
+    }
+    .stage-copy .caption {
+      display: flex;
+      gap: 24px;
+      color: rgba(255,255,255,0.55);
+      font-size: 14px;
+      align-items: center;
+    }
+    .stage-copy .caption .dot { width: 6px; height: 6px; border-radius: 50%; background: #D0FF00; }
+
+    /* Popup frame — a rounded card that looks like a Chrome popup */
+    .popup-frame {
+      width: 440px;
+      background: #000;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.4);
+      overflow: hidden;
+      position: relative;
+    }
+    .popup-frame::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 32px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .popup-frame::after {
+      content: "botlens";
+      position: absolute;
+      top: 6px; left: 16px;
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      font-family: ui-monospace, monospace;
+    }
+    .popup-dots {
+      position: absolute;
+      top: 12px; right: 14px;
+      display: flex; gap: 6px; z-index: 2;
+    }
+    .popup-dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+    }
+    .popup-body {
+      padding: 44px 20px 20px;
+      background: #000;
+      color-scheme: dark;
+    }
+    /* Force dark tokens inside the popup body */
+    .popup-body {
+      --ij-color-primary: #D0FF00;
+      --ij-color-on-primary: #000000;
+      --ij-color-text-primary: #FFFFFF;
+      --ij-color-text-secondary: rgba(255, 255, 255, 0.75);
+      --ij-color-text-tertiary: rgba(255, 255, 255, 0.60);
+      --ij-color-bg-app: #000000;
+      --ij-color-bg-card: rgba(255, 255, 255, 0.05);
+      --ij-color-border-subtle: rgba(255, 255, 255, 0.12);
+    }
+    .popup-body .container { gap: var(--ij-spacing-lg); }
+
+    /* Attribution watermark */
+    .watermark {
+      position: absolute;
+      bottom: 24px;
+      left: 80px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.02em;
+    }
+    .watermark strong { color: rgba(255,255,255,0.55); font-weight: 600; }
+  </style>
+</head>
+<body class="stage">
+  <div class="stage-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <div class="stage-content">
+    <div class="stage-copy">
+      <div class="eyebrow"><span>◆</span> <span id="eyebrow">AI Readability</span></div>
+      <h1 id="headline">Can AI <span class="accent">read</span> your website?</h1>
+      <p id="tagline">See how GPTBot, ClaudeBot, and Perplexity view any page you visit.</p>
+      <div class="caption">
+        <span><span class="dot"></span> <span id="feature1">robots.txt & meta</span></span>
+        <span><span class="dot"></span> <span id="feature2">Semantic HTML</span></span>
+        <span><span class="dot"></span> <span id="feature3">JS rendering</span></span>
+      </div>
+    </div>
+
+    <div class="popup-frame">
+      <div class="popup-dots"><span></span><span></span><span></span></div>
+      <div class="popup-body">
+        <div class="container">
+          <header>
+            <img src="../../icons/icon48.png" alt="BotLens Logo">
+            <h1>BotLens</h1>
+          </header>
+
+          <div id="verdict" class="verdict-card">
+            <div id="score-circle" class="score-container">
+              <svg viewBox="0 0 36 36" class="circular-chart">
+                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path id="score-path" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <text x="18" y="20.35" id="score-text" class="percentage">--</text>
+              </svg>
+            </div>
+            <div class="verdict-title" id="verdict-title">Analyzing…</div>
+            <div class="verdict-desc" id="verdict-desc">Inspecting AI signals</div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Technical Signals</div>
+
+            <div class="signal-item">
+              <svg class="signal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M12 7V3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/><path d="M9 17h6"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
+              <div class="signal-content">
+                <div class="signal-name">robots.txt &amp; Meta</div>
+                <div id="robots-value" class="signal-value"></div>
+              </div>
+              <div id="robots-status" class="signal-status-dot" style="margin-left: auto;"></div>
+            </div>
+
+            <div class="signal-item">
+              <svg class="signal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="4" rx="1"/><rect x="3" y="17" width="6" height="4" rx="1"/><rect x="15" y="17" width="6" height="4" rx="1"/><path d="M12 7v4"/><path d="M6 17v-2h12v2"/><path d="M12 11v4"/></svg>
+              <div class="signal-content">
+                <div class="signal-name">Content Structure</div>
+                <div id="semantic-value" class="signal-value"></div>
+              </div>
+              <div id="semantic-status" class="signal-status-dot" style="margin-left: auto;"></div>
+            </div>
+
+            <div class="signal-item">
+              <svg class="signal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M10 9v6a2 2 0 0 1-2 2H7"/><path d="M17 9h-3a1.5 1.5 0 0 0 0 3h1.5a1.5 1.5 0 0 1 0 3H12"/></svg>
+              <div class="signal-content">
+                <div class="signal-name">JS Rendering</div>
+                <div id="js-value" class="signal-value"></div>
+              </div>
+              <div id="js-status" class="signal-status-dot" style="margin-left: auto;"></div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <button class="refresh-btn">Re-analyze</button>
+            <div class="attribution">Made by <a href="#">iamjarl</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="watermark">botlens · <strong>iamjarl.com</strong></div>
+
+  <script>
+    const VARIANTS = {
+      good: {
+        eyebrow: "AI Readability",
+        headline: 'Instantly see how AI <span class="accent">reads</span> your site',
+        tagline: "A weighted score across robots.txt, meta directives, semantic HTML, and JS rendering — for every page you visit.",
+        features: ["robots.txt & meta", "Semantic HTML", "JS rendering"],
+        score: 92,
+        level: "ok",
+        title: "AI Friendly",
+        desc: "Highly accessible for AI systems.",
+        signals: [
+          { id: "robots", status: "ok", value: "Bots and AI crawlers allowed" },
+          { id: "semantic", status: "ok", value: "Structured data present" },
+          { id: "js", status: "ok", value: "Content is SEO-friendly" }
+        ]
+      },
+      warning: {
+        eyebrow: "Actionable feedback",
+        headline: 'Find what\'s <span class="accent">hidden</span> from bots',
+        tagline: "BotLens surfaces the exact meta tags, headings, and rendering issues that stop LLMs from reading your content.",
+        features: ["Detects noindex & noai", "Alt-text coverage", "SPA shell detection"],
+        score: 65,
+        level: "warn",
+        title: "Partially Restricted",
+        desc: "Some technical hurdles detected.",
+        signals: [
+          { id: "robots", status: "warn", value: "3 AI bots blocked (GPTBot, CCBot, ClaudeBot)" },
+          { id: "semantic", status: "warn", value: "Only 42% of images have alt text" },
+          { id: "js", status: "warn", value: "Significant client-side rendering" }
+        ]
+      },
+      blocked: {
+        eyebrow: "AI opt-out signals",
+        headline: 'Know exactly <span class="accent">who</span> is blocked',
+        tagline: "Full support for GPTBot, ClaudeBot, Perplexity, Google-Extended, Bytespider, and 15+ more — plus noai / noimageai.",
+        features: ["20+ AI user-agents", "Allow/Disallow precedence", "Wildcard paths"],
+        score: 22,
+        level: "error",
+        title: "Blocked / Poor",
+        desc: "Significant barriers for AI bots.",
+        signals: [
+          { id: "robots", status: "error", value: "Meta noindex prevents indexing" },
+          { id: "semantic", status: "warn", value: "Missing H1 heading" },
+          { id: "js", status: "error", value: "Heavy JS rendering — bots may miss content" }
+        ]
+      }
+    };
+
+    const params = new URLSearchParams(location.search);
+    const v = VARIANTS[params.get("variant") || "good"];
+
+    document.getElementById("eyebrow").textContent = v.eyebrow;
+    document.getElementById("headline").innerHTML = v.headline;
+    document.getElementById("tagline").textContent = v.tagline;
+    document.getElementById("feature1").textContent = v.features[0];
+    document.getElementById("feature2").textContent = v.features[1];
+    document.getElementById("feature3").textContent = v.features[2];
+
+    document.getElementById("score-text").textContent = v.score;
+    const path = document.getElementById("score-path");
+    path.setAttribute("stroke-dasharray", `${v.score}, 100`);
+    path.setAttribute("class", `circle score-${v.level}`);
+
+    document.getElementById("verdict-title").textContent = v.title;
+    document.getElementById("verdict-desc").textContent = v.desc;
+
+    v.signals.forEach(s => {
+      const dot = document.getElementById(`${s.id}-status`);
+      dot.className = `signal-status-dot status-${s.status}`;
+      document.getElementById(`${s.id}-value`).textContent = s.value;
+    });
+  </script>
+</body>
+</html>
