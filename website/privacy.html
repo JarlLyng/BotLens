@@ -6,6 +6,7 @@
   <title>Privacy Policy — BotLens</title>
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="style.css">
+  <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="492feeb5-deb8-4013-b0e1-fc42eb4830de"></script>
 </head>
 <body>
   <nav class="navbar">
@@ -22,35 +23,64 @@
 
   <main style="max-width: 720px; margin: 0 auto; padding: var(--ij-spacing-2xl) var(--ij-spacing-lg); line-height: 1.6;">
     <h1>Privacy Policy</h1>
-    <p><em>Last updated: 25 May 2026</em></p>
+    <p><em>Last updated: 1 July 2026</em></p>
 
     <h2>Short version</h2>
-    <p>BotLens does not collect, store, or transmit any personal data. Everything happens locally in your browser.</p>
+    <p>The <strong>BotLens Chrome extension</strong> collects no data — everything happens locally in your browser. This <strong>marketing website</strong> uses a self-hosted, privacy-friendly analytics tool (Umami) to count anonymous page views. No cookies, no personal data.</p>
 
-    <h2>What BotLens accesses</h2>
+    <h2>The BotLens extension</h2>
+
+    <h3>What it accesses</h3>
     <p>When you open the BotLens popup on a page, the extension:</p>
     <ul>
       <li>Reads the active tab's URL, meta tags, headings, image alt text, and DOM size.</li>
       <li>Fetches the site's <code>/robots.txt</code> file and the raw HTML of the current page in order to compare it with the rendered DOM.</li>
     </ul>
-    <p>All of this happens inside your browser. None of the data leaves your machine.</p>
+    <p>All of this happens inside your browser. <strong>None of the data leaves your machine.</strong></p>
 
-    <h2>What BotLens does not do</h2>
+    <h3>What the extension does not do</h3>
     <ul>
       <li>No analytics, telemetry, or crash reporting.</li>
-      <li>No external servers — BotLens has no backend.</li>
+      <li>No external servers — the extension has no backend.</li>
       <li>No cookies, no user accounts, no advertising.</li>
       <li>No selling or sharing of data, because no data is collected.</li>
     </ul>
 
-    <h2>Permissions explained</h2>
+    <h3>Permissions explained</h3>
     <ul>
       <li><strong>activeTab / scripting</strong> — needed to read the page you are currently viewing when you click the BotLens icon.</li>
       <li><strong>host permissions (all URLs)</strong> — needed to fetch <code>robots.txt</code> and the raw HTML of the active page for comparison. This permission is only exercised when you actively trigger analysis.</li>
     </ul>
 
+    <h2>This website (botlens.iamjarl.com)</h2>
+
+    <p>The marketing site you are reading now uses <a href="https://umami.is/" rel="noopener">Umami</a>, a privacy-friendly, open-source analytics tool self-hosted on <code>umami-iamjarl.vercel.app</code>. Umami is loaded via a single <code>&lt;script defer&gt;</code> tag.</p>
+
+    <h3>What Umami collects</h3>
+    <ul>
+      <li>Page URL and title</li>
+      <li>Referrer (the site you came from)</li>
+      <li>Browser, operating system, and device type</li>
+      <li>Approximate country (derived from IP, then IP is discarded)</li>
+      <li>Anonymous, daily-rotating session hash</li>
+    </ul>
+
+    <h3>What Umami does not do</h3>
+    <ul>
+      <li>No cookies</li>
+      <li>No cross-site tracking</li>
+      <li>No fingerprinting</li>
+      <li>No personal data (name, email, precise location, IP) is stored</li>
+      <li>No data shared with third parties</li>
+    </ul>
+
+    <p>The analytics data is used solely to understand how many people visit the site and which pages are useful. Under GDPR, Umami's default configuration is generally considered exempt from cookie-consent requirements because it stores no identifiers on your device.</p>
+
+    <h3>Opt out</h3>
+    <p>If you prefer not to be counted, any of the following blocks Umami cleanly: enabling your browser's Do Not Track / Global Privacy Control setting (respected by Umami), using an ad-blocker like uBlock Origin, or blocking <code>umami-iamjarl.vercel.app</code> at DNS level.</p>
+
     <h2>Contact</h2>
-    <p>BotLens is open source. Questions or concerns: <a href="https://github.com/JarlLyng/BotLens/issues">open an issue on GitHub</a>.</p>
+    <p>BotLens is open source. Questions or concerns: <a href="https://github.com/JarlLyng/BotLens/issues">open an issue on GitHub</a> or email <a href="mailto:jarl@iamjarl.com">jarl@iamjarl.com</a>.</p>
   </main>
 
   <footer>

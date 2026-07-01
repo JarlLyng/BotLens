@@ -94,7 +94,9 @@ The final score is clamped to 0-100 and mapped to a verdict:
 
 ## Privacy and permissions
 
-BotLens has no backend, no accounts, no analytics, and no data collection. All analysis runs inside the user's browser.
+The BotLens Chrome extension has no backend, no accounts, no analytics, and no data collection. All analysis runs inside the user's browser.
+
+The marketing website at botlens.iamjarl.com is separate: it uses Umami, a privacy-friendly self-hosted analytics tool, to count anonymous page views. Umami sets no cookies, collects no personal data, does no cross-site tracking, and respects Do Not Track / GPC signals.
 
 Chrome extension permissions requested:
 

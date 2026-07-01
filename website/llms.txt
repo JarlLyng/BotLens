@@ -11,7 +11,7 @@
 - Publisher: IAMJARL (Jarl Lyng Jakobsen)
 - Repository: https://github.com/JarlLyng/BotLens
 - Homepage: https://botlens.iamjarl.com/
-- Privacy: All analysis runs locally in the browser. No data collection, no accounts, no external servers.
+- Privacy: The Chrome extension collects no data — all analysis runs locally in the browser. The marketing site at botlens.iamjarl.com uses privacy-friendly Umami analytics (no cookies, no personal data). Full policy: https://botlens.iamjarl.com/privacy.html
 
 ## What BotLens checks
 
