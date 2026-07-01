@@ -3,52 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BotLens — Can AI read your website?</title>
+  <title>BotLens — Can AI read your website? | Free Chrome Extension</title>
+
+  <meta name="description" content="Free Chrome extension that scores how well GPTBot, ClaudeBot, Perplexity, Google-Extended and 15+ AI crawlers can read your website. Instant robots.txt, meta tag, semantic HTML and JS rendering analysis.">
+  <meta name="keywords" content="AI readability, GPTBot, ClaudeBot, Perplexity, LLM SEO, GEO, generative engine optimization, robots.txt analyzer, AI crawler check, Chrome extension">
+  <meta name="author" content="Jarl Lyng Jakobsen">
+  <link rel="canonical" href="https://botlens.iamjarl.com/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://botlens.iamjarl.com/">
+  <meta property="og:title" content="BotLens — Can AI read your website?">
+  <meta property="og:description" content="Instant AI readability score for any site. See how GPTBot, ClaudeBot and 15+ crawlers view your content.">
+  <meta property="og:image" content="https://botlens.iamjarl.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="BotLens">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BotLens — Can AI read your website?">
+  <meta name="twitter:description" content="Instant AI readability score for any site. See how GPTBot, ClaudeBot and 15+ crawlers view your content.">
+  <meta name="twitter:image" content="https://botlens.iamjarl.com/og-image.png">
+
+  <link rel="icon" type="image/png" sizes="128x128" href="icons/icon48.png">
+  <link rel="apple-touch-icon" href="icons/icon48.png">
+
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "BotLens",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Chrome, Chromium, Edge, Brave",
+    "description": "BotLens is a free Chrome extension that analyzes whether a website is readable by AI systems including GPTBot, ClaudeBot, Perplexity, and Google-Extended. It scores robots.txt directives, meta tags, semantic HTML structure, and JavaScript rendering.",
+    "url": "https://botlens.iamjarl.com/",
+    "author": {
+      "@type": "Person",
+      "name": "Jarl Lyng Jakobsen",
+      "url": "https://iamjarl.com/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "IAMJARL",
+      "url": "https://iamjarl.com/"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "robots.txt parsing with Allow/Disallow precedence and wildcard support",
+      "Detection of 20+ AI user-agents including GPTBot, ClaudeBot, and Google-Extended",
+      "Meta directive analysis: noindex, noai, noimageai",
+      "Semantic HTML and heading hierarchy check",
+      "Structured data (JSON-LD) detection",
+      "JavaScript rendering and SPA shell detection",
+      "Weighted 0-100 AI readability score"
+    ],
+    "softwareVersion": "1.0.0",
+    "isAccessibleForFree": true,
+    "license": "https://github.com/JarlLyng/BotLens/blob/main/LICENSE",
+    "sameAs": ["https://github.com/JarlLyng/BotLens"]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is BotLens?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BotLens is a free, open-source Chrome extension that analyzes whether a website can be read by AI crawlers and language models. It gives every page a 0-100 AI readability score based on robots.txt, meta tags, semantic HTML, and JavaScript rendering."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which AI crawlers does BotLens detect?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BotLens recognizes 20+ AI user-agents including GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, anthropic-ai, Google-Extended, PerplexityBot, Applebot-Extended, Bytespider, Meta-ExternalAgent, CCBot, Amazonbot, Cohere, Diffbot, and more."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does BotLens collect any data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. BotLens runs entirely in your browser. There are no analytics, no accounts, no external servers, and no data collection. See the privacy policy at botlens.iamjarl.com/privacy.html for details."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is BotLens different from a normal SEO tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Traditional SEO tools focus on Googlebot and Bingbot. BotLens is built specifically for the AI-native web — it detects blocks against LLM crawlers like GPTBot and ClaudeBot, flags noai and noimageai directives used for AI training opt-outs, and identifies SPA shells that hide content from bots that don't execute JavaScript."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is BotLens free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. BotLens is 100% free, open-source under the MIT license, and requires no account. Source code is available on GitHub."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
-  <nav class="navbar">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <nav class="navbar" aria-label="Primary">
     <div class="nav-content">
       <div class="logo">
-        <img src="icons/icon48.png" alt="BotLens">
+        <img src="icons/icon48.png" alt="BotLens logo" width="32" height="32">
         <span>BotLens</span>
       </div>
       <div class="nav-links">
-        <a href="https://iamjarl.com" class="nav-author">By iamjarl</a>
+        <a href="#how-it-works" class="nav-author">How it works</a>
+        <a href="#faq" class="nav-author">FAQ</a>
+        <a href="https://github.com/JarlLyng/BotLens" class="nav-author" rel="noopener">GitHub</a>
         <a href="#install" class="btn-primary">Add to Chrome</a>
       </div>
     </div>
   </nav>
 
-  <main>
+  <main id="main">
     <section class="hero">
       <div class="hero-content">
         <h1>Can AI read your website?</h1>
-        <p class="hero-subtitle">Analyze how LLMs, crawlers, and bots see your content. Get actionable insights in seconds.</p>
+        <p class="hero-subtitle">Analyze how LLMs, crawlers, and bots see your content. Get an actionable AI readability score in seconds — right from your browser.</p>
         <div class="hero-actions">
           <a href="#install" class="btn-hero">Install BotLens</a>
-          <span class="free-label">Free & Open Source</span>
+          <span class="free-label">Free &amp; Open Source · MIT License</span>
         </div>
       </div>
-      
+
       <div class="hero-preview">
-        <!-- Mockup of the Extension Popup -->
-        <div class="extension-mockup">
+        <div class="extension-mockup" aria-hidden="true">
           <header class="mockup-header">
-            <img src="icons/icon48.png" alt="Logo">
+            <img src="icons/icon48.png" alt="" width="24" height="24">
             <span>BotLens</span>
           </header>
           <div class="mockup-verdict">
-            <div class="mockup-score">84</div>
+            <div class="mockup-score">92</div>
             <div class="mockup-title">AI Friendly</div>
             <div class="mockup-desc">Highly accessible for AI systems.</div>
           </div>
           <div class="mockup-signals">
-            <div class="mockup-item"><i class="ph ph-robot"></i> <span>Search engines allowed</span> <div class="dot ok"></div></div>
-            <div class="mockup-item"><i class="ph ph-tree-structure"></i> <span>Good semantic structure</span> <div class="dot ok"></div></div>
-            <div class="mockup-item"><i class="ph ph-file-js"></i> <span>SEO-friendly rendering</span> <div class="dot warn"></div></div>
+            <div class="mockup-item">
+              <svg class="mockup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M12 7V3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/><path d="M9 17h6"/></svg>
+              <span>Bots and AI crawlers allowed</span>
+              <div class="dot ok"></div>
+            </div>
+            <div class="mockup-item">
+              <svg class="mockup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="4" rx="1"/><rect x="3" y="17" width="6" height="4" rx="1"/><rect x="15" y="17" width="6" height="4" rx="1"/><path d="M12 7v4"/><path d="M6 17v-2h12v2"/></svg>
+              <span>Structured data present</span>
+              <div class="dot ok"></div>
+            </div>
+            <div class="mockup-item">
+              <svg class="mockup-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M10 9v6a2 2 0 0 1-2 2H7"/><path d="M17 9h-3a1.5 1.5 0 0 0 0 3h1.5a1.5 1.5 0 0 1 0 3H12"/></svg>
+              <span>Content is SEO-friendly</span>
+              <div class="dot ok"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -56,36 +182,145 @@
 
     <section id="features" class="features">
       <div class="feature-card">
-        <i class="ph ph-shield-check"></i>
-        <h3>Robots.txt Analysis</h3>
-        <p>Instantly check if GPTBot, Googlebot, or Bingbot are blocked from your site.</p>
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h3>robots.txt &amp; Meta</h3>
+        <p>Full support for Allow/Disallow precedence, wildcards, and 20+ AI user-agents — plus meta directives like noindex, noai, and noimageai.</p>
       </div>
       <div class="feature-card">
-        <i class="ph ph-code"></i>
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         <h3>Semantic Check</h3>
-        <p>Analyze heading hierarchy and semantic HTML to ensure LLMs can parse your data.</p>
+        <p>Validates heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the lang attribute.</p>
       </div>
       <div class="feature-card">
-        <i class="ph ph-lightning"></i>
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         <h3>JS Detection</h3>
-        <p>Identify if your content is hidden behind heavy client-side rendering.</p>
+        <p>Compares initial HTML to rendered DOM to catch SPA shells that hide content from AI crawlers that don't execute JavaScript.</p>
       </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+      <div class="how-content">
+        <div class="section-eyebrow">How it works</div>
+        <h2>Every signal that matters — measured in one click</h2>
+        <p class="how-lead">When you click the BotLens icon on any website, it runs a technical audit in under a second. Nothing leaves your browser. Here's exactly what it checks.</p>
+
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-step-num">1</div>
+            <h3>Fetch robots.txt &amp; raw HTML</h3>
+            <p>BotLens fetches the site's <code>/robots.txt</code> and the page's server-rendered HTML in parallel. This lets it compare what crawlers see versus what your browser renders after JavaScript runs.</p>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">2</div>
+            <h3>Parse crawler rules</h3>
+            <p>The parser handles the full robots.txt spec: multiple user-agent groups, Allow/Disallow precedence by longest match, wildcards (<code>*</code>), and end-of-path anchors (<code>$</code>). Every rule is evaluated against the current URL for each of 20+ known AI user-agents.</p>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">3</div>
+            <h3>Analyze the DOM</h3>
+            <p>BotLens reads meta directives (robots, googlebot, gptbot, noai, noimageai), heading hierarchy (H1 count, semantic depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the <code>&lt;html lang&gt;</code> attribute.</p>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">4</div>
+            <h3>Detect JS shells</h3>
+            <p>By comparing the initial HTML payload size to the rendered DOM, BotLens spots SPA shells where crawlers only see a nearly-empty document. A small initial HTML + a large rendered DOM is a red flag for LLM readability.</p>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">5</div>
+            <h3>Compute a weighted score</h3>
+            <p>Signals are weighted (robots/meta 50, semantic 30, JS 20) and combined into a single 0-100 readability score. You get a plain-language verdict — AI Friendly, Partially Restricted, or Blocked / Poor — plus the specific issues to fix.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="who-its-for" class="audience">
+      <h2>Who is BotLens for?</h2>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <h3>Developers</h3>
+          <p>Ship an SPA and want to make sure GPTBot can still index your docs? BotLens tells you if your Next.js or React Router app looks like a hollow shell to crawlers.</p>
+        </div>
+        <div class="audience-card">
+          <h3>SEO practitioners</h3>
+          <p>Traditional tools focus on Google. BotLens surfaces the emerging AI-crawler landscape: which of your clients are blocking ChatGPT? Are they opted out of AI training on purpose?</p>
+        </div>
+        <div class="audience-card">
+          <h3>Content teams</h3>
+          <p>Want your articles cited by Perplexity or answered by Claude? BotLens shows whether your semantic HTML, headings, and structured data give LLMs enough signal to represent you accurately.</p>
+        </div>
+        <div class="audience-card">
+          <h3>Site owners</h3>
+          <p>Curious whether your CMS silently opted you out of AI training? Or blocked ClaudeBot in a stale robots.txt? One click answers both.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="install">
+      <h2>Get BotLens</h2>
+      <p class="install-lead">v1.0.0 is currently under review at the Chrome Web Store. You can install from source today.</p>
+      <div class="install-options">
+        <div class="install-card">
+          <div class="install-tag">Coming soon</div>
+          <h3>Chrome Web Store</h3>
+          <p>One-click install with automatic updates. Currently pending Google's initial review — typically 1-7 days.</p>
+          <a href="https://chromewebstore.google.com/search/botlens" class="btn-primary" rel="noopener">Check the store</a>
+        </div>
+        <div class="install-card">
+          <div class="install-tag accent">Available now</div>
+          <h3>Install from source</h3>
+          <p>Clone the repo, open <code>chrome://extensions</code>, enable Developer Mode, click <em>Load unpacked</em>, and select the project folder.</p>
+          <a href="https://github.com/JarlLyng/BotLens#readme" class="btn-primary" rel="noopener">View instructions</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item">
+        <summary>What is BotLens?</summary>
+        <p>BotLens is a free, open-source Chrome extension that analyzes whether a website can be read by AI crawlers and language models. It gives every page a 0-100 AI readability score based on robots.txt, meta tags, semantic HTML, and JavaScript rendering.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which AI crawlers does BotLens detect?</summary>
+        <p>BotLens recognizes 20+ AI user-agents including <strong>GPTBot</strong>, OAI-SearchBot, ChatGPT-User, <strong>ClaudeBot</strong>, anthropic-ai, <strong>Google-Extended</strong>, PerplexityBot, Applebot-Extended, Bytespider, Meta-ExternalAgent, CCBot, Amazonbot, Cohere, Diffbot, and more.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does BotLens collect any data?</summary>
+        <p>No. BotLens runs entirely in your browser. There are no analytics, no accounts, no external servers, and no data collection. See the <a href="privacy.html">privacy policy</a> for details.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How is BotLens different from a normal SEO tool?</summary>
+        <p>Traditional SEO tools focus on Googlebot and Bingbot. BotLens is built for the AI-native web — it detects blocks against LLM crawlers like GPTBot and ClaudeBot, flags noai and noimageai directives used for AI training opt-outs, and identifies SPA shells that hide content from bots that don't execute JavaScript.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is GEO (Generative Engine Optimization)?</summary>
+        <p>GEO is the practice of optimizing content so it can be discovered, understood, and cited by generative AI systems like ChatGPT, Claude, and Perplexity — as opposed to traditional SEO which targets search-result rankings. GEO cares about the same technical foundations (semantic HTML, structured data, crawler access) plus new signals like whether you've opted in to AI training via robots.txt and meta directives.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is BotLens free?</summary>
+        <p>Yes. BotLens is 100% free, open-source under the MIT license, and requires no account. Source code is on <a href="https://github.com/JarlLyng/BotLens" rel="noopener">GitHub</a>.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does BotLens work on other Chromium browsers?</summary>
+        <p>BotLens is built on Manifest V3 and should work on any Chromium-based browser: Chrome, Edge, Brave, Arc, Opera, and Vivaldi. Firefox support is on the roadmap.</p>
+      </details>
     </section>
 
     <section class="cta-bottom">
       <h2>Ready to optimize for the AI-native web?</h2>
-      <p>Download BotLens and start analyzing today.</p>
-      <a href="#" class="btn-primary lg">Get the Extension</a>
+      <p>Install BotLens and start analyzing any site in one click.</p>
+      <a href="#install" class="btn-primary lg">Get the Extension</a>
     </section>
   </main>
 
   <footer>
     <div class="footer-content">
-      <p>&copy; 2026 BotLens. Created with &hearts; by <a href="https://iamjarl.com">iamjarl</a></p>
+      <p>&copy; 2026 BotLens · Built by <a href="https://iamjarl.com" rel="noopener">iamjarl</a></p>
       <div class="footer-links">
-        <a href="https://github.com/JarlLyng/BotLens">GitHub</a>
+        <a href="https://github.com/JarlLyng/BotLens" rel="noopener">GitHub</a>
         <a href="privacy.html">Privacy</a>
-        <a href="https://iamjarl.com">Portfolio</a>
+        <a href="https://iamjarl.com" rel="noopener">Portfolio</a>
       </div>
     </div>
   </footer>

@@ -1,0 +1,32 @@
+# BotLens
+
+> BotLens is a free, open-source Chrome extension that analyzes whether a website is readable by AI systems — including GPTBot, ClaudeBot, Perplexity, Google-Extended and 15+ other AI crawlers. It produces a 0-100 AI readability score based on robots.txt, meta directives, semantic HTML, and JavaScript rendering.
+
+## Core information
+
+- Name: BotLens
+- Category: Chrome extension, developer tool
+- License: MIT (open source)
+- Price: Free
+- Publisher: IAMJARL (Jarl Lyng Jakobsen)
+- Repository: https://github.com/JarlLyng/BotLens
+- Homepage: https://botlens.iamjarl.com/
+- Privacy: All analysis runs locally in the browser. No data collection, no accounts, no external servers.
+
+## What BotLens checks
+
+1. **robots.txt** — Parses the full spec including Allow/Disallow precedence by longest match, wildcards, and end-of-path anchors. Evaluates rules against 20+ known AI user-agents.
+2. **Meta directives** — Detects robots noindex/nofollow/none, plus bot-specific meta and the noai / noimageai AI-training opt-out directives.
+3. **Semantic HTML** — Heading hierarchy (H1 count and depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the html lang attribute.
+4. **JavaScript rendering** — Compares initial HTML payload to rendered DOM to catch SPA shells that hide content from crawlers.
+
+## AI crawlers recognized
+
+GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-Web, anthropic-ai, Google-Extended, GoogleOther, PerplexityBot, Perplexity-User, Applebot-Extended, Bytespider, Meta-ExternalAgent, Meta-ExternalFetcher, FacebookBot, CCBot, Amazonbot, cohere-ai, Diffbot, Omgilibot, ImagesiftBot, YouBot, MistralAI-User, DuckAssistBot.
+
+## Documentation
+
+- [Homepage](https://botlens.iamjarl.com/): Overview, features, install instructions, FAQ
+- [Privacy policy](https://botlens.iamjarl.com/privacy.html): What BotLens accesses and why
+- [Source code](https://github.com/JarlLyng/BotLens): MIT-licensed repository with issues and roadmap
+- [Full content](https://botlens.iamjarl.com/llms-full.txt): Extended AI-readable description

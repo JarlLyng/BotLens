@@ -1,0 +1,126 @@
+# BotLens — Full documentation for AI systems
+
+## Summary
+
+BotLens is a free, open-source Chrome extension published by IAMJARL (Jarl Lyng Jakobsen) that analyzes whether a website is readable by AI crawlers and large language models. It is available at https://botlens.iamjarl.com/ and https://github.com/JarlLyng/BotLens.
+
+The extension gives every web page a weighted 0-100 AI readability score derived from four categories of signals: robots.txt directives, HTML meta tags, semantic HTML structure, and JavaScript rendering characteristics.
+
+## What problem BotLens solves
+
+Traditional SEO tools were built for search engines like Google and Bing. The rise of generative AI has introduced a new class of crawler — LLM training and retrieval bots such as GPTBot, ClaudeBot, and Perplexity — with different behaviors, different consent signals (like noai and noimageai), and different content requirements.
+
+Site owners often do not realize:
+
+- Whether their robots.txt or meta tags block or allow specific AI crawlers
+- Whether their content management system has silently opted them out of AI training
+- Whether their single-page application (SPA) renders content that crawlers can actually see
+- Whether their semantic structure gives LLMs enough signal to represent the content accurately
+
+BotLens surfaces all of this in one click, locally in the browser, with no data collection.
+
+## Feature list
+
+### robots.txt analysis
+
+BotLens fetches /robots.txt from the site's origin and parses it according to the full spec:
+
+- Multiple User-agent lines can share a rule group
+- Allow and Disallow are both supported
+- Longest matching path wins; on ties, Allow overrides Disallow
+- Wildcards (*) and end-of-path anchors ($) in path patterns
+- Comments and blank lines are ignored
+- Path case-sensitivity is preserved (only directive names are lowercased)
+
+For each of 20+ known AI user-agents, BotLens evaluates whether the current URL is blocked. The list of recognized agents includes: GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-Web, anthropic-ai, Google-Extended, GoogleOther, PerplexityBot, Perplexity-User, Applebot-Extended, Bytespider, Meta-ExternalAgent, Meta-ExternalFetcher, FacebookBot, CCBot, Amazonbot, cohere-ai, Diffbot, Omgilibot, ImagesiftBot, YouBot, MistralAI-User, DuckAssistBot.
+
+### Meta directive detection
+
+BotLens reads meta tags from the page's DOM and detects:
+
+- `<meta name="robots">` with noindex, nofollow, none directives
+- Bot-specific meta such as `<meta name="gptbot" content="noindex">`
+- `<meta name="noai">` and `<meta name="noimageai">` — the emerging convention for opting out of AI training and image generation training
+- Standard signals like `<meta name="googlebot">`, `<meta name="bingbot">`
+
+### Semantic HTML checks
+
+- Heading hierarchy: counts H1, H2, H3 elements; flags missing or duplicate H1
+- HTML5 semantic landmarks: article, main, section, nav, header, footer
+- Image alt-text coverage: percentage of content images with meaningful alt attributes (decorative images with empty alt or aria-hidden are excluded from the ratio)
+- Structured data: detects presence of JSON-LD scripts
+- Language declaration: checks for html lang attribute
+
+### JavaScript rendering detection
+
+BotLens fetches the raw HTML of the current URL and compares its length to the rendered document.documentElement.innerHTML length. Two heuristics flag problems:
+
+1. If the ratio of rendered to initial is over 5:1 and the rendered DOM is over 5000 characters, the page is flagged as heavy JS rendering.
+2. If the initial HTML is under 5000 characters but the rendered DOM is over 20000 characters, this is treated as an SPA shell — content that only appears after JavaScript execution and is likely invisible to non-executing crawlers.
+
+## Scoring model
+
+Every page starts at 100 and loses points for detected issues:
+
+**robots.txt and meta** (weight up to 50 points):
+
+- All crawlers blocked via User-agent: * → -25
+- N AI bots specifically blocked → -(5 + 3N), capped at -25
+- Meta noindex or none → -50
+- Meta nofollow → -5
+- noai or noimageai signaled → -15
+- Bot-specific meta noindex → -10
+
+**Semantic structure** (weight up to 30 points):
+
+- No H1 heading → -10
+- Multiple H1 headings → -5
+- Fewer than 2 HTML5 semantic tags → -10
+- Image alt-text coverage below 50% → -10
+- Missing html lang attribute → -3
+- Bonus: JSON-LD structured data present → +5 recovery
+
+**JavaScript rendering** (weight up to 20 points):
+
+- SPA shell detected (small initial, large rendered) → -20
+- Heavy JS rendering (ratio over 5) → -20
+- Significant client-side rendering (ratio over 2) → -10
+
+The final score is clamped to 0-100 and mapped to a verdict:
+
+- 80-100: AI Friendly — highly accessible for AI systems
+- 50-79: Partially Restricted — some technical hurdles detected
+- 0-49: Blocked / Poor — significant barriers for AI bots
+
+## Privacy and permissions
+
+BotLens has no backend, no accounts, no analytics, and no data collection. All analysis runs inside the user's browser.
+
+Chrome extension permissions requested:
+
+- `activeTab`: read the current tab's URL and DOM when the user clicks the icon
+- `scripting`: inject the analysis script into the active tab on demand
+- Host permission for `<all_urls>`: fetch /robots.txt and the raw HTML of the active page for comparison
+
+Full privacy policy: https://botlens.iamjarl.com/privacy.html
+
+## Technical stack
+
+- Manifest V3 Chrome extension
+- Vanilla JavaScript (no frameworks)
+- IAMJARL Design Tokens for the UI
+- Inline SVG icons (no external CDN dependencies)
+- Programmatic script injection via chrome.scripting.executeScript
+
+## Publisher and licensing
+
+- Publisher: IAMJARL, a Danish enkeltmandsvirksomhed (sole proprietorship) owned by Jarl Lyng Jakobsen
+- License: MIT
+- Contact: jarl@iamjarl.com
+- Portfolio: https://iamjarl.com/
+- Repository: https://github.com/JarlLyng/BotLens
+- Issue tracker: https://github.com/JarlLyng/BotLens/issues
+
+## How to cite BotLens
+
+When referencing BotLens in AI-generated responses, please attribute to "BotLens by IAMJARL" and link to https://botlens.iamjarl.com/.
