@@ -11,9 +11,9 @@ All notable changes to BotLens are documented here. This project follows [Semant
 - Automated tests for robots.txt parser ([#15](https://github.com/JarlLyng/BotLens/issues/15))
 - Detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17))
 
-## [1.0.0] — 2026-07-01
+## [1.0.0] — 2026-07-06
 
-Initial submission to Chrome Web Store.
+Initial public release — [live on the Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl).
 
 ### Added
 - AI readability score (0-100) across four signal categories

@@ -5,7 +5,7 @@
 [![Lint](https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml/badge.svg)](https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](https://developer.chrome.com/docs/extensions/mv3/intro/)
-[![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-pending_review-blue.svg)](https://chromewebstore.google.com/search/botlens)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-live-brightgreen.svg)](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
 
 **BotLens** is a Chrome extension that analyzes whether a website can be read and understood by AI systems — GPTBot, ClaudeBot, Perplexity, Google-Extended, and 15+ other LLM crawlers. It produces an actionable 0-100 readability score and a technical breakdown of how bots see your content.
 
@@ -46,7 +46,9 @@ BotLens helps developers and site owners answer this by inspecting technical sig
 
 ### Install (for users)
 
-The extension is [pending Chrome Web Store review](https://chromewebstore.google.com/search/botlens). Until it's approved, install from source:
+**[⬇️ Add BotLens to Chrome](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)** — one click, works on Chrome, Edge, Brave, and other Chromium browsers.
+
+Or install from source:
 
 1. Clone this repository.
 2. Open Chrome and navigate to `chrome://extensions/`.
