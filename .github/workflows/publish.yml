@@ -1,0 +1,70 @@
+name: Publish to Chrome Web Store
+
+# Publishes a build to the Chrome Web Store.
+# - Runs automatically when a version tag (v*) is pushed.
+# - Can also be triggered manually from the Actions tab (workflow_dispatch).
+#
+# Requires four repository secrets (Settings → Secrets and variables → Actions):
+#   CWS_EXTENSION_ID, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN
+# These are encrypted and are NOT exposed to workflows triggered from forks.
+# This workflow never runs on pull_request, so a malicious PR cannot exfiltrate them.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Submit for publishing (uncheck to upload as draft only)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cws-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Optional human-in-the-loop gate: create an Environment named
+    # "chrome-web-store" with required reviewers to require approval before
+    # anything is uploaded. Safe to leave as-is if you don't set one up.
+    environment: chrome-web-store
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build extension zip
+        run: npm run build
+
+      - name: Upload to Chrome Web Store
+        env:
+          EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          # push-triggered runs always publish; manual runs honor the input.
+          PUBLISH: ${{ github.event_name == 'push' && 'true' || inputs.publish }}
+        run: |
+          set -euo pipefail
+          ZIP=$(ls dist/botlens-*.zip)
+          echo "Uploading $ZIP"
+          if [ "$PUBLISH" = "true" ]; then
+            npx --yes chrome-webstore-upload-cli@3 upload --source "$ZIP" --auto-publish
+          else
+            npx --yes chrome-webstore-upload-cli@3 upload --source "$ZIP"
+            echo "Uploaded as draft (not submitted for publishing)."
+          fi
