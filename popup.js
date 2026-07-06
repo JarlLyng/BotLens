@@ -20,10 +20,10 @@ async function analyze() {
     }
 
     const url = new URL(tab.url);
-    const origin = url.origin;
 
-    // 1. Inject extractor on demand. Returns whatever the script's last
-    //    expression evaluates to (an IIFE in content.js).
+    // 1. Inject extractor on demand. It runs in the page's own origin and
+    //    fetches robots.txt + raw HTML same-origin, so no host permission is
+    //    needed. executeScript awaits the async IIFE and returns its result.
     let pageData;
     try {
       const results = await chrome.scripting.executeScript({
@@ -38,27 +38,12 @@ async function analyze() {
       return;
     }
 
-    // 2. Fetch robots.txt & Initial HTML
-    let robotsTxt = null;
-    let rawHtml = '';
-    
-    try {
-      const results = await Promise.allSettled([
-        fetchRobotsTxt(origin),
-        fetchRawHtml(tab.url)
-      ]);
-      
-      robotsTxt = results[0].status === 'fulfilled' ? results[0].value : null;
-      rawHtml = results[1].status === 'fulfilled' ? results[1].value : '';
-    } catch (e) {
-      console.warn("Fetch failed, but continuing analysis with available data.");
-    }
-
-    const robotsRules = parseRobotsTxt(robotsTxt, url.pathname);
+    // 2. Parse robots rules (robotsTxt was fetched by the content script).
+    const robotsRules = parseRobotsTxt(pageData.robotsTxt, url.pathname);
 
     // 3. Analyze Signals & Calculate Score
-    const signals = calculateEnhancedSignals(pageData, robotsRules, rawHtml);
-    
+    const signals = calculateEnhancedSignals(pageData, robotsRules);
+
     // 4. Update UI
     updateEnhancedUI(signals);
 
@@ -75,20 +60,6 @@ function resetUI() {
   updateSignal('robots', 'fetching', 'Analyzing tags...');
   updateSignal('semantic', 'fetching', 'Checking structure...');
   updateSignal('js', 'fetching', 'Checking rendering...');
-}
-
-async function fetchRobotsTxt(origin) {
-  try {
-    const res = await fetch(`${origin}/robots.txt`);
-    return res.ok ? await res.text() : null;
-  } catch (e) { return null; }
-}
-
-async function fetchRawHtml(url) {
-  try {
-    const res = await fetch(url);
-    return res.ok ? await res.text() : '';
-  } catch (e) { return ''; }
 }
 
 // Known AI / LLM crawler user-agents (lowercase). Keep in sync with calculateEnhancedSignals.
@@ -174,7 +145,7 @@ function pathMatches(currentPath, pattern) {
   return re.test(currentPath);
 }
 
-function calculateEnhancedSignals(pageData, robotsRules, rawHtml) {
+function calculateEnhancedSignals(pageData, robotsRules) {
   let score = 100;
   const meta = pageData.metaTags || {};
   const semantic = pageData.semantic || {};
@@ -264,24 +235,31 @@ function calculateEnhancedSignals(pageData, robotsRules, rawHtml) {
   score -= Math.max(0, semanticPenalty);
 
   // 3. JS-Heavy Detection (Weight: 20)
+  // The content script re-fetches the page same-origin, so this compares the
+  // exact HTML the browser rendered from against the rendered DOM.
   const renderedSize = pageData.domSize || 0;
-  const initialSize = rawHtml.length;
-  // Heuristic: compare rendered DOM size to initial HTML, but require a meaningful
-  // initial payload so SPAs with empty shells get flagged correctly.
-  if (initialSize > 0) {
-    const jsRatio = renderedSize / initialSize;
-    const shellLikely = initialSize < 5000 && renderedSize > 20000;
+  const initialSize = (pageData.rawHtml || '').length;
 
-    if (shellLikely || (jsRatio > 5 && renderedSize > 5000)) {
+  if (!pageData.rawHtmlOk || !pageData.rawHtmlIsHtml || initialSize === 0) {
+    // Could not fetch comparable HTML (non-HTML response, redirect, or error).
+    // Don't penalize — we simply can't verify server-side rendering.
+    signals.js = { status: 'warn', value: 'Could not verify SSR payload' };
+  } else {
+    const jsRatio = renderedSize / initialSize;
+    const absoluteGap = renderedSize - initialSize;
+    // Require BOTH a high ratio AND a large absolute gap, so small pages
+    // (where minor DOM normalization inflates the ratio) never trip the check.
+    const shellLikely = initialSize < 5000 && renderedSize > 20000;
+    const heavyJs = jsRatio > 5 && absoluteGap > 20000;
+    const moderateJs = jsRatio > 2 && absoluteGap > 10000;
+
+    if (shellLikely || heavyJs) {
       score -= 20;
       signals.js = { status: 'error', value: 'Heavy JS rendering — bots may miss content' };
-    } else if (jsRatio > 2) {
+    } else if (moderateJs) {
       score -= 10;
       signals.js = { status: 'warn', value: 'Significant client-side rendering' };
     }
-  } else {
-    // Could not fetch raw HTML — note but don't penalize
-    signals.js = { status: 'warn', value: 'Could not verify SSR payload' };
   }
 
   signals.score = Math.max(0, Math.min(100, Math.round(score)));

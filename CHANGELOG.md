@@ -5,11 +5,27 @@ All notable changes to BotLens are documented here. This project follows [Semant
 ## [Unreleased]
 
 ### Planned
-- Drop `<all_urls>` host permission by moving fetches into content script ([#20](https://github.com/JarlLyng/BotLens/issues/20))
 - Detect Open Graph, Twitter Card, canonical as scoring signals ([#18](https://github.com/JarlLyng/BotLens/issues/18))
 - llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
+- AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
 - Automated tests for robots.txt parser ([#15](https://github.com/JarlLyng/BotLens/issues/15))
 - Detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17))
+- Automate Web Store publishing via GitHub Actions ([#23](https://github.com/JarlLyng/BotLens/issues/23))
+
+## [1.1.0] — 2026-07-06
+
+### Changed
+- **Removed the `<all_urls>` host permission.** robots.txt and raw HTML are now
+  fetched from within the content script (same-origin), so the extension no
+  longer needs broad host access. Users no longer see the "Read your data on
+  all websites" install warning. ([#20](https://github.com/JarlLyng/BotLens/issues/20))
+
+### Fixed
+- Static sites were incorrectly flagged as "Significant client-side rendering".
+  The JS-heavy heuristic now requires both a high rendered/initial ratio **and**
+  a large absolute byte gap, and falls back to "could not verify" for non-HTML
+  or failed fetches. Fully static pages now score their JS signal as OK.
+  ([#24](https://github.com/JarlLyng/BotLens/issues/24))
 
 ## [1.0.0] — 2026-07-06
 
