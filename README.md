@@ -69,6 +69,24 @@ Coding conventions:
 - Keep the popup logic in [`popup.js`](popup.js) and the injected page extractor in [`content.js`](content.js).
 - Do not add remote script dependencies — MV3 forbids it and Chrome Web Store review rejects it.
 
+### Releasing
+
+Publishing to the Chrome Web Store is automated via GitHub Actions ([`.github/workflows/publish.yml`](.github/workflows/publish.yml)):
+
+```bash
+# 1. Bump "version" in manifest.json + update CHANGELOG.md, commit
+# 2. Tag and push:
+git tag v1.2.0 && git push origin v1.2.0
+# → CI lints, builds, uploads to the Web Store, and submits for review
+```
+
+To upload a draft without submitting (e.g. to sanity-check a package), run the
+workflow manually from the Actions tab and uncheck "Submit for publishing".
+
+Publishing requires four repository secrets (`CWS_EXTENSION_ID`, `CWS_CLIENT_ID`,
+`CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN`). The manual devconsole upload remains a
+valid fallback if the API flow ever breaks.
+
 ---
 
 ## 🗺️ Roadmap
