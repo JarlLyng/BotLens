@@ -12,5 +12,11 @@
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["scripts/**/*.js"],
+      "env": { "node": true, "browser": false }
+    }
+  ]
 }
