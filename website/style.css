@@ -336,6 +336,8 @@ body {
   border-radius: var(--ij-radius-lg);
 }
 .how-step-num {
+  grid-column: 1;
+  grid-row: 1 / span 2;
   width: 40px; height: 40px;
   border-radius: 50%;
   background: var(--ij-color-primary);
@@ -346,11 +348,13 @@ body {
   flex-shrink: 0;
 }
 .how-step h3 {
+  grid-column: 2;
   font-size: var(--ij-font-size-lg);
   margin-bottom: var(--ij-spacing-sm);
   letter-spacing: -0.01em;
 }
 .how-step p {
+  grid-column: 2;
   color: var(--ij-color-text-secondary);
   font-size: var(--ij-font-size-sm);
   line-height: 1.6;
