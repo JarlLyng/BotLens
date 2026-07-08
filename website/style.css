@@ -80,6 +80,17 @@ body {
   color: var(--ij-color-primary);
 }
 
+/* On mobile the section links crowd the logo, so hide them and keep the
+   primary CTA. It's a single-page scroll site, so nothing is lost. */
+@media (max-width: 768px) {
+  .nav-links { gap: var(--ij-spacing-md); }
+  .nav-links .nav-author { display: none; }
+  .navbar .btn-primary {
+    white-space: nowrap;
+    padding: var(--ij-spacing-sm) var(--ij-spacing-md);
+  }
+}
+
 /* Buttons */
 .btn-primary {
   background: var(--ij-color-primary);
@@ -116,7 +127,6 @@ body {
 @media (max-width: 768px) {
   .hero {
     grid-template-columns: 1fr;
-    text-align: center;
     margin: 40px auto;
   }
   .hero-preview {
@@ -140,7 +150,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  .hero-subtitle { margin: 0 auto 32px; }
+  .hero-subtitle { margin-bottom: 32px; }
 }
 
 .hero-actions {
@@ -150,7 +160,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  .hero-actions { justify-content: center; }
+  .hero-actions { flex-wrap: wrap; }
 }
 
 .btn-hero {
