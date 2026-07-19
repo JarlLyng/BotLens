@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](https://developer.chrome.com/docs/extensions/mv3/intro/)
 [![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-live-brightgreen.svg)](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
+[![Co-created with AI](https://img.shields.io/badge/Co--created_with-AI-8A2BE2.svg)](https://madebyhuman.iamjarl.com)
 
 **BotLens** is a Chrome extension that analyzes whether a website can be read and understood by AI systems — GPTBot, ClaudeBot, Perplexity, Google-Extended, and 15+ other LLM crawlers. It produces an actionable 0-100 readability score and a technical breakdown of how bots see your content.
 
