@@ -201,7 +201,7 @@ header h1 {
 }
 
 .refresh-btn:hover {
-  filter: brightness(1.1);
+  background-color: var(--ij-color-primary-hover);
   box-shadow: var(--ij-shadow-md);
 }
 

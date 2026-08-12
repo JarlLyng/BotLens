@@ -1,4 +1,4 @@
-/* IAMJARL Design Tokens v0.5.0 — fetched from iamjarl-design */
+/* IAMJARL Design Tokens v1.2.1 — generated, do not edit */
 
 :root {
   /* Spacing */
@@ -26,11 +26,12 @@
   --ij-font-size-xl: 24px;
   --ij-font-size-xxl: 36px;
 
-  --ij-line-height-tight: 20px;
-  --ij-line-height-normal: 24px;
-  --ij-line-height-relaxed: 28px;
-  --ij-line-height-xxl: 43.2px;
-  --ij-line-height-sm: 18px;
+  --ij-line-height-xs: 16px;
+  --ij-line-height-sm: 20px;
+  --ij-line-height-base: 24px;
+  --ij-line-height-lg: 28px;
+  --ij-line-height-xl: 32px;
+  --ij-line-height-xxl: 44px;
 
   --ij-font-weight-regular: 400;
   --ij-font-weight-semibold: 600;
@@ -50,7 +51,7 @@
   --ij-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ij-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
 
-  /* Breakpoints */
+  /* Breakpoints (for JS / SCSS use; CSS media queries need literal px values) */
   --ij-breakpoint-popup: 320px;
   --ij-breakpoint-sm: 640px;
   --ij-breakpoint-md: 768px;
@@ -61,6 +62,20 @@
   /* Focus ring */
   --ij-focus-width: 2px;
   --ij-focus-offset: 2px;
+
+  /* Z-index */
+  --ij-z-base: 0;
+  --ij-z-dropdown: 1000;
+  --ij-z-sticky: 1100;
+  --ij-z-overlay: 1200;
+  --ij-z-modal: 1300;
+  --ij-z-popover: 1400;
+  --ij-z-toast: 1500;
+  --ij-z-tooltip: 1600;
+
+  /* Opacity */
+  --ij-opacity-disabled: 0.4;
+  --ij-opacity-muted: 0.65;
 
   /* Static colors */
   --ij-color-black: #000000;
@@ -77,33 +92,98 @@
   /* Mode colors (light default) */
   --ij-color-primary: #A435D2;
   --ij-color-on-primary: #FFFFFF;
+  --ij-color-primary-hover: #8E2BB8;
+  --ij-color-primary-pressed: #7A2499;
+  --ij-color-primary-subtle: rgba(164, 53, 210, 0.12);
   --ij-color-text-primary: #000000;
   --ij-color-text-secondary: rgba(0, 0, 0, 0.70);
   --ij-color-text-tertiary: rgba(0, 0, 0, 0.55);
+  --ij-color-text-disabled: rgba(0, 0, 0, 0.35);
   --ij-color-text-inverse: #FFFFFF;
   --ij-color-bg-app: #FFFFFF;
   --ij-color-bg-muted: rgba(0, 0, 0, 0.04);
   --ij-color-bg-card: rgba(0, 0, 0, 0.04);
+  --ij-color-bg-disabled: rgba(0, 0, 0, 0.06);
   --ij-color-surface-default: #FFFFFF;
   --ij-color-surface-raised: rgba(0, 0, 0, 0.02);
   --ij-color-border-subtle: rgba(0, 0, 0, 0.10);
   --ij-color-border-default: rgba(0, 0, 0, 0.16);
+  --ij-color-state-success: #2E7D32;
+  --ij-color-state-warning: #C2410C;
+  --ij-color-state-error: #D70015;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --ij-color-primary: #D0FF00;
     --ij-color-on-primary: #000000;
+    --ij-color-primary-hover: #B8E000;
+    --ij-color-primary-pressed: #A0C400;
+    --ij-color-primary-subtle: rgba(208, 255, 0, 0.15);
     --ij-color-text-primary: #FFFFFF;
     --ij-color-text-secondary: rgba(255, 255, 255, 0.75);
     --ij-color-text-tertiary: rgba(255, 255, 255, 0.60);
+    --ij-color-text-disabled: rgba(255, 255, 255, 0.35);
     --ij-color-text-inverse: #000000;
     --ij-color-bg-app: #000000;
     --ij-color-bg-muted: rgba(255, 255, 255, 0.05);
     --ij-color-bg-card: rgba(255, 255, 255, 0.05);
+    --ij-color-bg-disabled: rgba(255, 255, 255, 0.07);
     --ij-color-surface-default: #000000;
     --ij-color-surface-raised: rgba(255, 255, 255, 0.03);
     --ij-color-border-subtle: rgba(255, 255, 255, 0.12);
     --ij-color-border-default: rgba(255, 255, 255, 0.18);
+    --ij-color-state-success: #4CAF50;
+    --ij-color-state-warning: #FF6B35;
+    --ij-color-state-error: #FF453A;
   }
+}
+
+/* Explicit class overrides for manual mode switching */
+.light {
+  --ij-color-primary: #A435D2;
+  --ij-color-on-primary: #FFFFFF;
+  --ij-color-primary-hover: #8E2BB8;
+  --ij-color-primary-pressed: #7A2499;
+  --ij-color-primary-subtle: rgba(164, 53, 210, 0.12);
+  --ij-color-text-primary: #000000;
+  --ij-color-text-secondary: rgba(0, 0, 0, 0.70);
+  --ij-color-text-tertiary: rgba(0, 0, 0, 0.55);
+  --ij-color-text-disabled: rgba(0, 0, 0, 0.35);
+  --ij-color-text-inverse: #FFFFFF;
+  --ij-color-bg-app: #FFFFFF;
+  --ij-color-bg-muted: rgba(0, 0, 0, 0.04);
+  --ij-color-bg-card: rgba(0, 0, 0, 0.04);
+  --ij-color-bg-disabled: rgba(0, 0, 0, 0.06);
+  --ij-color-surface-default: #FFFFFF;
+  --ij-color-surface-raised: rgba(0, 0, 0, 0.02);
+  --ij-color-border-subtle: rgba(0, 0, 0, 0.10);
+  --ij-color-border-default: rgba(0, 0, 0, 0.16);
+  --ij-color-state-success: #2E7D32;
+  --ij-color-state-warning: #C2410C;
+  --ij-color-state-error: #D70015;
+}
+
+.dark {
+  --ij-color-primary: #D0FF00;
+  --ij-color-on-primary: #000000;
+  --ij-color-primary-hover: #B8E000;
+  --ij-color-primary-pressed: #A0C400;
+  --ij-color-primary-subtle: rgba(208, 255, 0, 0.15);
+  --ij-color-text-primary: #FFFFFF;
+  --ij-color-text-secondary: rgba(255, 255, 255, 0.75);
+  --ij-color-text-tertiary: rgba(255, 255, 255, 0.60);
+  --ij-color-text-disabled: rgba(255, 255, 255, 0.35);
+  --ij-color-text-inverse: #000000;
+  --ij-color-bg-app: #000000;
+  --ij-color-bg-muted: rgba(255, 255, 255, 0.05);
+  --ij-color-bg-card: rgba(255, 255, 255, 0.05);
+  --ij-color-bg-disabled: rgba(255, 255, 255, 0.07);
+  --ij-color-surface-default: #000000;
+  --ij-color-surface-raised: rgba(255, 255, 255, 0.03);
+  --ij-color-border-subtle: rgba(255, 255, 255, 0.12);
+  --ij-color-border-default: rgba(255, 255, 255, 0.18);
+  --ij-color-state-success: #4CAF50;
+  --ij-color-state-warning: #FF6B35;
+  --ij-color-state-error: #FF453A;
 }
