@@ -4,13 +4,20 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
+### Changed — merged, ships with the next release
+- Updated `iamjarl-design` tokens from v0.5.0 to v1.2.1. The popup's Re-analyze button now
+  uses the mode-aware `--ij-color-primary-hover` token instead of `filter: brightness(1.1)`,
+  which corrects the dark-mode hover direction (it was going lighter and washed out; the
+  token goes deeper). Marketing-site changes from the same update are already live; this
+  entry covers the extension side, which reaches users on the next Web Store release.
+
 ### Planned
 - Detect Open Graph, Twitter Card, canonical as scoring signals ([#18](https://github.com/JarlLyng/BotLens/issues/18))
 - llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
 - AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
 - Automated tests for robots.txt parser ([#15](https://github.com/JarlLyng/BotLens/issues/15))
 - Detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17))
-- Automate Web Store publishing via GitHub Actions ([#23](https://github.com/JarlLyng/BotLens/issues/23))
+- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
 
 ## [1.1.0] — 2026-07-06
 
