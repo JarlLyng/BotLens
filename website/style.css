@@ -555,55 +555,35 @@ body {
   color: var(--ij-color-text-secondary);
 }
 
-/* Footer */
-footer {
-  padding: 60px var(--ij-spacing-lg);
+/* Footer — rendered by <ij-footer> from iamjarl-design (pinned v1.8.0).
+   The component owns the border, group labels and link styling inside its
+   shadow root; the page only places and sizes the host. Cross-links are
+   inlined in the markup so they are in the served HTML for non-JS crawlers. */
+ij-footer {
+  display: block;
+  max-width: 1100px;
+  margin: 100px auto 0;
+  padding: 0 var(--ij-spacing-lg) 60px;
+}
+
+/* Until the component upgrades — and permanently if the script fails or is
+   blocked — the light DOM is the entire footer. Unknown elements are inline,
+   so give it readable shape instead of a run-on line of anchors. */
+ij-footer:not(:defined) {
+  padding-top: var(--ij-spacing-xxl);
   border-top: 1px solid var(--ij-color-border-subtle);
 }
 
-.footer-content {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--ij-spacing-xxxl);
+ij-footer:not(:defined) a {
+  display: block;
+  margin-bottom: var(--ij-spacing-sm);
   font-size: var(--ij-font-size-sm);
-  color: var(--ij-color-text-tertiary);
-}
-
-.footer-groups {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 80px;
-}
-
-@media (max-width: 640px) {
-  .footer-groups { gap: var(--ij-spacing-xxl); }
-}
-
-.footer-label {
-  font-size: var(--ij-font-size-xs);
-  font-weight: var(--ij-font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ij-color-text-tertiary);
-  margin-bottom: var(--ij-spacing-md);
-}
-
-.footer-content a {
+  font-weight: var(--ij-font-weight-semibold);
   color: var(--ij-color-text-secondary);
   text-decoration: none;
-  font-weight: var(--ij-font-weight-semibold);
 }
 
-.footer-content a:hover { color: var(--ij-color-primary); }
-
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ij-spacing-sm);
-}
-
-.footer-fineprint {
+ij-footer:not(:defined) p {
+  font-size: var(--ij-font-size-sm);
   color: var(--ij-color-text-tertiary);
 }
