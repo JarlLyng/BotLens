@@ -1,23 +1,31 @@
 name: Publish to Chrome Web Store
 
-# Publishes a build to the Chrome Web Store.
-# - Runs automatically when a version tag (v*) is pushed.
-# - Can also be triggered manually from the Actions tab (workflow_dispatch).
+# Publishes a build to the Chrome Web Store through Chrome Web Store API V2.
+# - Runs automatically when a version tag (v*) is pushed, and publishes.
+# - Can also be triggered manually from the Actions tab (workflow_dispatch),
+#   where "check" (the default) only verifies the credentials and uploads nothing.
 #
 # Requires four repository secrets (Settings → Secrets and variables → Actions):
 #   CWS_EXTENSION_ID, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN
-# These are encrypted and are NOT exposed to workflows triggered from forks.
+# and one repository variable (same page, Variables tab):
+#   CWS_PUBLISHER_ID, from the Developer Dashboard's Account page
+# The secrets are encrypted and are NOT exposed to workflows triggered from forks.
 # This workflow never runs on pull_request, so a malicious PR cannot exfiltrate them.
+#
+# The OAuth app is in "Testing", so a refresh token lasts 7 days. Before a
+# release, mint a new one with `npx chrome-webstore-upload-keys` and update
+# CWS_REFRESH_TOKEN, then run this workflow in "check" mode to confirm it works.
 
 on:
   push:
     tags: ['v*']
   workflow_dispatch:
     inputs:
-      publish:
-        description: 'Submit for publishing (uncheck to upload as draft only)'
-        type: boolean
-        default: true
+      mode:
+        description: 'check: verify credentials only. draft: upload without publishing. publish: upload and submit.'
+        type: choice
+        options: [check, draft, publish]
+        default: check
 
 permissions:
   contents: read
@@ -33,6 +41,11 @@ jobs:
     # "chrome-web-store" with required reviewers to require approval before
     # anything is uploaded. Safe to leave as-is if you don't set one up.
     environment: chrome-web-store
+    env:
+      # push-triggered runs always publish; manual runs honor the input.
+      MODE: ${{ github.event_name == 'push' && 'publish' || inputs.mode }}
+      EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+      PUBLISHER_ID: ${{ vars.CWS_PUBLISHER_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -55,21 +68,49 @@ jobs:
       - name: Build extension zip
         run: npm run build
 
-      - name: Upload to Chrome Web Store
+      # Fails fast with a readable message instead of an API error.
+      - name: Check configuration
+        run: |
+          [ -n "$PUBLISHER_ID" ] || { echo "::error::Repository variable CWS_PUBLISHER_ID is not set."; exit 1; }
+          [ -n "$EXTENSION_ID" ] || { echo "::error::Secret CWS_EXTENSION_ID is not set."; exit 1; }
+
+      # Asks the API for the item's status. This proves the token, client
+      # secret and publisher ID work, and changes nothing in the store.
+      - name: Check credentials
+        if: env.MODE == 'check'
         env:
-          EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
           CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
-          # push-triggered runs always publish; manual runs honor the input.
-          PUBLISH: ${{ github.event_name == 'push' && 'true' || inputs.publish }}
+        run: |
+          set -euo pipefail
+          npm install --no-save --prefix "$RUNNER_TEMP/cws" chrome-webstore-upload@6.0.0
+          cd "$RUNNER_TEMP/cws"
+          node --input-type=module -e "
+            import cws from 'chrome-webstore-upload';
+            const { EXTENSION_ID: extensionId, PUBLISHER_ID: publisherId,
+                    CLIENT_ID: clientId, CLIENT_SECRET: clientSecret,
+                    REFRESH_TOKEN: refreshToken } = process.env;
+            const status = await cws({ extensionId, publisherId, clientId, clientSecret, refreshToken }).get();
+            console.log(JSON.stringify(status, null, 2));
+            console.log('Credentials OK. Nothing was uploaded.');
+          "
+
+      - name: Upload to Chrome Web Store
+        if: env.MODE != 'check'
+        env:
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
         run: |
           set -euo pipefail
           ZIP=$(ls dist/botlens-*.zip)
           echo "Uploading $ZIP"
-          if [ "$PUBLISH" = "true" ]; then
-            npx --yes chrome-webstore-upload-cli@3 upload --source "$ZIP" --auto-publish
+          # CLI v4 uses API V2. With no command it uploads and publishes;
+          # `upload` alone leaves a draft.
+          if [ "$MODE" = "publish" ]; then
+            npx --yes chrome-webstore-upload-cli@4.0.1 --source "$ZIP"
           else
-            npx --yes chrome-webstore-upload-cli@3 upload --source "$ZIP"
+            npx --yes chrome-webstore-upload-cli@4.0.1 upload --source "$ZIP"
             echo "Uploaded as draft (not submitted for publishing)."
           fi
