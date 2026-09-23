@@ -104,7 +104,7 @@
         "name": "Which AI crawlers does BotLens detect?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "BotLens recognizes 20+ AI user-agents including GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, anthropic-ai, Google-Extended, PerplexityBot, Applebot-Extended, Bytespider, Meta-ExternalAgent, CCBot, Amazonbot, Cohere, Diffbot, and more."
+          "text": "BotLens recognizes 20+ AI user-agents including <strong>GPTBot</strong>, OAI-SearchBot, ChatGPT-User, <strong>ClaudeBot</strong>, anthropic-ai, <strong>Google-Extended</strong>, PerplexityBot, Applebot-Extended, Bytespider, Meta-ExternalAgent, CCBot, Amazonbot, Cohere, Diffbot, and more."
         }
       },
       {
@@ -112,7 +112,7 @@
         "name": "Does BotLens collect any data?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The BotLens Chrome extension collects no data. All analysis runs entirely in your browser, with no accounts, no telemetry, and no external servers. The marketing website (botlens.iamjarl.com) uses privacy-friendly Umami analytics for anonymous page-view counts: no cookies, no personal data, no cross-site tracking. Full policy at botlens.iamjarl.com/privacy.html."
+          "text": "The <strong>Chrome extension</strong> collects no data. Analysis runs entirely in your browser, with no telemetry or external servers. This <strong>marketing site</strong> uses privacy-friendly <a href=\"https://umami.is/\">Umami</a> analytics for anonymous page counts (no cookies, no personal data). Full <a href=\"https://botlens.iamjarl.com/privacy.html\">privacy policy</a>."
         }
       },
       {
@@ -120,7 +120,15 @@
         "name": "How is BotLens different from a normal SEO tool?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Traditional SEO tools focus on Googlebot and Bingbot. BotLens is built specifically for the AI-native web. It detects blocks against LLM crawlers like GPTBot and ClaudeBot, flags noai and noimageai directives used for AI training opt-outs, and identifies SPA shells that hide content from bots that don't execute JavaScript."
+          "text": "Traditional SEO tools focus on Googlebot and Bingbot. BotLens is built for the AI-native web. It detects blocks against LLM crawlers like GPTBot and ClaudeBot, flags noai and noimageai directives used for AI training opt-outs, and identifies SPA shells that hide content from bots that don't execute JavaScript."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is GEO (Generative Engine Optimization)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "GEO is the practice of optimizing content so it can be discovered, understood, and cited by generative AI systems like ChatGPT, Claude, and Perplexity, as opposed to traditional SEO, which targets search-result rankings. GEO cares about the same technical foundations (semantic HTML, structured data, crawler access) plus new signals like whether you've opted in to AI training via robots.txt and meta directives."
         }
       },
       {
@@ -128,7 +136,15 @@
         "name": "Is BotLens free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. BotLens is 100% free, open-source under the MIT license, and requires no account. Source code is available on GitHub."
+          "text": "Yes. BotLens is 100% free, open-source under the MIT license, and requires no account. Source code is on <a href=\"https://github.com/JarlLyng/BotLens\">GitHub</a>."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does BotLens work on other Chromium browsers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BotLens is built on Manifest V3 and should work on any Chromium-based browser: Chrome, Edge, Brave, Arc, Opera, and Vivaldi. Firefox support is on the roadmap."
         }
       }
     ]
