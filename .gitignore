@@ -4,3 +4,19 @@ node_modules/
 dist/
 website/tokens.css
 # We ignore tokens.css in website because it's copied from root
+
+# Agent tooling stays local (hub PROJECT_STANDARDS §8, 2026-09-19): the repo is
+# indifferent to which AI is used. AGENTS.md is the one agent-context file.
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.cursor/
+.cursorrules
+.windsurfrules
+.clinerules
+.aider*
+.continue/
+.codex/
+.mcp.json
+GEMINI.md
+.github/copilot-instructions.md
