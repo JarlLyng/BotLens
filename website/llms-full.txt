@@ -2,7 +2,7 @@
 
 ## Summary
 
-BotLens is a free, open-source Chrome extension published by IAMJARL (Jarl Lyng Jakobsen) that analyzes whether a website is readable by AI crawlers and large language models. It is available at https://botlens.iamjarl.com/ and https://github.com/JarlLyng/BotLens.
+BotLens is a free, open-source Chrome extension published by IAMJARL that analyzes whether a website is readable by AI crawlers and large language models. It is available at https://botlens.iamjarl.com/ and https://github.com/JarlLyng/BotLens.
 
 The extension gives every web page a weighted 0-100 AI readability score derived from four categories of signals: robots.txt directives, HTML meta tags, semantic HTML structure, and JavaScript rendering characteristics.
 
@@ -116,7 +116,7 @@ Full privacy policy: https://botlens.iamjarl.com/privacy.html
 
 ## Publisher and licensing
 
-- Publisher: IAMJARL, a Danish enkeltmandsvirksomhed (sole proprietorship) owned by Jarl Lyng Jakobsen
+- Publisher: IAMJARL, a Danish sole proprietorship (enkeltmandsvirksomhed)
 - License: MIT
 - Contact: jarl@iamjarl.com
 - Portfolio: https://iamjarl.com/

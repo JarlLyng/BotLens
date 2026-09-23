@@ -8,7 +8,7 @@
 - Category: Chrome extension, developer tool
 - License: MIT (open source)
 - Price: Free
-- Publisher: IAMJARL (Jarl Lyng Jakobsen)
+- Publisher: IAMJARL
 - Repository: https://github.com/JarlLyng/BotLens
 - Homepage: https://botlens.iamjarl.com/
 - Privacy: The Chrome extension collects no data — all analysis runs locally in the browser. The marketing site at botlens.iamjarl.com uses privacy-friendly Umami analytics (no cookies, no personal data). Full policy: https://botlens.iamjarl.com/privacy.html

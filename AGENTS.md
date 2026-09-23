@@ -10,7 +10,7 @@ the current page a 0–100 AI readability score. Everything runs locally in the 
 accounts, no backend, no data collection. The marketing site uses privacy-friendly Umami
 analytics; the extension itself sends nothing anywhere.
 
-- **Developer:** Jarl Lyng / [IAMJARL](https://iamjarl.com)
+- **Developer:** [IAMJARL](https://iamjarl.com)
 - **Website:** [botlens.iamjarl.com](https://botlens.iamjarl.com)
 - **Store:** [Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
 - **License:** [MIT](LICENSE) — open source.
