@@ -75,7 +75,7 @@ const AI_BOTS = [
 ];
 
 function parseRobotsTxt(content, currentPath) {
-  if (!content) return { exists: false, blockedBots: [], blockedAll: false };
+  if (!content) return { exists: false, blockedBots: [], blockedAll: false, allowedBots: [] };
 
   const lines = content.split('\n');
   // Each group: { agents: [], rules: [{ type: 'allow'|'disallow', path }] }
@@ -108,14 +108,19 @@ function parseRobotsTxt(content, currentPath) {
     }
   }
 
+  // RFC 9309 §2.2.1: an agent obeys every group that names it, combined. An
+  // agent that no group names obeys the `*` groups instead.
+  function rulesFor(agent) {
+    const own = groups.filter(g => g.agents.includes(agent));
+    const applicable = own.length ? own : groups.filter(g => g.agents.includes('*'));
+    return applicable.flatMap(g => g.rules);
+  }
+
   // For a given agent, determine whether currentPath is blocked.
   // Robots spec: longest matching path wins; Allow overrides Disallow at equal length.
   function isBlockedFor(agent) {
-    const matchingGroup = groups.find(g => g.agents.includes(agent));
-    if (!matchingGroup) return false;
-
     let best = null; // { type, length }
-    for (const rule of matchingGroup.rules) {
+    for (const rule of rulesFor(agent)) {
       if (!rule.path) continue; // Empty disallow = allow all
       if (!pathMatches(currentPath, rule.path)) continue;
       const len = rule.path.length;
@@ -127,9 +132,12 @@ function parseRobotsTxt(content, currentPath) {
   }
 
   const blockedBots = AI_BOTS.filter(isBlockedFor);
-  const blockedAll = isBlockedFor('*');
+  // `*` blocking is not enough for "all": a bot with its own Allow group is exempt.
+  const starBlocked = isBlockedFor('*');
+  const allowedBots = starBlocked ? AI_BOTS.filter(b => !blockedBots.includes(b)) : [];
+  const blockedAll = starBlocked && allowedBots.length === 0;
 
-  return { exists: true, blockedBots, blockedAll, groups };
+  return { exists: true, blockedBots, blockedAll, allowedBots, groups };
 }
 
 function pathMatches(currentPath, pattern) {
@@ -168,8 +176,15 @@ function calculateEnhancedSignals(pageData, robotsRules) {
   } else if (robotsRules.blockedBots && robotsRules.blockedBots.length > 0) {
     const n = robotsRules.blockedBots.length;
     techPenalty += Math.min(25, 5 + n * 3);
-    const sample = robotsRules.blockedBots.slice(0, 3).join(', ');
-    issues.robots.push(`${n} AI bot${n > 1 ? 's' : ''} blocked (${sample}${n > 3 ? '…' : ''})`);
+    const allowed = robotsRules.allowedBots || [];
+    if (allowed.length > 0) {
+      // `*` blocks, so the exceptions are the useful part to show.
+      const sample = allowed.slice(0, 3).join(', ');
+      issues.robots.push(`${n} AI bot${n > 1 ? 's' : ''} blocked, ${allowed.length} allowed (${sample}${allowed.length > 3 ? '…' : ''})`);
+    } else {
+      const sample = robotsRules.blockedBots.slice(0, 3).join(', ');
+      issues.robots.push(`${n} AI bot${n > 1 ? 's' : ''} blocked (${sample}${n > 3 ? '…' : ''})`);
+    }
   }
 
   // Meta robots: noindex is fatal, nofollow & noai are partial penalties

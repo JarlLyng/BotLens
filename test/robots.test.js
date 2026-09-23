@@ -7,8 +7,15 @@ const { loadPopup, plain } = require('./load-popup');
 
 const P = loadPopup();
 const parse = (txt, path = '/') => plain(P.parseRobotsTxt(txt, path));
+// Every AI bot popup.js knows, read from the parser so the tests need no copy of the list.
+const ALL_BOTS = parse('User-agent: *\nDisallow: /').blockedBots;
 
 describe('parseRobotsTxt', () => {
+  test('User-agent: * with Disallow: / blocks all 20+ known AI bots', () => {
+    assert.ok(ALL_BOTS.length >= 20, `only ${ALL_BOTS.length} bots`);
+    assert.ok(ALL_BOTS.includes('gptbot') && ALL_BOTS.includes('claudebot'));
+  });
+
   test('a missing or empty file blocks nothing', () => {
     for (const txt of [null, undefined, '']) {
       const r = parse(txt);
@@ -78,16 +85,69 @@ describe('parseRobotsTxt', () => {
     assert.deepEqual(parse(txt, '/Private').blockedBots, ['gptbot']);
   });
 
-  // RFC 9309 §2.2.1: a crawler with no group of its own uses the `*` group. The
-  // parser only consults a bot's own group, so here GPTBot is correctly allowed
-  // but the 23 other AI bots, which fall back to `*`, are not listed as blocked,
-  // and the popup reports "All crawlers blocked" although GPTBot is allowed.
-  test('a bot with no group of its own falls back to the * group',
-    { todo: '#41: parser does not fall back to * per bot' }, () => {
-      const r = parse('User-agent: *\nDisallow: /\n\nUser-agent: GPTBot\nAllow: /');
-      assert.equal(r.blockedBots.includes('gptbot'), false, 'GPTBot has its own Allow group');
-      assert.ok(r.blockedBots.includes('claudebot'), 'ClaudeBot has no group, so * applies');
-    });
+  // RFC 9309 §2.2.1: a crawler with no group of its own uses the `*` group (#41).
+  test('a bot with no group of its own falls back to the * group', () => {
+    const r = parse('User-agent: *\nDisallow: /\n\nUser-agent: GPTBot\nAllow: /');
+    assert.equal(r.blockedBots.includes('gptbot'), false, 'GPTBot has its own Allow group');
+    assert.ok(r.blockedBots.includes('claudebot'), 'ClaudeBot has no group, so * applies');
+    assert.equal(r.blockedBots.length, ALL_BOTS.length - 1);
+    assert.deepEqual(r.allowedBots, ['gptbot']);
+  });
+
+  test('* blocking is not "all blocked" when a bot is exempt', () => {
+    assert.equal(parse('User-agent: *\nDisallow: /\n\nUser-agent: GPTBot\nAllow: /').blockedAll, false);
+  });
+
+  test('an empty Disallow in its own group exempts a bot from *', () => {
+    const r = parse('User-agent: *\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow:');
+    assert.deepEqual(r.allowedBots, ['claudebot']);
+  });
+
+  test('a bot uses only its own group, even when * is stricter elsewhere', () => {
+    const txt = 'User-agent: *\nDisallow: /private\n\nUser-agent: GPTBot\nDisallow: /tmp';
+    assert.equal(parse(txt, '/private').blockedBots.includes('gptbot'), false);
+    assert.ok(parse(txt, '/private').blockedBots.includes('claudebot'));
+  });
+
+  test('the * fallback respects the path', () => {
+    const txt = 'User-agent: *\nDisallow: /admin';
+    assert.deepEqual(parse(txt, '/').blockedBots, []);
+    assert.equal(parse(txt, '/admin/users').blockedBots.length, ALL_BOTS.length);
+    assert.equal(parse(txt, '/admin/users').blockedAll, true);
+  });
+
+  test('groups that name the same bot are combined', () => {
+    const txt = 'User-agent: GPTBot\nDisallow: /a\n\nUser-agent: GPTBot\nDisallow: /b';
+    assert.deepEqual(parse(txt, '/a').blockedBots, ['gptbot']);
+    assert.deepEqual(parse(txt, '/b').blockedBots, ['gptbot']);
+  });
+
+  test('* groups are combined too', () => {
+    const txt = 'User-agent: *\nDisallow: /a\n\nUser-agent: *\nDisallow: /b';
+    assert.equal(parse(txt, '/b').blockedAll, true);
+  });
+});
+
+describe('robots.txt signal', () => {
+  const clean = { metaTags: {}, semantic: { headings: { h1: 1 }, semanticTags: 4, imageAltRatio: 1,
+    imageCount: 1, textLength: 4000, hasStructuredData: true, hasLangAttr: true },
+  domSize: 20000, rawHtml: 'x'.repeat(20000), rawHtmlOk: true, rawHtmlIsHtml: true };
+  const robots = txt => plain(P.calculateEnhancedSignals(clean, P.parseRobotsTxt(txt, '/'))).robots;
+
+  test('Disallow all reports every crawler blocked', () => {
+    assert.equal(robots('User-agent: *\nDisallow: /').value, 'All crawlers blocked (User-agent: *)');
+  });
+
+  // #41: this said "All crawlers blocked" although the owner allowed GPTBot.
+  test('Disallow all with one exception names the exception', () => {
+    const n = ALL_BOTS.length - 1;
+    assert.equal(robots('User-agent: *\nDisallow: /\n\nUser-agent: GPTBot\nAllow: /').value,
+      `${n} AI bots blocked, 1 allowed (gptbot)`);
+  });
+
+  test('a single blocked bot is listed by name', () => {
+    assert.equal(robots('User-agent: GPTBot\nDisallow: /').value, '1 AI bot blocked (gptbot)');
+  });
 });
 
 describe('pathMatches', () => {
