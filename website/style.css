@@ -555,7 +555,8 @@ body {
   color: var(--ij-color-text-secondary);
 }
 
-/* Footer — rendered by <ij-footer> from iamjarl-design (pinned v1.8.0).
+/* Footer, rendered by <ij-footer> from iamjarl-design. The version is pinned on
+   the component's script tag in index.html and privacy.html, not here.
    The component owns the border, group labels and link styling inside its
    shadow root; the page only places and sizes the host. Cross-links are
    inlined in the markup so they are in the served HTML for non-JS crawlers. */
