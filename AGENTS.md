@@ -57,6 +57,7 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - `npm install`: dev dependencies (eslint).
 - `npm run lint`: ESLint (also runs in CI; must pass).
 - `npm run build`: produces `dist/botlens-<version>.zip` for the Web Store.
+- `npm run check:faq` / `npm run fix:faq`: check, or regenerate, the FAQPage JSON-LD.
 - **Release:** bump `version` in `manifest.json` + update `CHANGELOG.md`, then
   `git tag vX.Y.Z && git push origin vX.Y.Z` → GitHub Actions lints, builds, uploads, and
   publishes (see `.github/workflows/publish.yml`).
@@ -66,6 +67,9 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
   with no hardcoded colors/spacing/radius/type.
 - **No remote code**: Manifest V3 forbids it and Web Store review rejects it. All scripts
   and icons are bundled; icons are inline SVG.
+- The site's FAQ exists twice: the visible `<details class="faq-item">` list and the
+  `FAQPage` JSON-LD in `<head>`. The visible list is the source. Edit it, then run
+  `npm run fix:faq`. Never hand-edit the JSON-LD; CI blocks the deploy on a mismatch.
 - Popup logic in `popup.js`; the injected page extractor (runs same-origin, fetches
   robots.txt + raw HTML) in `content.js`.
 - Adding a new permission to `manifest.json` needs a deliberate reason, because broad host

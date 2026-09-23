@@ -40,7 +40,14 @@ Reload the extension from `chrome://extensions/` after any code change.
 ```bash
 npm run lint         # ESLint, must pass before pushing (also runs in CI)
 npm run build        # produce a store-ready zip in dist/
+npm run check:faq    # FAQ structured data matches the visible FAQ (also runs in CI)
+npm run fix:faq      # regenerate that structured data after editing the FAQ
 ```
+
+The FAQ on the marketing site exists twice: the visible questions, and the
+`FAQPage` JSON-LD in `<head>` that search engines read. Edit the visible one,
+then run `npm run fix:faq`. CI fails, and the site does not deploy, if the two
+disagree.
 
 ## Pull requests
 

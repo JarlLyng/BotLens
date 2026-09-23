@@ -25,6 +25,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Pushes go straight to main, and the Lint workflow runs alongside this one
+      # without blocking it. So the check also lives here, before the upload: a
+      # mismatch fails the deploy and the live site keeps its last consistent
+      # version. The script has no dependencies, so no npm install is needed.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: FAQPage JSON-LD matches the visible FAQ
+        run: node scripts/check-faq-jsonld.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
