@@ -12,6 +12,8 @@ All notable changes to BotLens are documented here. This project follows [Semant
   entry covers the extension side, which reaches users on the next Web Store release.
 - The JS Rendering signal's warning now reads "Heavy JS rendering (bots may miss content)".
   It used an em-dash, which the portfolio voice does not use in copy.
+- The extension package drops from 492 KB to 24 KB. It had been shipping the unused
+  1024px source icon, which was 95% of the download.
 
 ### Planned
 - Detect Open Graph, Twitter Card, canonical as scoring signals ([#18](https://github.com/JarlLyng/BotLens/issues/18))

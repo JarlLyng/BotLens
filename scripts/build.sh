@@ -26,7 +26,19 @@ FILES=(
 for f in "${FILES[@]}"; do
   cp "$f" "${OUT_DIR}/${NAME}/"
 done
-cp -R icons "${OUT_DIR}/${NAME}/icons"
+# Ship only the icons the manifest references. icons/src/ holds the 1024px
+# source artwork, which the extension never loads, and copying the whole folder
+# put that one file at ~95% of the zip.
+mkdir -p "${OUT_DIR}/${NAME}/icons"
+node -e "
+  const m = require('./manifest.json');
+  const icons = new Set([...Object.values(m.icons || {}),
+                         ...Object.values((m.action || {}).default_icon || {})]);
+  process.stdout.write([...icons].join('\n') + '\n');
+" | while read -r icon; do
+  [ -f "$icon" ] || { echo "Manifest references missing icon: $icon" >&2; exit 1; }
+  cp "$icon" "${OUT_DIR}/${NAME}/$icon"
+done
 
 # Validate the manifest version matches what we expect
 node -e "
