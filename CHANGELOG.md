@@ -4,30 +4,32 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
-### Changed (merged, ships with the next release)
-- Updated `iamjarl-design` tokens from v0.5.0 to v1.13.0. The popup's Re-analyze button now
-  uses the mode-aware `--ij-color-primary-hover` token instead of `filter: brightness(1.1)`,
-  which corrects the dark-mode hover direction (it was going lighter and washed out; the
-  token goes deeper). Marketing-site changes from the same update are already live; this
-  entry covers the extension side, which reaches users on the next Web Store release.
-- The JS Rendering signal's warning now reads "Heavy JS rendering (bots may miss content)".
-  It used an em-dash, which the portfolio voice does not use in copy.
-- The extension package drops from 492 KB to 24 KB. It had been shipping the unused
-  1024px source icon, which was 95% of the download.
-
-### Fixed (merged, ships with the next release)
-- robots.txt: a bot with no group of its own now falls back to `User-agent: *`, as
-  RFC 9309 requires, and several groups naming the same bot are combined. Before, a file
-  that blocks everything except chosen bots reported "All crawlers blocked" and missed
-  the bots that `*` did block. It now reports, for example, "23 AI bots blocked, 1
-  allowed (gptbot)" ([#41](https://github.com/JarlLyng/BotLens/issues/41))
-
 ### Planned
 - Detect Open Graph, Twitter Card, canonical as scoring signals ([#18](https://github.com/JarlLyng/BotLens/issues/18))
 - llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
 - AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
 - Detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17))
 - Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
+
+## [1.1.1] - 2026-09-23
+
+### Changed
+- Updated `iamjarl-design` tokens from v0.5.0 to v1.13.0. The popup's Re-analyze button now
+  uses the mode-aware `--ij-color-primary-hover` token instead of `filter: brightness(1.1)`,
+  which corrects the dark-mode hover direction (it was going lighter and washed out; the
+  token goes deeper). Marketing-site changes from the same update
+  were already live; this entry covers the extension side.
+- The JS Rendering signal's warning now reads "Heavy JS rendering (bots may miss content)".
+  It used an em-dash, which the portfolio voice does not use in copy.
+- The extension package drops from 492 KB to 24 KB. It had been shipping the unused
+  1024px source icon, which was 95% of the download.
+
+### Fixed
+- robots.txt: a bot with no group of its own now falls back to `User-agent: *`, as
+  RFC 9309 requires, and several groups naming the same bot are combined. Before, a file
+  that blocks everything except chosen bots reported "All crawlers blocked" and missed
+  the bots that `*` did block. It now reports, for example, "23 AI bots blocked, 1
+  allowed (gptbot)" ([#41](https://github.com/JarlLyng/BotLens/issues/41))
 
 ## [1.1.0] - 2026-07-06
 

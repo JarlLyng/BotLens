@@ -15,7 +15,7 @@ analytics; the extension itself sends nothing anywhere.
 - **Store:** [Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
 - **License:** [MIT](LICENSE), open source.
 - **Price:** Free (no in-app purchases, no subscription, no ads)
-- **Status:** Live on the Chrome Web Store (v1.1.0)
+- **Status:** Live on the Chrome Web Store (v1.1.1)
 
 ## Strategy lives in the private hub
 
