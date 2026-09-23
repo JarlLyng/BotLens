@@ -53,10 +53,13 @@ BotLens reads meta tags from the page's DOM and detects:
 
 ### JavaScript rendering detection
 
-BotLens fetches the raw HTML of the current URL and compares its length to the rendered document.documentElement.innerHTML length. Two heuristics flag problems:
+BotLens re-fetches the current page's HTML from its own origin and compares that length to the rendered document.documentElement.innerHTML length. It flags a problem only when the rendered DOM is larger both proportionally and in absolute terms, so a small page with minor DOM normalization is not penalized:
 
-1. If the ratio of rendered to initial is over 5:1 and the rendered DOM is over 5000 characters, the page is flagged as heavy JS rendering.
-2. If the initial HTML is under 5000 characters but the rendered DOM is over 20000 characters, this is treated as an SPA shell — content that only appears after JavaScript execution and is likely invisible to non-executing crawlers.
+1. SPA shell: the initial HTML is under 5000 characters and the rendered DOM is over 20000. Content that appears only after JavaScript runs is likely invisible to crawlers that do not execute it.
+2. Heavy JS rendering: the rendered DOM is over 5 times the initial HTML and more than 20000 characters larger.
+3. Significant client-side rendering: over 2 times the initial HTML and more than 10000 characters larger.
+
+If the raw HTML cannot be fetched, or the response is not HTML, the check reports that it could not verify rather than guessing.
 
 ## Scoring model
 
@@ -83,8 +86,9 @@ Every page starts at 100 and loses points for detected issues:
 **JavaScript rendering** (weight up to 20 points):
 
 - SPA shell detected (small initial, large rendered) → -20
-- Heavy JS rendering (ratio over 5) → -20
-- Significant client-side rendering (ratio over 2) → -10
+- Heavy JS rendering (ratio over 5 and more than 20000 characters larger) → -20
+- Significant client-side rendering (ratio over 2 and more than 10000 characters larger) → -10
+- Raw HTML unavailable or not HTML → no penalty, reported as "could not verify"
 
 The final score is clamped to 0-100 and mapped to a verdict:
 
@@ -102,7 +106,8 @@ Chrome extension permissions requested:
 
 - `activeTab`: read the current tab's URL and DOM when the user clicks the icon
 - `scripting`: inject the analysis script into the active tab on demand
-- Host permission for `<all_urls>`: fetch /robots.txt and the raw HTML of the active page for comparison
+
+No host permissions are requested. The injected script fetches /robots.txt and the raw HTML from the analyzed page's own origin, so it needs no access to any other site.
 
 Full privacy policy: https://botlens.iamjarl.com/privacy.html
 

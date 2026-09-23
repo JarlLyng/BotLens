@@ -94,7 +94,6 @@ valid fallback if the API flow ever breaks.
 
 Tracked in [GitHub issues](https://github.com/JarlLyng/BotLens/issues). High-level:
 
-- **v1.1** — Drop `<all_urls>` host permission by moving fetches into content script ([#20](https://github.com/JarlLyng/BotLens/issues/20))
 - **v2** — Detect Open Graph, Twitter Card, canonical ([#18](https://github.com/JarlLyng/BotLens/issues/18)); llms.txt detection ([#19](https://github.com/JarlLyng/BotLens/issues/19)); detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17)); parser tests ([#15](https://github.com/JarlLyng/BotLens/issues/15))
 - **v3** — Modular detection engine, CMS/framework/hosting/analytics detection
 
