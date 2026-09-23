@@ -1,4 +1,4 @@
-# BotLens — Full documentation for AI systems
+# BotLens: Full documentation for AI systems
 
 ## Summary
 
@@ -8,7 +8,7 @@ The extension gives every web page a weighted 0-100 AI readability score derived
 
 ## What problem BotLens solves
 
-Traditional SEO tools were built for search engines like Google and Bing. The rise of generative AI has introduced a new class of crawler — LLM training and retrieval bots such as GPTBot, ClaudeBot, and Perplexity — with different behaviors, different consent signals (like noai and noimageai), and different content requirements.
+Traditional SEO tools were built for search engines like Google and Bing. The rise of generative AI has introduced a new class of crawler (LLM training and retrieval bots such as GPTBot, ClaudeBot, and Perplexity) with different behaviors, different consent signals (like noai and noimageai), and different content requirements.
 
 Site owners often do not realize:
 
@@ -40,7 +40,7 @@ BotLens reads meta tags from the page's DOM and detects:
 
 - `<meta name="robots">` with noindex, nofollow, none directives
 - Bot-specific meta such as `<meta name="gptbot" content="noindex">`
-- `<meta name="noai">` and `<meta name="noimageai">` — the emerging convention for opting out of AI training and image generation training
+- `<meta name="noai">` and `<meta name="noimageai">`, the emerging convention for opting out of AI training and image generation training
 - Standard signals like `<meta name="googlebot">`, `<meta name="bingbot">`
 
 ### Semantic HTML checks
@@ -92,9 +92,9 @@ Every page starts at 100 and loses points for detected issues:
 
 The final score is clamped to 0-100 and mapped to a verdict:
 
-- 80-100: AI Friendly — highly accessible for AI systems
-- 50-79: Partially Restricted — some technical hurdles detected
-- 0-49: Blocked / Poor — significant barriers for AI bots
+- 80-100: AI Friendly (highly accessible for AI systems)
+- 50-79: Partially Restricted (some technical hurdles detected)
+- 0-49: Blocked / Poor (significant barriers for AI bots)
 
 ## Privacy and permissions
 

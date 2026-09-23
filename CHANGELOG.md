@@ -4,12 +4,14 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
-### Changed — merged, ships with the next release
+### Changed (merged, ships with the next release)
 - Updated `iamjarl-design` tokens from v0.5.0 to v1.13.0. The popup's Re-analyze button now
   uses the mode-aware `--ij-color-primary-hover` token instead of `filter: brightness(1.1)`,
   which corrects the dark-mode hover direction (it was going lighter and washed out; the
   token goes deeper). Marketing-site changes from the same update are already live; this
   entry covers the extension side, which reaches users on the next Web Store release.
+- The JS Rendering signal's warning now reads "Heavy JS rendering (bots may miss content)".
+  It used an em-dash, which the portfolio voice does not use in copy.
 
 ### Planned
 - Detect Open Graph, Twitter Card, canonical as scoring signals ([#18](https://github.com/JarlLyng/BotLens/issues/18))
@@ -19,7 +21,7 @@ All notable changes to BotLens are documented here. This project follows [Semant
 - Detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17))
 - Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
 
-## [1.1.0] — 2026-07-06
+## [1.1.0] - 2026-07-06
 
 ### Changed
 - **Removed the `<all_urls>` host permission.** robots.txt and raw HTML are now
@@ -34,9 +36,9 @@ All notable changes to BotLens are documented here. This project follows [Semant
   or failed fetches. Fully static pages now score their JS signal as OK.
   ([#24](https://github.com/JarlLyng/BotLens/issues/24))
 
-## [1.0.0] — 2026-07-06
+## [1.0.0] - 2026-07-06
 
-Initial public release — [live on the Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl).
+Initial public release, [live on the Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl).
 
 ### Added
 - AI readability score (0-100) across four signal categories
@@ -53,5 +55,5 @@ Initial public release — [live on the Chrome Web Store](https://chromewebstore
 ### Technical
 - Manifest V3
 - Programmatic script injection via `chrome.scripting.executeScript` (no static content scripts)
-- Inline SVG icons — no remote code dependencies
+- Inline SVG icons (no remote code dependencies)
 - Permissions: `activeTab`, `scripting`, and `<all_urls>` host permission

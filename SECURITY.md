@@ -15,8 +15,8 @@ Only the latest published version of BotLens receives security updates.
 
 Use one of these private channels instead:
 
-- **Preferred:** [GitHub Private Vulnerability Reporting](https://github.com/JarlLyng/BotLens/security/advisories/new) — authenticated, tracked, and lets us collaborate on a fix before public disclosure.
-- **Email:** `jarl@iamjarl.com` — include "BotLens security" in the subject line.
+- **Preferred:** [GitHub Private Vulnerability Reporting](https://github.com/JarlLyng/BotLens/security/advisories/new). It is authenticated and tracked, and lets us collaborate on a fix before public disclosure.
+- **Email:** `jarl@iamjarl.com`. Include "BotLens security" in the subject line.
 
 Please include:
 
@@ -31,7 +31,7 @@ BotLens is maintained by an indie developer, not a team. Realistic expectations:
 
 - **Initial acknowledgement:** within 3 working days
 - **Assessment and communication of severity:** within 7 working days
-- **Fix release:** depends on severity — critical issues within 14 days, others as part of the normal release cadence
+- **Fix release:** depends on severity (critical issues within 14 days, others as part of the normal release cadence)
 
 ## Disclosure
 
@@ -56,4 +56,4 @@ Out of scope:
 
 ## Privacy note
 
-BotLens collects no user data — it runs entirely in the browser. See the [privacy policy](https://botlens.iamjarl.com/privacy.html) for details.
+BotLens collects no user data. It runs entirely in the browser. See the [privacy policy](https://botlens.iamjarl.com/privacy.html) for details.

@@ -1,4 +1,4 @@
-# BotLens marketing site — all crawlers welcome.
+# BotLens marketing site. All crawlers welcome.
 User-agent: *
 Allow: /
 

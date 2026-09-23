@@ -1,6 +1,6 @@
 # BotLens
 
-> BotLens is a free, open-source Chrome extension that analyzes whether a website is readable by AI systems — including GPTBot, ClaudeBot, Perplexity, Google-Extended and 15+ other AI crawlers. It produces a 0-100 AI readability score based on robots.txt, meta directives, semantic HTML, and JavaScript rendering.
+> BotLens is a free, open-source Chrome extension that analyzes whether a website is readable by AI systems, including GPTBot, ClaudeBot, Perplexity, Google-Extended and 15+ other AI crawlers. It produces a 0-100 AI readability score based on robots.txt, meta directives, semantic HTML, and JavaScript rendering.
 
 ## Core information
 
@@ -11,14 +11,14 @@
 - Publisher: IAMJARL
 - Repository: https://github.com/JarlLyng/BotLens
 - Homepage: https://botlens.iamjarl.com/
-- Privacy: The Chrome extension collects no data — all analysis runs locally in the browser. The marketing site at botlens.iamjarl.com uses privacy-friendly Umami analytics (no cookies, no personal data). Full policy: https://botlens.iamjarl.com/privacy.html
+- Privacy: The Chrome extension collects no data. All analysis runs locally in the browser. The marketing site at botlens.iamjarl.com uses privacy-friendly Umami analytics (no cookies, no personal data). Full policy: https://botlens.iamjarl.com/privacy.html
 
 ## What BotLens checks
 
-1. **robots.txt** — Parses the full spec including Allow/Disallow precedence by longest match, wildcards, and end-of-path anchors. Evaluates rules against 20+ known AI user-agents.
-2. **Meta directives** — Detects robots noindex/nofollow/none, plus bot-specific meta and the noai / noimageai AI-training opt-out directives.
-3. **Semantic HTML** — Heading hierarchy (H1 count and depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the html lang attribute.
-4. **JavaScript rendering** — Compares initial HTML payload to rendered DOM to catch SPA shells that hide content from crawlers.
+1. **robots.txt**: Parses the full spec including Allow/Disallow precedence by longest match, wildcards, and end-of-path anchors. Evaluates rules against 20+ known AI user-agents.
+2. **Meta directives**: Detects robots noindex/nofollow/none, plus bot-specific meta and the noai / noimageai AI-training opt-out directives.
+3. **Semantic HTML**: Heading hierarchy (H1 count and depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the html lang attribute.
+4. **JavaScript rendering**: Compares initial HTML payload to rendered DOM to catch SPA shells that hide content from crawlers.
 
 ## AI crawlers recognized
 

@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        For **public-safe** marketing work only — a blog post, a community thread, a screenshot to redo, store-listing copy.
-        **Anything competitive-sensitive** (positioning, pricing reasoning, channel plans that reveal an edge, competitor analysis) does **not** belong in a public issue — put it in the private [iamjarl-strategy](https://github.com/JarlLyng/iamjarl-strategy) hub instead.
+        For **public-safe** marketing work only, such as a blog post, a community thread, a screenshot to redo, or store-listing copy.
+        **Anything competitive-sensitive** (positioning, pricing reasoning, channel plans that reveal an edge, competitor analysis) does **not** belong in a public issue. Put it in the private [iamjarl-strategy](https://github.com/JarlLyng/iamjarl-strategy) hub instead.
 
   - type: textarea
     id: idea

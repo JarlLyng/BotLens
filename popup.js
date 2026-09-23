@@ -255,7 +255,7 @@ function calculateEnhancedSignals(pageData, robotsRules) {
 
     if (shellLikely || heavyJs) {
       score -= 20;
-      signals.js = { status: 'error', value: 'Heavy JS rendering — bots may miss content' };
+      signals.js = { status: 'error', value: 'Heavy JS rendering (bots may miss content)' };
     } else if (moderateJs) {
       score -= 10;
       signals.js = { status: 'warn', value: 'Significant client-side rendering' };
