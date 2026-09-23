@@ -1,4 +1,4 @@
-/* IAMJARL Design Tokens v1.8.0 — generated, do not edit */
+/* IAMJARL Design Tokens v1.13.0 — generated, do not edit */
 
 :root {
   /* Spacing */
@@ -97,8 +97,8 @@
 
   /* Mode colors (light default) */
   --ij-color-primary-rgb: 164, 53, 210; /* deprecated, use color-mix() */
-  --ij-gradient-primary: linear-gradient(135deg, #A435D2, #E0529C);
-  --ij-gradient-brand: linear-gradient(135deg, #D0FF00, #A435D2);
+  --ij-gradient-primary: linear-gradient(135deg, #A435D2, #E0529C); /* decorative only — no text colour clears AA */
+  --ij-gradient-brand: linear-gradient(135deg, #D0FF00, #A435D2); /* decorative only — no text colour clears AA */
   --ij-color-primary: #A435D2;
   --ij-color-on-primary: #FFFFFF;
   --ij-color-primary-hover: #8E2BB8;
@@ -125,8 +125,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --ij-color-primary-rgb: 208, 255, 0; /* deprecated, use color-mix() */
-    --ij-gradient-primary: linear-gradient(135deg, #D0FF00, #5DE0A6, #37B6E9);
-    --ij-gradient-brand: linear-gradient(135deg, #A435D2, #D0FF00);
+    --ij-gradient-primary: linear-gradient(135deg, #D0FF00, #5DE0A6, #37B6E9); /* text-safe: black */
+    --ij-gradient-brand: linear-gradient(135deg, #A435D2, #D0FF00); /* decorative only — no text colour clears AA */
     --ij-color-primary: #D0FF00;
     --ij-color-on-primary: #000000;
     --ij-color-primary-hover: #B8E000;
@@ -154,8 +154,8 @@
 /* Explicit class overrides for manual mode switching */
 .light {
   --ij-color-primary-rgb: 164, 53, 210; /* deprecated, use color-mix() */
-  --ij-gradient-primary: linear-gradient(135deg, #A435D2, #E0529C);
-  --ij-gradient-brand: linear-gradient(135deg, #D0FF00, #A435D2);
+  --ij-gradient-primary: linear-gradient(135deg, #A435D2, #E0529C); /* decorative only — no text colour clears AA */
+  --ij-gradient-brand: linear-gradient(135deg, #D0FF00, #A435D2); /* decorative only — no text colour clears AA */
   --ij-color-primary: #A435D2;
   --ij-color-on-primary: #FFFFFF;
   --ij-color-primary-hover: #8E2BB8;
@@ -181,8 +181,8 @@
 
 .dark {
   --ij-color-primary-rgb: 208, 255, 0; /* deprecated, use color-mix() */
-  --ij-gradient-primary: linear-gradient(135deg, #D0FF00, #5DE0A6, #37B6E9);
-  --ij-gradient-brand: linear-gradient(135deg, #A435D2, #D0FF00);
+  --ij-gradient-primary: linear-gradient(135deg, #D0FF00, #5DE0A6, #37B6E9); /* text-safe: black */
+  --ij-gradient-brand: linear-gradient(135deg, #A435D2, #D0FF00); /* decorative only — no text colour clears AA */
   --ij-color-primary: #D0FF00;
   --ij-color-on-primary: #000000;
   --ij-color-primary-hover: #B8E000;
