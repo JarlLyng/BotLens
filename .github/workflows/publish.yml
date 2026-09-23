@@ -47,6 +47,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # A tag push publishes to every user. The tests are the gate that stops a
+      # parser or scoring regression (#24 was one) from shipping on its own.
+      - name: Tests
+        run: npm test
+
       - name: Build extension zip
         run: npm run build
 

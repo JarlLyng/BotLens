@@ -15,8 +15,14 @@
   },
   "overrides": [
     {
-      "files": ["scripts/**/*.js"],
-      "env": { "node": true, "browser": false }
+      "files": [
+        "scripts/**/*.js",
+        "test/**/*.js"
+      ],
+      "env": {
+        "node": true,
+        "browser": false
+      }
     }
   ]
 }

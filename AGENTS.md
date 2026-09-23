@@ -56,6 +56,7 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - **Load unpacked:** `chrome://extensions` → enable Developer Mode → Load unpacked → select repo folder.
 - `npm install`: dev dependencies (eslint).
 - `npm run lint`: ESLint (also runs in CI; must pass).
+- `npm test`: parser and scoring tests against the shipped `popup.js` (CI; gates publishing).
 - `npm run build`: produces `dist/botlens-<version>.zip` for the Web Store.
 - `npm run check:faq` / `npm run fix:faq`: check, or regenerate, the FAQPage JSON-LD.
 - **Release:** bump `version` in `manifest.json` + update `CHANGELOG.md`, then

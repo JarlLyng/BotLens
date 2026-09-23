@@ -13,6 +13,7 @@ Fixes #
 
 ## Checklist
 - [ ] `npm run lint` passes locally
+- [ ] `npm test` passes locally
 - [ ] I loaded the extension unpacked and tested the change on at least one live site
 - [ ] I have not introduced any remote script dependencies (MV3 forbids them)
 - [ ] UI changes use tokens from `tokens.css`, not hardcoded values

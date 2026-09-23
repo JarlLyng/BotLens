@@ -20,5 +20,7 @@ jobs:
         run: npm install
       - name: Run ESLint
         run: npm run lint
+      - name: Tests
+        run: npm test
       - name: FAQPage JSON-LD matches the visible FAQ
         run: npm run check:faq

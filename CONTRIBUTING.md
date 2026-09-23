@@ -39,6 +39,7 @@ Reload the extension from `chrome://extensions/` after any code change.
 
 ```bash
 npm run lint         # ESLint, must pass before pushing (also runs in CI)
+npm test             # robots.txt parser and scoring tests (also runs in CI)
 npm run build        # produce a store-ready zip in dist/
 npm run check:faq    # FAQ structured data matches the visible FAQ (also runs in CI)
 npm run fix:faq      # regenerate that structured data after editing the FAQ
@@ -53,7 +54,9 @@ disagree.
 
 1. Fork the repo and create a branch from `main`: `git checkout -b your-branch`
 2. Make your changes. Keep commits focused and messages descriptive.
-3. Run `npm run lint` locally. CI will reject on lint errors.
+3. Run `npm run lint` and `npm test` locally. CI rejects on either, and a
+   release tag will not publish if the tests fail.
+   Changing the parser or the scoring? Add a case to `test/robots.test.js`.
 4. Push and open a PR against `main` using the PR template.
 5. Link the issue you're fixing (`Fixes #123`).
 
