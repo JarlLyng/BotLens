@@ -96,6 +96,14 @@ The final score is clamped to 0-100 and mapped to a verdict:
 - 50-79: Partially Restricted (some technical hurdles detected)
 - 0-49: Blocked / Poor (significant barriers for AI bots)
 
+## What Google says about AI-specific files
+
+Google's guide "Optimizing your website for generative AI features on Google Search" (https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says Google Search, including its generative AI features, does not use AI-specific files such as llms.txt, so they neither help nor hurt a site's visibility there. Google notes they can still be useful for other services that read them.
+
+Whatever a given crawler does with llms.txt, BotLens scores the signals every crawler depends on, such as robots.txt access, meta directives, semantic HTML, structured data, and whether the content is present in the served HTML. It does not check for llms.txt. This site publishes an llms.txt anyway, since it costs nothing.
+
+Google's guidance on using generative AI content is at https://developers.google.com/search/docs/fundamentals/using-gen-ai-content.
+
 ## Privacy and permissions
 
 The BotLens Chrome extension has no backend, no accounts, no analytics, and no data collection. All analysis runs inside the user's browser.
