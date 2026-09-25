@@ -4,7 +4,14 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
-### Added (merged, ships with the next release)
+### Planned
+- llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
+- AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
+- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
+
+## [1.2.0] - 2026-09-25
+
+### Added
 - Content Structure now checks for complete Open Graph tags (title, description and image),
   a Twitter Card and a canonical link. Each is worth 2 points, offsetting other penalties in
   that category, so they can raise a page's score but never past 100
@@ -16,13 +23,8 @@ All notable changes to BotLens are documented here. This project follows [Semant
   missing, and the Twitter Card and canonical URL; and the served and rendered HTML sizes
   ([#17](https://github.com/JarlLyng/BotLens/issues/17), [#2](https://github.com/JarlLyng/BotLens/issues/2))
 
-### Fixed (merged, ships with the next release)
+### Fixed
 - Signal rows no longer split words in the middle ("gptbo / t"). Long values still wrap.
-
-### Planned
-- llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
-- AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
-- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
 
 ## [1.1.1] - 2026-09-23
 

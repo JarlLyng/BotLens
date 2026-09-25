@@ -26,6 +26,7 @@ BotLens surfaces all of this in one click, locally in the browser, with no data 
 BotLens fetches /robots.txt from the site's origin and parses it according to the full spec:
 
 - Multiple User-agent lines can share a rule group
+- A crawler with no group of its own follows the User-agent: * group (RFC 9309), and several groups naming the same crawler are combined
 - Allow and Disallow are both supported
 - Longest matching path wins; on ties, Allow overrides Disallow
 - Wildcards (*) and end-of-path anchors ($) in path patterns
@@ -48,8 +49,9 @@ BotLens reads meta tags from the page's DOM and detects:
 - Heading hierarchy: counts H1, H2, H3 elements; flags missing or duplicate H1
 - HTML5 semantic landmarks: article, main, section, nav, header, footer
 - Image alt-text coverage: percentage of content images with meaningful alt attributes (decorative images with empty alt or aria-hidden are excluded from the ratio)
-- Structured data: detects presence of JSON-LD scripts
+- Structured data: detects JSON-LD scripts, lists the schema types they declare (top level and inside @graph), and counts blocks that do not parse
 - Language declaration: checks for html lang attribute
+- Link metadata: complete Open Graph (og:title, og:description and og:image), a Twitter Card, and a canonical link
 
 ### JavaScript rendering detection
 
@@ -82,6 +84,8 @@ Every page starts at 100 and loses points for detected issues:
 - Image alt-text coverage below 50% → -10
 - Missing html lang attribute → -3
 - Bonus: JSON-LD structured data present → +5 recovery
+- Bonus: complete Open Graph, Twitter Card, canonical link → +2 recovery each
+- Recovery offsets other penalties in this category and never lifts the score past 100
 
 **JavaScript rendering** (weight up to 20 points):
 
@@ -95,6 +99,10 @@ The final score is clamped to 0-100 and mapped to a verdict:
 - 80-100: AI Friendly (highly accessible for AI systems)
 - 50-79: Partially Restricted (some technical hurdles detected)
 - 0-49: Blocked / Poor (significant barriers for AI bots)
+
+## Details panel
+
+Under the three signal rows, a collapsed Details panel shows what the score was built from. It lists every issue in each category (each row shows only the first), every blocked AI bot and the exceptions to User-agent: *, all meta directives, heading counts, landmarks, alt-text coverage, the lang value, the JSON-LD types found, which Open Graph tags are missing, the Twitter Card and canonical URL, and the served and rendered HTML sizes.
 
 ## What Google says about AI-specific files
 

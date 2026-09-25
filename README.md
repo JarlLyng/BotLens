@@ -27,8 +27,9 @@ BotLens helps developers and site owners answer this by inspecting technical sig
 - **AI Readability Score**: Weighted 0-100 score across four signal categories.
 - **robots.txt Analysis**: full spec support for Allow/Disallow precedence, wildcards (`*`) and end-of-path anchors (`$`), checked against 20+ AI user-agents such as `GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended` and `Bytespider`.
 - **Meta Directive Detection**: `noindex`, `nofollow`, `noai`, `noimageai`, and bot-specific meta tags.
-- **Semantic Structure Check**: Heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD, and `<html lang>`.
+- **Semantic Structure Check**: Heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD and its schema types, `<html lang>`, and Open Graph, Twitter Card and canonical tags.
 - **JS Rendering Detection**: Compares initial HTML to rendered DOM to catch SPA shells that hide content from crawlers.
+- **Details panel**: every issue and the data behind the score, such as each blocked bot and every meta directive.
 - **Privacy-first**: 100% local. No accounts, no telemetry, no external servers.
 
 ---
@@ -94,7 +95,7 @@ valid fallback if the API flow ever breaks.
 
 Tracked in [GitHub issues](https://github.com/JarlLyng/BotLens/issues). High-level:
 
-- **v2**: Detect Open Graph, Twitter Card, canonical ([#18](https://github.com/JarlLyng/BotLens/issues/18)); llms.txt detection ([#19](https://github.com/JarlLyng/BotLens/issues/19)); detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17)); parser tests ([#15](https://github.com/JarlLyng/BotLens/issues/15))
+- **v2**: llms.txt detection ([#19](https://github.com/JarlLyng/BotLens/issues/19)); AI content transparency signals ([#21](https://github.com/JarlLyng/BotLens/issues/21))
 - **v3**: Modular detection engine, CMS/framework/hosting/analytics detection
 
 ---

@@ -15,7 +15,7 @@ analytics; the extension itself sends nothing anywhere.
 - **Store:** [Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
 - **License:** [MIT](LICENSE), open source.
 - **Price:** Free (no in-app purchases, no subscription, no ads)
-- **Status:** Live on the Chrome Web Store (v1.1.1)
+- **Status:** Live on the Chrome Web Store (v1.2.0)
 
 ## Strategy lives in the private hub
 
@@ -38,14 +38,14 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
   coverage, JSON-LD presence, `<html lang>`.
 - Link metadata: complete Open Graph (title, description, image), Twitter Card and
   `<link rel="canonical">`, worth 2 points each as offsets against other Content Structure
-  penalties, never past 100. On `main`, ships in the next release (#18).
+  penalties, never past 100.
 - JS-rendering detection: compares same-origin raw HTML to the rendered DOM to flag SPA
   shells that serve crawlers a near-empty page.
 - Three signal rows (robots.txt & Meta, Content Structure, JS Rendering) plus a verdict.
 - A collapsed "Details" panel under the rows: every issue per category, the full list of
   blocked bots, all meta directives, heading counts, landmarks, alt-text coverage, `lang`,
   JSON-LD `@type`s and unparseable blocks, Open Graph / Twitter Card / canonical, and the
-  served vs rendered HTML sizes. On `main`, ships in the next release (#17).
+  served vs rendered HTML sizes.
 
 ### Features that do NOT exist (common hallucination targets)
 - **No** account, login, cloud sync, or backend of any kind.
@@ -53,8 +53,7 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - **No** historical tracking, dashboards, or saved reports.
 - **No** telemetry from the extension (the marketing *site* has Umami; the extension does not).
 - **No** IPTC image-metadata or llms.txt detection *yet* (tracked in issues #19/#21, so do
-  not describe them as shipped). Open Graph / canonical detection (#18) is merged but not
-  released until the next version.
+  not describe them as shipped).
 - **No** Firefox/Safari build yet (Manifest V3, Chromium browsers only).
 
 ## Requirements

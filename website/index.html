@@ -75,11 +75,13 @@
       "Detection of 20+ AI user-agents including GPTBot, ClaudeBot, and Google-Extended",
       "Meta directive analysis: noindex, noai, noimageai",
       "Semantic HTML and heading hierarchy check",
-      "Structured data (JSON-LD) detection",
+      "Structured data (JSON-LD) detection, with the schema types found",
+      "Open Graph, Twitter Card and canonical link detection",
+      "Details panel listing every issue and the data behind the score",
       "JavaScript rendering and SPA shell detection",
       "Weighted 0-100 AI readability score"
     ],
-    "softwareVersion": "1.0.0",
+    "softwareVersion": "1.2.0",
     "isAccessibleForFree": true,
     "license": "https://github.com/JarlLyng/BotLens/blob/main/LICENSE",
     "sameAs": ["https://github.com/JarlLyng/BotLens"]
@@ -232,7 +234,7 @@
       <div class="feature-card">
         <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         <h3>Semantic Check</h3>
-        <p>Validates heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the lang attribute.</p>
+        <p>Validates heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD structured data, the lang attribute, and Open Graph, Twitter Card and canonical tags.</p>
       </div>
       <div class="feature-card">
         <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -261,7 +263,7 @@
           <div class="how-step">
             <div class="how-step-num">3</div>
             <h3>Analyze the DOM</h3>
-            <p>BotLens reads meta directives (robots, googlebot, gptbot, noai, noimageai), heading hierarchy (H1 count, semantic depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the <code>&lt;html lang&gt;</code> attribute.</p>
+            <p>BotLens reads meta directives (robots, googlebot, gptbot, noai, noimageai), heading hierarchy (H1 count, semantic depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data and its schema types, the <code>&lt;html lang&gt;</code> attribute, and Open Graph, Twitter Card and canonical tags.</p>
           </div>
           <div class="how-step">
             <div class="how-step-num">4</div>
@@ -271,7 +273,7 @@
           <div class="how-step">
             <div class="how-step-num">5</div>
             <h3>Compute a weighted score</h3>
-            <p>Signals are weighted (robots/meta 50, semantic 30, JS 20) and combined into a single 0-100 readability score. You get a plain-language verdict (AI Friendly, Partially Restricted, or Blocked / Poor) plus the specific issues to fix.</p>
+            <p>Signals are weighted (robots/meta 50, semantic 30, JS 20) and combined into a single 0-100 readability score. You get a plain-language verdict (AI Friendly, Partially Restricted, or Blocked / Poor) plus the specific issues to fix. A Details panel lists every issue and the data behind the score, such as each blocked bot and every meta directive.</p>
           </div>
         </div>
       </div>

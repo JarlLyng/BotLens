@@ -17,7 +17,7 @@
 
 1. **robots.txt**: Parses the full spec including Allow/Disallow precedence by longest match, wildcards, and end-of-path anchors. Evaluates rules against 20+ known AI user-agents.
 2. **Meta directives**: Detects robots noindex/nofollow/none, plus bot-specific meta and the noai / noimageai AI-training opt-out directives.
-3. **Semantic HTML**: Heading hierarchy (H1 count and depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data, and the html lang attribute.
+3. **Semantic HTML**: Heading hierarchy (H1 count and depth), HTML5 landmarks, image alt-text coverage, JSON-LD structured data and its schema types, the html lang attribute, and Open Graph, Twitter Card and canonical tags.
 4. **JavaScript rendering**: Compares initial HTML payload to rendered DOM to catch SPA shells that hide content from crawlers.
 
 ## AI crawlers recognized
