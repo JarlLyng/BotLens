@@ -238,10 +238,15 @@ function calculateEnhancedSignals(pageData, robotsRules) {
     semanticPenalty += 3;
     issues.semantic.push('Missing <html lang> attribute');
   }
-  // Reward structured data (cap recovery so we never exceed 100)
+  // Reward structured data and link metadata. They offset other penalties in
+  // this category but never add past 100 (the penalty is floored at 0 below).
   if (semantic.hasStructuredData) {
     semanticPenalty -= 5;
   }
+  const og = semantic.openGraph || {};
+  if (og.title && og.description && og.image) semanticPenalty -= 2;
+  if (semantic.hasTwitterCard) semanticPenalty -= 2;
+  if (semantic.hasCanonical) semanticPenalty -= 2;
   if (issues.semantic.length > 0) {
     signals.semantic = { status: 'warn', value: issues.semantic[0] };
   } else if (semantic.hasStructuredData) {

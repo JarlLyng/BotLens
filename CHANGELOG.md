@@ -4,8 +4,13 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
+### Added (merged, ships with the next release)
+- Content Structure now checks for complete Open Graph tags (title, description and image),
+  a Twitter Card and a canonical link. Each is worth 2 points, offsetting other penalties in
+  that category, so they can raise a page's score but never past 100
+  ([#18](https://github.com/JarlLyng/BotLens/issues/18))
+
 ### Planned
-- Detect Open Graph, Twitter Card, canonical as scoring signals ([#18](https://github.com/JarlLyng/BotLens/issues/18))
 - llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
 - AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
 - Detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17))

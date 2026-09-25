@@ -228,3 +228,47 @@ describe('JS rendering signal', () => {
     assert.equal(s.score, 100);
   });
 });
+
+// #18: Open Graph, Twitter Card and canonical offset other Content Structure
+// penalties, 2 points each, and never lift the score past 100.
+describe('link metadata', () => {
+  const allowAll = P.parseRobotsTxt('User-agent: *\nAllow: /', '/');
+  const fullOg = { title: true, description: true, image: true };
+  // No H1 (-10) and no JSON-LD, so there is a penalty to offset. The JS check
+  // cannot verify, which costs nothing, so only this category moves.
+  const score = semantic => plain(P.calculateEnhancedSignals({
+    metaTags: {}, domSize: 1, rawHtml: '', rawHtmlOk: false, rawHtmlIsHtml: true,
+    semantic: { headings: { h1: 0 }, semanticTags: 4, imageAltRatio: 1, imageCount: 0,
+                hasStructuredData: false, hasLangAttr: true, ...semantic },
+  }, allowAll)).score;
+
+  test('none present costs nothing extra', () => {
+    assert.equal(score({}), 90);
+  });
+
+  test('each of complete Open Graph, Twitter Card and canonical is worth 2', () => {
+    assert.equal(score({ openGraph: fullOg }), 92);
+    assert.equal(score({ hasTwitterCard: true }), 92);
+    assert.equal(score({ hasCanonical: true }), 92);
+    assert.equal(score({ openGraph: fullOg, hasTwitterCard: true, hasCanonical: true }), 96);
+  });
+
+  test('Open Graph counts only with title, description and image', () => {
+    assert.equal(score({ openGraph: { title: true, description: true, image: false } }), 90);
+  });
+
+  test('the bonus never lifts a page past 100', () => {
+    assert.equal(score({ headings: { h1: 1 }, hasStructuredData: true, openGraph: fullOg,
+                         hasTwitterCard: true, hasCanonical: true }), 100);
+  });
+
+  test('the issue is still reported when the bonus covers its cost', () => {
+    const s = plain(P.calculateEnhancedSignals({
+      metaTags: {}, domSize: 1, rawHtml: '', rawHtmlOk: false, rawHtmlIsHtml: true,
+      semantic: { headings: { h1: 1 }, semanticTags: 4, imageAltRatio: 1, imageCount: 0,
+                  hasLangAttr: false, openGraph: fullOg, hasCanonical: true },
+    }, allowAll));
+    assert.equal(s.score, 100);
+    assert.equal(s.semantic.value, 'Missing <html lang> attribute');
+  });
+});

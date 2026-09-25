@@ -36,6 +36,9 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
   `noai` / `noimageai` AI-training opt-outs.
 - Semantic checks: heading hierarchy (H1 count/depth), HTML5 landmarks, image alt-text
   coverage, JSON-LD presence, `<html lang>`.
+- Link metadata: complete Open Graph (title, description, image), Twitter Card and
+  `<link rel="canonical">`, worth 2 points each as offsets against other Content Structure
+  penalties, never past 100. On `main`, ships in the next release (#18).
 - JS-rendering detection: compares same-origin raw HTML to the rendered DOM to flag SPA
   shells that serve crawlers a near-empty page.
 - Three signal rows (robots.txt & Meta, Content Structure, JS Rendering) plus a verdict.
@@ -45,8 +48,9 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - **No** multi-page / whole-site crawl. It scores the single active page only.
 - **No** historical tracking, dashboards, or saved reports.
 - **No** telemetry from the extension (the marketing *site* has Umami; the extension does not).
-- **No** IPTC image-metadata or Open Graph / canonical / llms.txt detection *yet* (tracked
-  in issues #18/#19/#21, so do not describe them as shipped).
+- **No** IPTC image-metadata or llms.txt detection *yet* (tracked in issues #19/#21, so do
+  not describe them as shipped). Open Graph / canonical detection (#18) is merged but not
+  released until the next version.
 - **No** Firefox/Safari build yet (Manifest V3, Chromium browsers only).
 
 ## Requirements

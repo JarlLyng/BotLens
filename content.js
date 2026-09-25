@@ -57,7 +57,26 @@
       imageCount: contentImages.length,
       textLength: bodyText.length,
       hasStructuredData: !!document.querySelector('script[type="application/ld+json"]'),
-      hasLangAttr: !!document.documentElement.lang
+      hasLangAttr: !!document.documentElement.lang,
+      ...getLinkMetadata()
+    };
+  }
+
+  // Open Graph, Twitter Card and canonical (#18). A tag counts only with a
+  // non-empty value. Open Graph uses `property`, but `name` is common in the wild.
+  function getLinkMetadata() {
+    const hasMeta = key => Array.from(document.querySelectorAll(
+      `meta[property="${key}"], meta[name="${key}"]`
+    )).some(m => (m.getAttribute('content') || '').trim() !== '');
+    const canonical = document.querySelector('link[rel~="canonical" i][href]');
+    return {
+      openGraph: {
+        title: hasMeta('og:title'),
+        description: hasMeta('og:description'),
+        image: hasMeta('og:image')
+      },
+      hasTwitterCard: hasMeta('twitter:card'),
+      hasCanonical: !!canonical && canonical.getAttribute('href').trim() !== ''
     };
   }
 
