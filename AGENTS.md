@@ -62,10 +62,10 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - **Release:** bump `version` in `manifest.json` + update `CHANGELOG.md`, then
   `git tag vX.Y.Z && git push origin vX.Y.Z` → GitHub Actions lints, builds, uploads, and
   publishes through Chrome Web Store API V2 (see `.github/workflows/publish.yml`).
-  The Google OAuth app is in "Testing", so the refresh token lasts 7 days: before tagging,
-  mint a new one (`npx chrome-webstore-upload-keys`, client "BotLens CI"), update the
-  `CWS_REFRESH_TOKEN` secret, and run the workflow manually in `check` mode, which
-  verifies the credentials and uploads nothing.
+  Authentication is keyless: GitHub's OIDC token is exchanged for a short-lived Google
+  access token (Workload Identity Federation), so nothing expires. Run the workflow
+  manually in `check` mode to verify it; that uploads nothing. The API calls are in
+  `scripts/cws.js`.
 
 ## Conventions
 - Uses [`iamjarl-design`](https://github.com/JarlLyng/iamjarl-design) tokens via `tokens.css`,

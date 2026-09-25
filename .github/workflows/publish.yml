@@ -5,16 +5,16 @@ name: Publish to Chrome Web Store
 # - Can also be triggered manually from the Actions tab (workflow_dispatch),
 #   where "check" (the default) only verifies the credentials and uploads nothing.
 #
-# Requires four repository secrets (Settings → Secrets and variables → Actions):
-#   CWS_EXTENSION_ID, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN
-# and one repository variable (same page, Variables tab):
-#   CWS_PUBLISHER_ID, from the Developer Dashboard's Account page
-# The secrets are encrypted and are NOT exposed to workflows triggered from forks.
-# This workflow never runs on pull_request, so a malicious PR cannot exfiltrate them.
+# Authentication is keyless (#43). GitHub's OIDC token is exchanged, through
+# Workload Identity Federation, for a short-lived Google access token for the
+# service account the Developer Dashboard lists as this publisher's. Nothing
+# expires and the repo holds no Google secret. Google accepts the token only
+# from this repo and JarlLyng/PageLens.
 #
-# The OAuth app is in "Testing", so a refresh token lasts 7 days. Before a
-# release, mint a new one with `npx chrome-webstore-upload-keys` and update
-# CWS_REFRESH_TOKEN, then run this workflow in "check" mode to confirm it works.
+# Repository variables (Settings → Secrets and variables → Actions → Variables):
+#   CWS_WIF_PROVIDER, CWS_SERVICE_ACCOUNT, CWS_PUBLISHER_ID
+# and one secret: CWS_EXTENSION_ID.
+# This workflow never runs on pull_request, so a PR from a fork cannot obtain a token.
 
 on:
   push:
@@ -29,6 +29,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write   # lets google-github-actions/auth request GitHub's OIDC token
 
 concurrency:
   group: cws-publish
@@ -70,47 +71,31 @@ jobs:
 
       # Fails fast with a readable message instead of an API error.
       - name: Check configuration
-        run: |
-          [ -n "$PUBLISHER_ID" ] || { echo "::error::Repository variable CWS_PUBLISHER_ID is not set."; exit 1; }
-          [ -n "$EXTENSION_ID" ] || { echo "::error::Secret CWS_EXTENSION_ID is not set."; exit 1; }
-
-      # Asks the API for the item's status. This proves the token, client
-      # secret and publisher ID work, and changes nothing in the store.
-      - name: Check credentials
-        if: env.MODE == 'check'
         env:
-          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          WIF_PROVIDER: ${{ vars.CWS_WIF_PROVIDER }}
+          SERVICE_ACCOUNT: ${{ vars.CWS_SERVICE_ACCOUNT }}
         run: |
-          set -euo pipefail
-          npm install --no-save --prefix "$RUNNER_TEMP/cws" chrome-webstore-upload@6.0.0
-          cd "$RUNNER_TEMP/cws"
-          node --input-type=module -e "
-            import cws from 'chrome-webstore-upload';
-            const { EXTENSION_ID: extensionId, PUBLISHER_ID: publisherId,
-                    CLIENT_ID: clientId, CLIENT_SECRET: clientSecret,
-                    REFRESH_TOKEN: refreshToken } = process.env;
-            const status = await cws({ extensionId, publisherId, clientId, clientSecret, refreshToken }).get();
-            console.log(JSON.stringify(status, null, 2));
-            console.log('Credentials OK. Nothing was uploaded.');
-          "
+          for v in WIF_PROVIDER SERVICE_ACCOUNT PUBLISHER_ID EXTENSION_ID; do
+            [ -n "${!v}" ] || { echo "::error::$v is not set (see the comment at the top of this workflow)."; exit 1; }
+          done
 
-      - name: Upload to Chrome Web Store
-        if: env.MODE != 'check'
+      - id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.CWS_WIF_PROVIDER }}
+          service_account: ${{ vars.CWS_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/chromewebstore
+          create_credentials_file: false
+
+      # check: asks the API for the item's status and changes nothing.
+      # draft: uploads without submitting. publish: uploads and submits.
+      - name: Chrome Web Store (${{ env.MODE }})
         env:
-          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
-          set -euo pipefail
-          ZIP=$(ls dist/botlens-*.zip)
-          echo "Uploading $ZIP"
-          # CLI v4 uses API V2. With no command it uploads and publishes;
-          # `upload` alone leaves a draft.
-          if [ "$MODE" = "publish" ]; then
-            npx --yes chrome-webstore-upload-cli@4.0.1 --source "$ZIP"
+          if [ "$MODE" = "check" ]; then
+            node scripts/cws.js check
           else
-            npx --yes chrome-webstore-upload-cli@4.0.1 upload --source "$ZIP"
-            echo "Uploaded as draft (not submitted for publishing)."
+            node scripts/cws.js "$MODE" "$(ls dist/botlens-*.zip)"
           fi
