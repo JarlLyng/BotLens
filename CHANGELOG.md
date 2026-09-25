@@ -9,11 +9,19 @@ All notable changes to BotLens are documented here. This project follows [Semant
   a Twitter Card and a canonical link. Each is worth 2 points, offsetting other penalties in
   that category, so they can raise a page's score but never past 100
   ([#18](https://github.com/JarlLyng/BotLens/issues/18))
+- A "Details" panel, collapsed under the three signal rows, shows what each score was built
+  from. It lists every issue, not only the first; every blocked AI bot and the exceptions to
+  `User-agent: *`; all meta directives; headings, landmarks, alt-text coverage and `lang`;
+  the JSON-LD types found and any block that does not parse; which Open Graph tags are
+  missing, and the Twitter Card and canonical URL; and the served and rendered HTML sizes
+  ([#17](https://github.com/JarlLyng/BotLens/issues/17), [#2](https://github.com/JarlLyng/BotLens/issues/2))
+
+### Fixed (merged, ships with the next release)
+- Signal rows no longer split words in the middle ("gptbo / t"). Long values still wrap.
 
 ### Planned
 - llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
 - AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
-- Detail breakdown panel ([#17](https://github.com/JarlLyng/BotLens/issues/17))
 - Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
 
 ## [1.1.1] - 2026-09-23

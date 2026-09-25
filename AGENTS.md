@@ -42,6 +42,10 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - JS-rendering detection: compares same-origin raw HTML to the rendered DOM to flag SPA
   shells that serve crawlers a near-empty page.
 - Three signal rows (robots.txt & Meta, Content Structure, JS Rendering) plus a verdict.
+- A collapsed "Details" panel under the rows: every issue per category, the full list of
+  blocked bots, all meta directives, heading counts, landmarks, alt-text coverage, `lang`,
+  JSON-LD `@type`s and unparseable blocks, Open Graph / Twitter Card / canonical, and the
+  served vs rendered HTML sizes. On `main`, ships in the next release (#17).
 
 ### Features that do NOT exist (common hallucination targets)
 - **No** account, login, cloud sync, or backend of any kind.

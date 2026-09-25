@@ -272,3 +272,81 @@ describe('link metadata', () => {
     assert.equal(s.semantic.value, 'Missing <html lang> attribute');
   });
 });
+
+// #17: the detail panel's data. Rows are looked up by label.
+describe('breakdown panel', () => {
+  const base = {
+    metaTags: { robots: 'index, follow', gptbot: 'noindex' },
+    semantic: { headings: { h1: 1, h2: 4, h3: 2 }, semanticTags: 3, landmarks: ['main', 'nav', 'footer'],
+                imageAltRatio: 0.75, imageCount: 4, hasStructuredData: true, hasLangAttr: true, lang: 'en',
+                jsonLdTypes: ['WebSite', 'SoftwareApplication'], jsonLdInvalid: 0,
+                openGraph: { title: true, description: true, image: false }, hasTwitterCard: false,
+                hasCanonical: true, canonicalUrl: 'https://example.com/' },
+    domSize: 30720, rawHtml: 'x'.repeat(20480), rawHtmlOk: true, rawHtmlIsHtml: true,
+  };
+  const build = (txt, overrides = {}) => {
+    const pageData = { ...base, ...overrides, semantic: { ...base.semantic, ...(overrides.semantic || {}) } };
+    const rules = P.parseRobotsTxt(txt, '/');
+    return plain(P.buildBreakdown(pageData, rules, P.calculateEnhancedSignals(pageData, rules)));
+  };
+  const row = (sections, title, label) =>
+    sections.find(s => s.title === title).rows.find(r => r.label === label)?.value;
+
+  test('lists every blocked bot, and the exceptions to *', () => {
+    const b = build('User-agent: *\nDisallow: /\n\nUser-agent: GPTBot\nAllow: /');
+    assert.match(row(b, 'robots.txt & Meta', 'AI bots blocked'), new RegExp(`^${ALL_BOTS.length - 1}: .*claudebot`));
+    assert.equal(row(b, 'robots.txt & Meta', 'Allowed despite *'), 'gptbot');
+  });
+
+  test('a missing robots.txt says so, and has no exception row', () => {
+    const b = build(null);
+    assert.equal(row(b, 'robots.txt & Meta', 'robots.txt'), 'Not found');
+    assert.equal(row(b, 'robots.txt & Meta', 'AI bots blocked'), 'None');
+    assert.equal(row(b, 'robots.txt & Meta', 'Allowed despite *'), undefined);
+  });
+
+  test('shows every meta directive, not only the first', () => {
+    assert.equal(row(build(''), 'robots.txt & Meta', 'Meta directives'), 'gptbot: noindex, robots: index, follow');
+  });
+
+  test('every issue is listed, including those the row does not show', () => {
+    const b = build('', { semantic: { headings: { h1: 0 }, hasLangAttr: false, lang: '' } });
+    assert.deepEqual(b.find(s => s.title === 'Content Structure').issues,
+      ['Missing H1 heading', 'Missing <html lang> attribute']);
+  });
+
+  test('content structure rows', () => {
+    const b = build('');
+    const r = label => row(b, 'Content Structure', label);
+    assert.equal(r('Headings'), 'H1 1 · H2 4 · H3 2');
+    assert.equal(r('Landmarks'), 'main, nav, footer');
+    assert.equal(r('Image alt text'), '3 of 4 (75%)');
+    assert.equal(r('Language'), 'en');
+    assert.equal(r('JSON-LD'), 'WebSite, SoftwareApplication');
+    assert.equal(r('Invalid JSON-LD'), undefined);
+    assert.equal(r('Open Graph'), 'Missing og:image');
+    assert.equal(r('Twitter Card'), 'Missing');
+    assert.equal(r('Canonical'), 'https://example.com/');
+  });
+
+  test('invalid JSON-LD and no images are reported plainly', () => {
+    const b = build('', { semantic: { imageCount: 0, jsonLdTypes: [], jsonLdInvalid: 2 } });
+    assert.equal(row(b, 'Content Structure', 'Image alt text'), 'No content images');
+    assert.equal(row(b, 'Content Structure', 'JSON-LD'), 'Present');
+    assert.equal(row(b, 'Content Structure', 'Invalid JSON-LD'), '2 blocks could not be parsed');
+    const untyped = build('', { semantic: { jsonLdTypes: [], jsonLdInvalid: 0 } });
+    assert.equal(row(untyped, 'Content Structure', 'JSON-LD'), 'Present, no @type');
+    const none = build('', { semantic: { hasStructuredData: false, jsonLdTypes: [] } });
+    assert.equal(row(none, 'Content Structure', 'JSON-LD'), 'None');
+  });
+
+  test('JS rendering shows sizes and the ratio, or why it cannot', () => {
+    const b = build('');
+    assert.equal(row(b, 'JS Rendering', 'Served HTML'), '20.0 KB');
+    assert.equal(row(b, 'JS Rendering', 'Rendered DOM'), '30.0 KB');
+    assert.equal(row(b, 'JS Rendering', 'Ratio'), '1.50×');
+    const failed = build('', { rawHtmlOk: false });
+    assert.equal(row(failed, 'JS Rendering', 'Served HTML'), 'Could not fetch comparable HTML');
+    assert.equal(row(failed, 'JS Rendering', 'Ratio'), undefined);
+  });
+});

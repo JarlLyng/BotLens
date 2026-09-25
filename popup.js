@@ -46,6 +46,7 @@ async function analyze() {
 
     // 4. Update UI
     updateEnhancedUI(signals);
+    renderBreakdown(buildBreakdown(pageData, robotsRules, signals));
 
   } catch (error) {
     console.error("Analysis failed:", error);
@@ -60,6 +61,9 @@ function resetUI() {
   updateSignal('robots', 'fetching', 'Analyzing tags...');
   updateSignal('semantic', 'fetching', 'Checking structure...');
   updateSignal('js', 'fetching', 'Checking rendering...');
+  const breakdown = document.getElementById('breakdown');
+  breakdown.hidden = true;
+  document.getElementById('breakdown-body').replaceChildren();
 }
 
 // Known AI / LLM crawler user-agents (lowercase). Keep in sync with calculateEnhancedSignals.
@@ -283,7 +287,100 @@ function calculateEnhancedSignals(pageData, robotsRules) {
   }
 
   signals.score = Math.max(0, Math.min(100, Math.round(score)));
+  signals.issues = issues;
   return signals;
+}
+
+// The detail panel (#17): everything the score was built from, per category.
+// Returns plain data so it can be tested without a DOM; renderBreakdown draws it.
+function buildBreakdown(pageData, robotsRules, signals) {
+  const meta = pageData.metaTags || {};
+  const semantic = pageData.semantic || {};
+  const issues = signals.issues || { robots: [], semantic: [], js: [] };
+  const list = (items, empty = 'None') => (items && items.length ? items.join(', ') : empty);
+  const kb = n => `${(n / 1024).toFixed(1)} KB`;
+
+  const robotsRows = [
+    { label: 'robots.txt', value: robotsRules.exists ? 'Found' : 'Not found' },
+    { label: 'AI bots blocked', value: robotsRules.blockedBots.length
+      ? `${robotsRules.blockedBots.length}: ${robotsRules.blockedBots.join(', ')}` : 'None' },
+  ];
+  if (robotsRules.allowedBots && robotsRules.allowedBots.length) {
+    robotsRows.push({ label: 'Allowed despite *', value: robotsRules.allowedBots.join(', ') });
+  }
+  const directives = Object.keys(meta).sort().map(k => `${k}: ${meta[k]}`);
+  robotsRows.push({ label: 'Meta directives', value: list(directives) });
+
+  const h = semantic.headings || {};
+  const og = semantic.openGraph || {};
+  const ogMissing = ['title', 'description', 'image'].filter(k => !og[k]).map(k => `og:${k}`);
+  const imageCount = semantic.imageCount || 0;
+  const withAlt = Math.round((semantic.imageAltRatio ?? 1) * imageCount);
+  const structured = semantic.jsonLdTypes && semantic.jsonLdTypes.length
+    ? semantic.jsonLdTypes.join(', ')
+    : !semantic.hasStructuredData ? 'None'
+      // Types are unknown when blocks do not parse; the next row says so.
+      : semantic.jsonLdInvalid ? 'Present' : 'Present, no @type';
+  const semanticRows = [
+    { label: 'Headings', value: `H1 ${h.h1 || 0} · H2 ${h.h2 || 0} · H3 ${h.h3 || 0}` },
+    { label: 'Landmarks', value: list(semantic.landmarks) },
+    { label: 'Image alt text', value: imageCount
+      ? `${withAlt} of ${imageCount} (${Math.round((semantic.imageAltRatio ?? 1) * 100)}%)`
+      : 'No content images' },
+    { label: 'Language', value: semantic.lang || 'Not set' },
+    { label: 'JSON-LD', value: structured },
+  ];
+  if (semantic.jsonLdInvalid) {
+    const n = semantic.jsonLdInvalid;
+    semanticRows.push({ label: 'Invalid JSON-LD', value: `${n} block${n > 1 ? 's' : ''} could not be parsed` });
+  }
+  semanticRows.push(
+    { label: 'Open Graph', value: ogMissing.length ? `Missing ${ogMissing.join(', ')}` : 'Complete' },
+    { label: 'Twitter Card', value: semantic.hasTwitterCard ? 'Present' : 'Missing' },
+    { label: 'Canonical', value: semantic.hasCanonical ? (semantic.canonicalUrl || 'Present') : 'Missing' },
+  );
+
+  const served = (pageData.rawHtml || '').length;
+  const rendered = pageData.domSize || 0;
+  const jsRows = pageData.rawHtmlOk && pageData.rawHtmlIsHtml && served > 0
+    ? [
+      { label: 'Served HTML', value: kb(served) },
+      { label: 'Rendered DOM', value: kb(rendered) },
+      { label: 'Ratio', value: `${(rendered / served).toFixed(2)}×` },
+    ]
+    : [{ label: 'Served HTML', value: 'Could not fetch comparable HTML' },
+       { label: 'Rendered DOM', value: kb(rendered) }];
+
+  return [
+    { title: 'robots.txt & Meta', issues: issues.robots, rows: robotsRows },
+    { title: 'Content Structure', issues: issues.semantic, rows: semanticRows },
+    { title: 'JS Rendering', issues: issues.js, rows: jsRows },
+  ];
+}
+
+// Built with textContent only: values such as meta content and the canonical
+// URL come from the page and must never be parsed as HTML.
+function renderBreakdown(sections) {
+  const make = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+  const body = document.getElementById('breakdown-body');
+  body.replaceChildren();
+  for (const section of sections) {
+    body.append(make('div', 'breakdown-heading', section.title));
+    if (section.issues && section.issues.length) {
+      const ul = make('ul', 'breakdown-issues');
+      section.issues.forEach(issue => ul.append(make('li', '', issue)));
+      body.append(ul);
+    }
+    const dl = make('dl', 'breakdown-list');
+    for (const row of section.rows) dl.append(make('dt', '', row.label), make('dd', '', row.value));
+    body.append(dl);
+  }
+  document.getElementById('breakdown').hidden = false;
 }
 
 function updateEnhancedUI(signals) {
@@ -333,6 +430,7 @@ function updateSignal(id, status, value) {
 }
 
 function showError(message) {
+  document.getElementById('breakdown').hidden = true;
   document.querySelector('.verdict-title').textContent = "Error";
   document.querySelector('.verdict-desc').textContent = message;
   document.getElementById('score-text').textContent = '!!';

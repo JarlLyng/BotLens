@@ -37,8 +37,8 @@
       h3: document.querySelectorAll('h3').length
     };
 
-    const semanticTags = ['article', 'main', 'section', 'nav', 'header', 'footer']
-      .filter(tag => document.querySelector(tag)).length;
+    const landmarks = ['article', 'main', 'section', 'nav', 'header', 'footer']
+      .filter(tag => document.querySelector(tag));
 
     const contentImages = Array.from(document.querySelectorAll('img')).filter(img => {
       if (img.getAttribute('alt') === '') return false;
@@ -52,14 +52,41 @@
 
     return {
       headings,
-      semanticTags,
+      semanticTags: landmarks.length,
+      landmarks,
       imageAltRatio: contentImages.length > 0 ? imagesWithAlt / contentImages.length : 1,
       imageCount: contentImages.length,
       textLength: bodyText.length,
       hasStructuredData: !!document.querySelector('script[type="application/ld+json"]'),
       hasLangAttr: !!document.documentElement.lang,
+      lang: document.documentElement.lang || '',
+      ...getJsonLd(),
       ...getLinkMetadata()
     };
+  }
+
+  // The @type of each top-level JSON-LD node, including nodes in an @graph,
+  // and how many blocks do not parse (a parser cannot read those either).
+  function getJsonLd() {
+    const types = new Set();
+    let invalid = 0;
+    const visit = node => {
+      if (Array.isArray(node)) { node.forEach(visit); return; }
+      if (!node || typeof node !== 'object') return;
+      const type = node['@type'];
+      for (const t of Array.isArray(type) ? type : [type]) {
+        if (typeof t === 'string' && t.trim()) types.add(t.trim());
+      }
+      if (node['@graph']) visit(node['@graph']);
+    };
+    for (const script of document.querySelectorAll('script[type="application/ld+json"]')) {
+      try {
+        visit(JSON.parse(script.textContent));
+      } catch (e) {
+        invalid++;
+      }
+    }
+    return { jsonLdTypes: [...types], jsonLdInvalid: invalid };
   }
 
   // Open Graph, Twitter Card and canonical (#18). A tag counts only with a
@@ -76,7 +103,8 @@
         image: hasMeta('og:image')
       },
       hasTwitterCard: hasMeta('twitter:card'),
-      hasCanonical: !!canonical && canonical.getAttribute('href').trim() !== ''
+      hasCanonical: !!canonical && canonical.getAttribute('href').trim() !== '',
+      canonicalUrl: canonical ? canonical.href : ''
     };
   }
 

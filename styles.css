@@ -160,7 +160,65 @@ header h1 {
 .signal-value {
   font-size: var(--ij-font-size-xs);
   color: var(--ij-color-text-tertiary);
-  word-break: break-all;
+  overflow-wrap: anywhere; /* break long tokens, but not words that fit */
+}
+
+/* Detail panel (#17). Collapsed by default so the popup stays compact. */
+.breakdown {
+  background: var(--ij-color-bg-card);
+  border: 1px solid var(--ij-color-border-subtle);
+  border-radius: var(--ij-radius-sm);
+}
+
+.breakdown summary {
+  padding: var(--ij-spacing-md);
+  font-size: var(--ij-font-size-sm);
+  font-weight: var(--ij-font-weight-semibold);
+  cursor: pointer;
+  border-radius: var(--ij-radius-sm);
+}
+
+.breakdown summary:focus-visible {
+  outline: var(--ij-focus-width) solid var(--ij-color-primary);
+  outline-offset: var(--ij-focus-offset);
+}
+
+.breakdown-body {
+  padding: 0 var(--ij-spacing-md) var(--ij-spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ij-spacing-sm);
+}
+
+.breakdown-heading {
+  margin-top: var(--ij-spacing-sm);
+  font-size: var(--ij-font-size-xs);
+  font-weight: var(--ij-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ij-color-text-tertiary);
+}
+
+.breakdown-issues {
+  padding-left: var(--ij-spacing-lg);
+  font-size: var(--ij-font-size-xs);
+  color: var(--ij-color-text-primary);
+}
+
+.breakdown-list {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--ij-spacing-xs) var(--ij-spacing-sm);
+  font-size: var(--ij-font-size-xs);
+}
+
+.breakdown-list dt {
+  color: var(--ij-color-text-tertiary);
+}
+
+.breakdown-list dd {
+  color: var(--ij-color-text-secondary);
+  overflow-wrap: anywhere;
 }
 
 .footer {
