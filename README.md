@@ -82,12 +82,14 @@ git tag v1.2.0 && git push origin v1.2.0
 # → CI lints, builds, uploads to the Web Store, and submits for review
 ```
 
-To upload a draft without submitting (e.g. to sanity-check a package), run the
-workflow manually from the Actions tab and uncheck "Submit for publishing".
+The workflow can also be run manually from the Actions tab. `check` (the default) verifies
+that publishing works and uploads nothing; `draft` uploads without submitting.
 
-Publishing requires four repository secrets (`CWS_EXTENSION_ID`, `CWS_CLIENT_ID`,
-`CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN`). The manual devconsole upload remains a
-valid fallback if the API flow ever breaks.
+Publishing is keyless. GitHub's OIDC token is exchanged for a short-lived Google access token
+(Workload Identity Federation), so there is no token to renew. It needs one secret,
+`CWS_EXTENSION_ID`, and three repository variables: `CWS_PUBLISHER_ID`, `CWS_WIF_PROVIDER` and
+`CWS_SERVICE_ACCOUNT`. The manual devconsole upload remains a valid fallback if the API flow
+ever breaks.
 
 ---
 
