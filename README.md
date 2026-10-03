@@ -29,7 +29,7 @@ BotLens helps developers and site owners answer this by inspecting technical sig
 - **Meta Directive Detection**: `noindex`, `nofollow`, `noai`, `noimageai`, and bot-specific meta tags.
 - **Semantic Structure Check**: Heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD and its schema types, `<html lang>`, and Open Graph, Twitter Card and canonical tags.
 - **JS Rendering Detection**: Compares initial HTML to rendered DOM to catch SPA shells that hide content from crawlers.
-- **Details panel**: every issue and the data behind the score, such as each blocked bot and every meta directive, plus the sitemap, `llms.txt` and `llms-full.txt`.
+- **Details panel**: every issue and the data behind the score, such as each blocked bot and every meta directive, plus the sitemap, `llms.txt`, `llms-full.txt`, and content provenance (generator meta, schema.org `digitalSourceType`, IPTC image metadata).
 - **Privacy-first**: 100% local. No accounts, no telemetry, no external servers.
 
 ---

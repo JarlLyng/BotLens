@@ -15,7 +15,7 @@ analytics; the extension itself sends nothing anywhere.
 - **Store:** [Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
 - **License:** [MIT](LICENSE), open source.
 - **Price:** Free (no in-app purchases, no subscription, no ads)
-- **Status:** Live on the Chrome Web Store (v1.3.0)
+- **Status:** Live on the Chrome Web Store (v1.4.0)
 
 ## Boundaries: work only in this repo
 
@@ -63,7 +63,7 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - A "Content provenance" section in the panel: `<meta name="generator">`, schema.org
   `digitalSourceType` anywhere in JSON-LD, and the IPTC DigitalSourceType in the first 256 KB of
   up to 10 same-origin images. `trainedAlgorithmicMedia` and its composite are marked
-  AI-generated. Reported only, not scored. On `main`, ships in the next release (#21).
+  AI-generated. Reported only, not scored (#21).
 
 ### Features that do NOT exist (common hallucination targets)
 - **No** account, login, cloud sync, or backend of any kind.

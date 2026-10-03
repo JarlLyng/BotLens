@@ -4,7 +4,12 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
-### Added (merged, ships with the next release)
+### Planned
+- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
+
+## [1.4.0] - 2026-10-03
+
+### Added
 - The Details panel has a "Content provenance" section: the page's `<meta name="generator">`,
   any schema.org `digitalSourceType` in its JSON-LD, and the IPTC DigitalSourceType in up to
   10 of the page's own images (read from their first 256 KB). Values that mean generative AI
@@ -12,9 +17,6 @@ All notable changes to BotLens are documented here. This project follows [Semant
   to give this context and names the IPTC field for AI images; it neither rewards nor
   penalizes it, so BotLens reports it and does not score it
   ([#21](https://github.com/JarlLyng/BotLens/issues/21))
-
-### Planned
-- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
 
 ## [1.3.0] - 2026-10-03
 
