@@ -372,7 +372,51 @@ function buildBreakdown(pageData, robotsRules, signals) {
     { title: 'JS Rendering', issues: issues.js, rows: jsRows },
   ];
   if (pageData.siteFiles) sections.push({ title: 'Site files', issues: [], rows: siteFileRows(pageData.siteFiles, kb) });
+  if (pageData.provenance) {
+    sections.push({ title: 'Content provenance', issues: [],
+                    rows: provenanceRows(pageData.provenance, semantic.jsonLdSourceTypes || []) });
+  }
   return sections;
+}
+
+// IPTC digital source types that mean generative AI made the media, as IPTC
+// terms and as their schema.org enumeration names.
+const AI_SOURCE_TYPES = new Set([
+  'trainedAlgorithmicMedia', 'compositeWithTrainedAlgorithmicMedia',
+  'TrainedAlgorithmicMediaDigitalSource', 'CompositeWithTrainedAlgorithmicMediaDigitalSource',
+]);
+const describeSourceType = term => (AI_SOURCE_TYPES.has(term) ? `${term} (AI-generated)` : term);
+
+// #21. How the page and its images say they were made. Reported, not scored:
+// Google asks for this context but does not reward or penalize it.
+function provenanceRows(provenance, jsonLdSourceTypes) {
+  const images = provenance.images || {};
+  const counted = Object.entries(images.sourceTypes || {})
+    .map(([term, n]) => `${describeSourceType(term)}: ${n}`);
+  let imageValue;
+  if (!images.checked && !images.unreadable && !images.otherSite) {
+    imageValue = 'No images on this page';
+  } else if (!images.checked) {
+    imageValue = 'No image from this site could be read';
+  } else {
+    const n = images.checked;
+    imageValue = counted.length
+      ? `${counted.join(', ')} (of ${n} checked)`
+      : `None declared in the ${n} image${n === 1 ? '' : 's'} checked`;
+  }
+  const skipped = [];
+  if (images.notChecked) skipped.push(`${images.notChecked} more on this site`);
+  if (images.otherSite) skipped.push(`${images.otherSite} on other sites`);
+  if (images.checked && images.unreadable) skipped.push(`${images.unreadable} unreadable`);
+
+  const rows = [
+    { label: 'Generator', value: (provenance.generators || []).join(', ') || 'Not set' },
+    { label: 'Source type (JSON-LD)', value: jsonLdSourceTypes.length
+      ? jsonLdSourceTypes.map(describeSourceType).join(', ') : 'None declared' },
+    { label: 'Source type (images)', value: imageValue },
+  ];
+  if (skipped.length) rows.push({ label: 'Images not checked', value: skipped.join(', ') });
+  return rows;
 }
 
 // Sitemap (#1) and llms.txt (#19). Reported for information, not scored: the

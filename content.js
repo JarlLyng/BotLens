@@ -79,14 +79,32 @@
       }
       if (node['@graph']) visit(node['@graph']);
     };
+    // schema.org digitalSourceType (#21) can sit on any node, so search deeply.
+    const sourceTypes = new Set();
+    const deep = node => {
+      if (Array.isArray(node)) { node.forEach(deep); return; }
+      if (!node || typeof node !== 'object') return;
+      for (const [key, value] of Object.entries(node)) {
+        if (key === 'digitalSourceType') {
+          for (const v of Array.isArray(value) ? value : [value]) {
+            const term = typeof v === 'string' ? v : v && v['@id'];
+            if (typeof term === 'string' && term.trim()) sourceTypes.add(term.trim().split(/[/:#]/).pop());
+          }
+        } else {
+          deep(value);
+        }
+      }
+    };
     for (const script of document.querySelectorAll('script[type="application/ld+json"]')) {
       try {
-        visit(JSON.parse(script.textContent));
+        const data = JSON.parse(script.textContent);
+        visit(data);
+        deep(data);
       } catch (e) {
         invalid++;
       }
     }
-    return { jsonLdTypes: [...types], jsonLdInvalid: invalid };
+    return { jsonLdTypes: [...types], jsonLdInvalid: invalid, jsonLdSourceTypes: [...sourceTypes] };
   }
 
   // Open Graph, Twitter Card and canonical (#18). A tag counts only with a
@@ -188,14 +206,75 @@
     }
   }
 
+  // Content provenance (#21). <meta name="generator"> names the software that
+  // made the page. IPTC DigitalSourceType in an image's XMP (or C2PA) metadata
+  // says how the image was made; Google's guidance names
+  // trainedAlgorithmicMedia for AI-generated images. Reported, not scored.
+  const IMAGE_LIMIT = 10;
+  const IMAGE_BYTES = 256 * 1024; // XMP and C2PA sit near the start of the file
+
+  async function readImageSourceTypes(url) {
+    try {
+      const res = await fetch(url, { credentials: 'omit' });
+      if (!res.ok || !res.body) return null;
+      const reader = res.body.getReader();
+      const chunks = [];
+      let size = 0;
+      while (size < IMAGE_BYTES) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        size += value.length;
+      }
+      reader.cancel().catch(() => {});
+      const bytes = new Uint8Array(size);
+      let offset = 0;
+      for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+      const text = new TextDecoder('latin1').decode(bytes.subarray(0, IMAGE_BYTES));
+      const terms = new Set();
+      for (const m of text.matchAll(/cv\.iptc\.org\/newscodes\/digitalsourcetype\/([A-Za-z]+)/g)) terms.add(m[1]);
+      return [...terms];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function getProvenance(origin) {
+    const generators = Array.from(document.querySelectorAll('meta[name="generator" i]'))
+      .map(m => (m.getAttribute('content') || '').trim()).filter(Boolean);
+    const urls = [];
+    let otherSite = 0;
+    for (const img of document.images) {
+      let url;
+      try { url = new URL(img.currentSrc || img.src, location.href); } catch (e) { continue; }
+      if (!/^https?:$/.test(url.protocol) || urls.includes(url.href)) continue;
+      if (url.origin !== origin) { otherSite++; continue; }
+      urls.push(url.href);
+    }
+    const checkedUrls = urls.slice(0, IMAGE_LIMIT);
+    const results = await Promise.all(checkedUrls.map(readImageSourceTypes));
+    const imageSourceTypes = {};
+    let checked = 0;
+    for (const terms of results) {
+      if (!terms) continue;
+      checked++;
+      for (const t of terms) imageSourceTypes[t] = (imageSourceTypes[t] || 0) + 1;
+    }
+    return {
+      generators,
+      images: { checked, unreadable: checkedUrls.length - checked, notChecked: urls.length - checkedUrls.length, otherSite, sourceTypes: imageSourceTypes }
+    };
+  }
+
   const origin = window.location.origin;
   const robotsPromise = fetchRobotsTxt(origin);
-  const [robotsTxt, rawHtml, llmsTxt, llmsFullTxt, sitemap] = await Promise.all([
+  const [robotsTxt, rawHtml, llmsTxt, llmsFullTxt, sitemap, provenance] = await Promise.all([
     robotsPromise,
     fetchRawHtml(window.location.href),
     fetchTextFile(`${origin}/llms.txt`),
     fetchTextFile(`${origin}/llms-full.txt`),
-    robotsPromise.then(txt => checkSitemap(origin, txt))
+    robotsPromise.then(txt => checkSitemap(origin, txt)),
+    getProvenance(origin)
   ]);
 
   return {
@@ -209,6 +288,7 @@
     rawHtml: rawHtml.html,
     rawHtmlOk: rawHtml.ok,
     rawHtmlIsHtml: rawHtml.contentType.includes('html'),
-    siteFiles: { sitemap, llmsTxt, llmsFullTxt }
+    siteFiles: { sitemap, llmsTxt, llmsFullTxt },
+    provenance
   };
 })();

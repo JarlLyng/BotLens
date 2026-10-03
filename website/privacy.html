@@ -39,6 +39,7 @@
       <li>Reads the active tab's URL, meta tags, headings, image alt text, and DOM size.</li>
       <li>Fetches the site's <code>/robots.txt</code> file and the raw HTML of the current page in order to compare it with the rendered DOM.</li>
       <li>Fetches the site's sitemap (the one <code>robots.txt</code> names, or <code>/sitemap.xml</code>), <code>/llms.txt</code> and <code>/llms-full.txt</code>, to report whether they exist. A sitemap on another site is not fetched.</li>
+      <li>Reads the first 256 KB of up to 10 of the page's own images, to report the IPTC metadata that says how an image was made (for example, by generative AI). Images on other sites are not fetched.</li>
     </ul>
     <p>All of this happens inside your browser. <strong>None of the data leaves your machine.</strong></p>
 

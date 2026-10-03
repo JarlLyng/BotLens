@@ -406,3 +406,50 @@ describe('site files', () => {
     assert.equal(rows(undefined), undefined);
   });
 });
+
+// #21: content provenance, reported in the panel and never scored.
+describe('content provenance', () => {
+  const rules = P.parseRobotsTxt('User-agent: *\nAllow: /', '/');
+  const page = (provenance, jsonLdSourceTypes = []) => ({
+    metaTags: {}, domSize: 1, rawHtml: '', rawHtmlOk: false, rawHtmlIsHtml: true, provenance,
+    semantic: { headings: { h1: 1 }, semanticTags: 4, imageAltRatio: 1, imageCount: 0,
+                hasStructuredData: true, hasLangAttr: true, jsonLdSourceTypes },
+  });
+  const rows = (provenance, types) => {
+    const p = page(provenance, types);
+    const section = plain(P.buildBreakdown(p, rules, P.calculateEnhancedSignals(p, rules)))
+      .find(s => s.title === 'Content provenance');
+    return section && Object.fromEntries(section.rows.map(r => [r.label, r.value]));
+  };
+  const images = over => ({ checked: 0, unreadable: 0, notChecked: 0, otherSite: 0, sourceTypes: {}, ...over });
+
+  test('nothing declared', () => {
+    const r = rows({ generators: [], images: images({ checked: 3 }) });
+    assert.equal(r['Generator'], 'Not set');
+    assert.equal(r['Source type (JSON-LD)'], 'None declared');
+    assert.equal(r['Source type (images)'], 'None declared in the 3 images checked');
+    assert.equal(r['Images not checked'], undefined);
+  });
+
+  test('AI-generated source types are marked, others shown as they are', () => {
+    const r = rows({ generators: ['WordPress 6.6'],
+                     images: images({ checked: 4, sourceTypes: { trainedAlgorithmicMedia: 2, digitalCapture: 1 } }) },
+                   ['TrainedAlgorithmicMediaDigitalSource']);
+    assert.equal(r['Generator'], 'WordPress 6.6');
+    assert.equal(r['Source type (JSON-LD)'], 'TrainedAlgorithmicMediaDigitalSource (AI-generated)');
+    assert.equal(r['Source type (images)'], 'trainedAlgorithmicMedia (AI-generated): 2, digitalCapture: 1 (of 4 checked)');
+  });
+
+  test('says which images were not checked, and why', () => {
+    const r = rows({ generators: [], images: images({ checked: 10, notChecked: 5, otherSite: 7, unreadable: 1 }) });
+    assert.equal(r['Images not checked'], '5 more on this site, 7 on other sites, 1 unreadable');
+    assert.equal(rows({ generators: [], images: images({ otherSite: 4 }) })['Source type (images)'],
+      'No image from this site could be read');
+    assert.equal(rows({ generators: [], images: images({}) })['Source type (images)'], 'No images on this page');
+  });
+
+  test('declaring AI-generated content does not change the score', () => {
+    const score = prov => P.calculateEnhancedSignals(page(prov, ['TrainedAlgorithmicMediaDigitalSource']), rules).score;
+    assert.equal(score({ generators: ['x'], images: images({ checked: 1, sourceTypes: { trainedAlgorithmicMedia: 1 } }) }), 100);
+  });
+});

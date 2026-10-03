@@ -60,13 +60,16 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
   served vs rendered HTML sizes, plus a "Site files" section: the sitemap (from robots.txt or
   `/sitemap.xml`, same-origin only, XML-validated) and whether `/llms.txt` and
   `/llms-full.txt` exist. Reported only, not scored (#1, #19).
+- A "Content provenance" section in the panel: `<meta name="generator">`, schema.org
+  `digitalSourceType` anywhere in JSON-LD, and the IPTC DigitalSourceType in the first 256 KB of
+  up to 10 same-origin images. `trainedAlgorithmicMedia` and its composite are marked
+  AI-generated. Reported only, not scored. On `main`, ships in the next release (#21).
 
 ### Features that do NOT exist (common hallucination targets)
 - **No** account, login, cloud sync, or backend of any kind.
 - **No** multi-page / whole-site crawl. It scores the single active page only.
 - **No** historical tracking, dashboards, or saved reports.
 - **No** telemetry from the extension (the marketing *site* has Umami; the extension does not).
-- **No** IPTC image-metadata detection *yet* (#21, so do not describe it as shipped).
 - **No** claims about which AI companies read llms.txt. BotLens reports whether the file
   exists and nothing more; the site's FAQ cites what Google says about it.
 - **No** Firefox/Safari build yet (Manifest V3, Chromium browsers only).
