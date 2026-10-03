@@ -4,17 +4,19 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
-### Added (merged, ships with the next release)
+### Planned
+- AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
+- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
+
+## [1.3.0] - 2026-10-03
+
+### Added
 - The Details panel has a "Site files" section. It reports the sitemap (the one robots.txt
   names, or `/sitemap.xml`), whether it is valid XML and how many URLs or sitemaps it lists,
   and whether `/llms.txt` and `/llms-full.txt` exist. A page that answers with HTML, as many
   single-page apps do for every path, does not count. These describe the site rather than
   the page, so they are reported and not scored
   ([#1](https://github.com/JarlLyng/BotLens/issues/1), [#19](https://github.com/JarlLyng/BotLens/issues/19))
-
-### Planned
-- AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
-- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
 
 ## [1.2.1] - 2026-10-03
 

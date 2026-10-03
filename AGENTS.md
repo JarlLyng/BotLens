@@ -15,7 +15,7 @@ analytics; the extension itself sends nothing anywhere.
 - **Store:** [Chrome Web Store](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
 - **License:** [MIT](LICENSE), open source.
 - **Price:** Free (no in-app purchases, no subscription, no ads)
-- **Status:** Live on the Chrome Web Store (v1.2.1)
+- **Status:** Live on the Chrome Web Store (v1.3.0)
 
 ## Boundaries: work only in this repo
 
@@ -59,8 +59,7 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
   JSON-LD `@type`s and unparseable blocks, Open Graph / Twitter Card / canonical, and the
   served vs rendered HTML sizes, plus a "Site files" section: the sitemap (from robots.txt or
   `/sitemap.xml`, same-origin only, XML-validated) and whether `/llms.txt` and
-  `/llms-full.txt` exist. Reported only, not scored. On `main`, ships in the next release
-  (#1, #19).
+  `/llms-full.txt` exist. Reported only, not scored (#1, #19).
 
 ### Features that do NOT exist (common hallucination targets)
 - **No** account, login, cloud sync, or backend of any kind.

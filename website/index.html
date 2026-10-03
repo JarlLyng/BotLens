@@ -78,10 +78,11 @@
       "Structured data (JSON-LD) detection, with the schema types found",
       "Open Graph, Twitter Card and canonical link detection",
       "Details panel listing every issue and the data behind the score",
+      "Sitemap, llms.txt and llms-full.txt detection",
       "JavaScript rendering and SPA shell detection",
       "Weighted 0-100 AI readability score"
     ],
-    "softwareVersion": "1.2.1",
+    "softwareVersion": "1.3.0",
     "isAccessibleForFree": true,
     "license": "https://github.com/JarlLyng/BotLens/blob/main/LICENSE",
     "sameAs": ["https://github.com/JarlLyng/BotLens"]
@@ -138,7 +139,7 @@
         "name": "Does Google use llms.txt?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. <a href=\"https://developers.google.com/search/docs/fundamentals/ai-optimization-guide\">Google says</a> Search, including its AI features, ignores llms.txt, so the file neither helps nor hurts how a site does there. Google also notes it can still be useful for other services that read it. BotLens does not check for llms.txt yet. This site publishes one anyway, since it costs nothing."
+          "text": "No. <a href=\"https://developers.google.com/search/docs/fundamentals/ai-optimization-guide\">Google says</a> Search, including its AI features, ignores llms.txt, so the file neither helps nor hurts how a site does there. Google also notes it can still be useful for other services that read it. BotLens reports whether a site has an llms.txt, in its Details panel, but does not score it. This site publishes one anyway, since it costs nothing."
         }
       },
       {
@@ -344,7 +345,7 @@
       </details>
       <details class="faq-item">
         <summary>Does Google use llms.txt?</summary>
-        <p>No. <a href="https://developers.google.com/search/docs/fundamentals/ai-optimization-guide" rel="noopener">Google says</a> Search, including its AI features, ignores llms.txt, so the file neither helps nor hurts how a site does there. Google also notes it can still be useful for other services that read it. BotLens does not check for llms.txt yet. This site publishes one anyway, since it costs nothing.</p>
+        <p>No. <a href="https://developers.google.com/search/docs/fundamentals/ai-optimization-guide" rel="noopener">Google says</a> Search, including its AI features, ignores llms.txt, so the file neither helps nor hurts how a site does there. Google also notes it can still be useful for other services that read it. BotLens reports whether a site has an llms.txt, in its Details panel, but does not score it. This site publishes one anyway, since it costs nothing.</p>
       </details>
       <details class="faq-item">
         <summary>Is BotLens free?</summary>

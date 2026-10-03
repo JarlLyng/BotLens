@@ -102,13 +102,13 @@ The final score is clamped to 0-100 and mapped to a verdict:
 
 ## Details panel
 
-Under the three signal rows, a collapsed Details panel shows what the score was built from. It lists every issue in each category (each row shows only the first), every blocked AI bot and the exceptions to User-agent: *, all meta directives, heading counts, landmarks, alt-text coverage, the lang value, the JSON-LD types found, which Open Graph tags are missing, the Twitter Card and canonical URL, and the served and rendered HTML sizes.
+Under the three signal rows, a collapsed Details panel shows what the score was built from. It lists every issue in each category (each row shows only the first), every blocked AI bot and the exceptions to User-agent: *, all meta directives, heading counts, landmarks, alt-text coverage, the lang value, the JSON-LD types found, which Open Graph tags are missing, the Twitter Card and canonical URL, and the served and rendered HTML sizes. A "Site files" section reports the sitemap (the one robots.txt names, or /sitemap.xml), whether it is valid XML and how many URLs it lists, and whether /llms.txt and /llms-full.txt exist. A server that answers those paths with an HTML page does not count as having the file. These describe the site, not the page, so they are not scored.
 
 ## What Google says about AI-specific files
 
 Google's guide "Optimizing your website for generative AI features on Google Search" (https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says Google Search, including its generative AI features, does not use AI-specific files such as llms.txt, so they neither help nor hurt a site's visibility there. Google notes they can still be useful for other services that read them.
 
-Whatever a given crawler does with llms.txt, BotLens scores the signals every crawler depends on, such as robots.txt access, meta directives, semantic HTML, structured data, and whether the content is present in the served HTML. It does not check for llms.txt. This site publishes an llms.txt anyway, since it costs nothing.
+Whatever a given crawler does with llms.txt, BotLens scores the signals every crawler depends on, such as robots.txt access, meta directives, semantic HTML, structured data, and whether the content is present in the served HTML. It reports whether a site has an llms.txt and llms-full.txt, but does not score them. This site publishes both anyway, since it costs nothing.
 
 Google's guidance on using generative AI content is at https://developers.google.com/search/docs/fundamentals/using-gen-ai-content.
 
