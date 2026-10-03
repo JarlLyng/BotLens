@@ -1,6 +1,6 @@
 # BotLens 🕵️‍♂️🤖
 
-![BotLens Social Preview](assets/social-preview.png)
+![BotLens: Can AI read your website? A page scored 92 out of 100.](website/og-image.png)
 
 [![Lint](https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml/badge.svg)](https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
