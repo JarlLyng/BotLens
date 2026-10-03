@@ -139,7 +139,7 @@ Full privacy policy: https://botlens.iamjarl.com/privacy.html
 
 - Publisher: IAMJARL, a Danish sole proprietorship (enkeltmandsvirksomhed)
 - License: MIT
-- Contact: jarl@iamjarl.com
+- Support and feedback: support@iamjarl.com
 - Portfolio: https://iamjarl.com/
 - Repository: https://github.com/JarlLyng/BotLens
 - Issue tracker: https://github.com/JarlLyng/BotLens/issues

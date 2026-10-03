@@ -6,8 +6,23 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const refreshBtn = document.getElementById('refresh');
   refreshBtn.addEventListener('click', analyze);
+  setUpFeedbackLink();
   analyze();
 });
+
+// "Send feedback" (#45). The extension collects no usage data, so this is how
+// users tell us what is wrong. The subject carries the version. A popup cannot
+// reliably follow a mailto: link itself, so the click opens it through a tab,
+// which hands it to the user's mail app.
+function setUpFeedbackLink() {
+  const link = document.getElementById('feedback');
+  const subject = `BotLens ${chrome.runtime.getManifest().version} feedback`;
+  link.href = `mailto:support@iamjarl.com?subject=${encodeURIComponent(subject)}`;
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    chrome.tabs.create({ url: link.href });
+  });
+}
 
 async function analyze() {
   resetUI();

@@ -106,6 +106,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Bug reports, feature requests, and pull 
 
 ---
 
+## 💬 Feedback and support
+
+Email [support@iamjarl.com](mailto:support@iamjarl.com), or use **Send feedback** at the bottom of the popup. Bug reports and feature requests are also welcome as [GitHub issues](https://github.com/JarlLyng/BotLens/issues).
+
+---
+
 ## 🔒 Security
 
 See [SECURITY.md](SECURITY.md). Please **do not** open public issues for vulnerabilities. Use GitHub's [Private Vulnerability Reporting](https://github.com/JarlLyng/BotLens/security/advisories/new).

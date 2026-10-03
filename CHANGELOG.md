@@ -4,6 +4,11 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
+### Added (merged, ships with the next release)
+- A "Send feedback" link at the bottom of the popup opens an email to support@iamjarl.com
+  with the subject "BotLens <version> feedback". The extension collects no usage data, so
+  this is the private way to say what is wrong ([#45](https://github.com/JarlLyng/BotLens/issues/45))
+
 ### Planned
 - llms.txt detection with capped bonus ([#19](https://github.com/JarlLyng/BotLens/issues/19))
 - AI content transparency detection ([#21](https://github.com/JarlLyng/BotLens/issues/21))
