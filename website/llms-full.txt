@@ -123,7 +123,7 @@ Chrome extension permissions requested:
 - `activeTab`: read the current tab's URL and DOM when the user clicks the icon
 - `scripting`: inject the analysis script into the active tab on demand
 
-No host permissions are requested. The injected script fetches /robots.txt and the raw HTML from the analyzed page's own origin, so it needs no access to any other site.
+No host permissions are requested. The injected script fetches /robots.txt, the raw HTML, the sitemap, /llms.txt and /llms-full.txt from the analyzed page's own origin only, so it needs no access to any other site.
 
 Full privacy policy: https://botlens.iamjarl.com/privacy.html
 

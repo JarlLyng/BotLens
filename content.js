@@ -1,8 +1,8 @@
 /**
  * BotLens Page Extractor
  * Injected on-demand via chrome.scripting.executeScript.
- * Runs in the page's own origin, so robots.txt and the raw HTML are
- * fetched same-origin — no host permissions required. The trailing
+ * Runs in the page's own origin, so robots.txt, the raw HTML, the sitemap
+ * and llms.txt are fetched same-origin — no host permissions required. The trailing
  * async IIFE resolves to the data object, which executeScript awaits
  * and hands back to popup.js.
  */
@@ -134,10 +134,68 @@
     }
   }
 
+  // A 200 that is really an HTML page (an SPA or a soft 404 answering every
+  // path) does not count as the file.
+  const looksLikeHtml = (text, contentType) =>
+    contentType.includes('html') || /^\s*<(!doctype|html)/i.test(text);
+
+  // llms.txt and llms-full.txt (#19). Reported, not scored.
+  async function fetchTextFile(url) {
+    try {
+      const res = await fetch(url, { credentials: 'omit' });
+      if (!res.ok) return { found: false };
+      const text = await res.text();
+      const contentType = (res.headers.get('content-type') || '').toLowerCase();
+      if (!text.trim() || looksLikeHtml(text, contentType)) return { found: false };
+      return { found: true, bytes: new Blob([text]).size };
+    } catch (e) {
+      return { found: false };
+    }
+  }
+
+  // The sitemap (#1): the first Sitemap: line in robots.txt, else /sitemap.xml.
+  // Only a same-origin sitemap can be fetched without host permissions.
+  async function checkSitemap(origin, robotsTxt) {
+    const declared = (robotsTxt || '').split('\n')
+      .map(line => line.replace(/#.*/, '').match(/^\s*sitemap\s*:\s*(\S+)/i))
+      .filter(Boolean)
+      .map(m => m[1]);
+    let url;
+    try {
+      url = new URL(declared[0] || '/sitemap.xml', origin);
+    } catch (e) {
+      return { declared: declared.length, url: declared[0], status: 'bad-url' };
+    }
+    const result = { declared: declared.length, url: url.href };
+    if (url.origin !== origin) return { ...result, status: 'other-site' };
+    if (/\.gz$/i.test(url.pathname)) return { ...result, status: 'compressed' };
+    try {
+      const res = await fetch(url.href, { credentials: 'omit' });
+      if (!res.ok) return { ...result, status: 'missing', httpStatus: res.status };
+      const text = await res.text();
+      const contentType = (res.headers.get('content-type') || '').toLowerCase();
+      if (looksLikeHtml(text, contentType)) return { ...result, status: 'html' };
+      const xml = new DOMParser().parseFromString(text, 'application/xml');
+      const root = xml.documentElement;
+      if (xml.getElementsByTagName('parsererror').length || !root) return { ...result, status: 'invalid' };
+      const kind = root.localName;
+      if (kind !== 'urlset' && kind !== 'sitemapindex') return { ...result, status: 'invalid' };
+      const entries = Array.from(root.children)
+        .filter(el => el.localName === (kind === 'urlset' ? 'url' : 'sitemap')).length;
+      return { ...result, status: 'valid', kind, entries };
+    } catch (e) {
+      return { ...result, status: 'error' };
+    }
+  }
+
   const origin = window.location.origin;
-  const [robotsTxt, rawHtml] = await Promise.all([
-    fetchRobotsTxt(origin),
-    fetchRawHtml(window.location.href)
+  const robotsPromise = fetchRobotsTxt(origin);
+  const [robotsTxt, rawHtml, llmsTxt, llmsFullTxt, sitemap] = await Promise.all([
+    robotsPromise,
+    fetchRawHtml(window.location.href),
+    fetchTextFile(`${origin}/llms.txt`),
+    fetchTextFile(`${origin}/llms-full.txt`),
+    robotsPromise.then(txt => checkSitemap(origin, txt))
   ]);
 
   return {
@@ -150,6 +208,7 @@
     robotsTxt,
     rawHtml: rawHtml.html,
     rawHtmlOk: rawHtml.ok,
-    rawHtmlIsHtml: rawHtml.contentType.includes('html')
+    rawHtmlIsHtml: rawHtml.contentType.includes('html'),
+    siteFiles: { sitemap, llmsTxt, llmsFullTxt }
   };
 })();

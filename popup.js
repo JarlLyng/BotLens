@@ -366,11 +366,45 @@ function buildBreakdown(pageData, robotsRules, signals) {
     : [{ label: 'Served HTML', value: 'Could not fetch comparable HTML' },
        { label: 'Rendered DOM', value: kb(rendered) }];
 
-  return [
+  const sections = [
     { title: 'robots.txt & Meta', issues: issues.robots, rows: robotsRows },
     { title: 'Content Structure', issues: issues.semantic, rows: semanticRows },
     { title: 'JS Rendering', issues: issues.js, rows: jsRows },
   ];
+  if (pageData.siteFiles) sections.push({ title: 'Site files', issues: [], rows: siteFileRows(pageData.siteFiles, kb) });
+  return sections;
+}
+
+// Sitemap (#1) and llms.txt (#19). Reported for information, not scored: the
+// score is about the current page, and these describe the site.
+function siteFileRows(files, kb) {
+  const sm = files.sitemap || {};
+  const where = sm.declared ? 'from robots.txt' : 'at /sitemap.xml';
+  const sitemapValue = {
+    valid: sm.kind === 'sitemapindex'
+      ? `Valid index of ${sm.entries} sitemap${sm.entries === 1 ? '' : 's'}, ${where}`
+      : `Valid, ${sm.entries} URL${sm.entries === 1 ? '' : 's'}, ${where}`,
+    missing: sm.declared
+      ? `Declared in robots.txt, but it returned ${sm.httpStatus}`
+      : 'Not found (no Sitemap line in robots.txt, no /sitemap.xml)',
+    html: `Not found (${sm.declared ? 'the declared URL' : '/sitemap.xml'} returns an HTML page)`,
+    invalid: 'Found, but not a valid sitemap',
+    'other-site': 'Declared on another site, not checked',
+    compressed: 'Compressed (.gz), not checked',
+    'bad-url': 'The Sitemap line in robots.txt is not a valid URL',
+    error: 'Could not be fetched',
+  }[sm.status] || 'Not checked';
+  const rows = [{ label: 'Sitemap', value: sitemapValue }];
+  if (sm.url && (sm.declared || sm.status === 'valid' || sm.status === 'invalid')) {
+    rows.push({ label: 'Sitemap URL', value: sm.url });
+  }
+  if (sm.declared > 1) rows.push({ label: 'Sitemaps declared', value: `${sm.declared} (first one checked)` });
+  const textFile = f => (f && f.found ? `Found (${kb(f.bytes)})` : 'Not found');
+  rows.push(
+    { label: 'llms.txt', value: textFile(files.llmsTxt) },
+    { label: 'llms-full.txt', value: textFile(files.llmsFullTxt) },
+  );
+  return rows;
 }
 
 // Built with textContent only: values such as meta content and the canonical

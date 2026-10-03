@@ -350,3 +350,59 @@ describe('breakdown panel', () => {
     assert.equal(row(failed, 'JS Rendering', 'Ratio'), undefined);
   });
 });
+
+// #1 and #19: sitemap and llms.txt, reported in the panel and never scored.
+describe('site files', () => {
+  const page = siteFiles => ({
+    metaTags: {}, domSize: 1, rawHtml: '', rawHtmlOk: false, rawHtmlIsHtml: true, siteFiles,
+    semantic: { headings: { h1: 1 }, semanticTags: 4, imageAltRatio: 1, imageCount: 0,
+                hasStructuredData: true, hasLangAttr: true },
+  });
+  const rules = P.parseRobotsTxt('User-agent: *\nAllow: /', '/');
+  const rows = siteFiles => {
+    const signals = P.calculateEnhancedSignals(page(siteFiles), rules);
+    const section = plain(P.buildBreakdown(page(siteFiles), rules, signals)).find(s => s.title === 'Site files');
+    return section && Object.fromEntries(section.rows.map(r => [r.label, r.value]));
+  };
+  const none = { found: false };
+
+  test('a valid sitemap from robots.txt, and both llms files', () => {
+    const r = rows({ sitemap: { status: 'valid', kind: 'urlset', entries: 3, declared: 1, url: 'https://a.test/s.xml' },
+                     llmsTxt: { found: true, bytes: 2048 }, llmsFullTxt: { found: true, bytes: 10240 } });
+    assert.equal(r['Sitemap'], 'Valid, 3 URLs, from robots.txt');
+    assert.equal(r['Sitemap URL'], 'https://a.test/s.xml');
+    assert.equal(r['llms.txt'], 'Found (2.0 KB)');
+    assert.equal(r['llms-full.txt'], 'Found (10.0 KB)');
+  });
+
+  test('a sitemap index at the default path', () => {
+    const r = rows({ sitemap: { status: 'valid', kind: 'sitemapindex', entries: 1, declared: 0, url: 'https://a.test/sitemap.xml' },
+                     llmsTxt: none, llmsFullTxt: none });
+    assert.equal(r['Sitemap'], 'Valid index of 1 sitemap, at /sitemap.xml');
+    assert.equal(r['llms.txt'], 'Not found');
+  });
+
+  test('missing, HTML and declared-but-broken sitemaps say which', () => {
+    assert.equal(rows({ sitemap: { status: 'missing', declared: 0, httpStatus: 404, url: 'https://a.test/sitemap.xml' } })['Sitemap'],
+      'Not found (no Sitemap line in robots.txt, no /sitemap.xml)');
+    assert.equal(rows({ sitemap: { status: 'missing', declared: 1, httpStatus: 410, url: 'https://a.test/s.xml' } })['Sitemap'],
+      'Declared in robots.txt, but it returned 410');
+    assert.equal(rows({ sitemap: { status: 'html', declared: 0, url: 'https://a.test/sitemap.xml' } })['Sitemap'],
+      'Not found (/sitemap.xml returns an HTML page)');
+    assert.equal(rows({ sitemap: { status: 'other-site', declared: 2, url: 'https://cdn.test/s.xml' } })['Sitemaps declared'],
+      '2 (first one checked)');
+  });
+
+  test('neither file changes the score', () => {
+    const score = siteFiles => P.calculateEnhancedSignals(page(siteFiles), rules).score;
+    assert.equal(score({ sitemap: { status: 'missing', declared: 0 }, llmsTxt: none, llmsFullTxt: none }), 100);
+    const withMissingH1 = siteFiles => P.calculateEnhancedSignals(
+      { ...page(siteFiles), semantic: { ...page(siteFiles).semantic, headings: { h1: 0 }, hasStructuredData: false } }, rules).score;
+    assert.equal(withMissingH1({ sitemap: { status: 'valid', kind: 'urlset', entries: 9, declared: 1 },
+                                 llmsTxt: { found: true, bytes: 1 }, llmsFullTxt: { found: true, bytes: 1 } }), 90);
+  });
+
+  test('no section when the extractor sent no site files', () => {
+    assert.equal(rows(undefined), undefined);
+  });
+});

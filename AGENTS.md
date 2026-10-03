@@ -57,15 +57,19 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
 - A collapsed "Details" panel under the rows: every issue per category, the full list of
   blocked bots, all meta directives, heading counts, landmarks, alt-text coverage, `lang`,
   JSON-LD `@type`s and unparseable blocks, Open Graph / Twitter Card / canonical, and the
-  served vs rendered HTML sizes.
+  served vs rendered HTML sizes, plus a "Site files" section: the sitemap (from robots.txt or
+  `/sitemap.xml`, same-origin only, XML-validated) and whether `/llms.txt` and
+  `/llms-full.txt` exist. Reported only, not scored. On `main`, ships in the next release
+  (#1, #19).
 
 ### Features that do NOT exist (common hallucination targets)
 - **No** account, login, cloud sync, or backend of any kind.
 - **No** multi-page / whole-site crawl. It scores the single active page only.
 - **No** historical tracking, dashboards, or saved reports.
 - **No** telemetry from the extension (the marketing *site* has Umami; the extension does not).
-- **No** IPTC image-metadata or llms.txt detection *yet* (tracked in issues #19/#21, so do
-  not describe them as shipped).
+- **No** IPTC image-metadata detection *yet* (#21, so do not describe it as shipped).
+- **No** claims about which AI companies read llms.txt. BotLens reports whether the file
+  exists and nothing more; the site's FAQ cites what Google says about it.
 - **No** Firefox/Safari build yet (Manifest V3, Chromium browsers only).
 
 ## Requirements
