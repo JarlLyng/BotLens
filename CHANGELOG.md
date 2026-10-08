@@ -4,9 +4,6 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
-### Planned
-- Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
-
 ## [1.4.1] - 2026-10-08
 
 ### Changed
