@@ -596,3 +596,108 @@ h1, h2, h3, .logo span {
   font-family: var(--ij-font-display, system-ui, sans-serif);
 }
 
+/* Web demo (#28) */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.demo {
+  max-width: 720px;
+  margin: 0 auto 80px;
+  padding: 0 var(--ij-spacing-lg);
+}
+
+.demo-lead {
+  color: var(--ij-color-text-secondary);
+  margin: var(--ij-spacing-sm) 0 var(--ij-spacing-lg);
+}
+
+.demo-form {
+  display: flex;
+  gap: var(--ij-spacing-sm);
+}
+
+.demo-form input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  padding: var(--ij-spacing-sm) var(--ij-spacing-md);
+  border: 1px solid var(--ij-color-border-default);
+  border-radius: var(--ij-radius-md);
+  background: var(--ij-color-bg-card);
+  color: var(--ij-color-text-primary);
+}
+
+.demo-form input:focus-visible,
+.demo-form button:focus-visible {
+  outline: var(--ij-focus-width) solid var(--ij-color-primary);
+  outline-offset: var(--ij-focus-offset);
+}
+
+.demo-form button {
+  border: none;
+  font: inherit;
+  font-weight: var(--ij-font-weight-semibold);
+  cursor: pointer;
+}
+
+.demo-form button[disabled] {
+  opacity: var(--ij-opacity-disabled);
+  cursor: progress;
+}
+
+.demo-result:not(:empty) {
+  margin-top: var(--ij-spacing-lg);
+  padding: var(--ij-spacing-lg);
+  background: var(--ij-color-bg-card);
+  border: 1px solid var(--ij-color-border-subtle);
+  border-radius: var(--ij-radius-md);
+}
+
+.demo-score {
+  font-family: var(--ij-font-display, var(--ij-font-ui));
+  font-size: var(--ij-font-size-xxl);
+  font-weight: var(--ij-font-weight-bold);
+}
+
+.demo-score small {
+  font-size: var(--ij-font-size-sm);
+  font-weight: var(--ij-font-weight-regular);
+  color: var(--ij-color-text-tertiary);
+}
+
+.demo-signal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ij-spacing-sm);
+  margin-top: var(--ij-spacing-sm);
+}
+
+.demo-signal strong { white-space: nowrap; }
+.demo-signal .dot { flex-shrink: 0; margin-left: 0; transform: translateY(-1px); }
+.dot.error { background: var(--ij-color-error); }
+
+.demo-issues {
+  margin: var(--ij-spacing-sm) 0 0 var(--ij-spacing-lg);
+  color: var(--ij-color-text-secondary);
+  font-size: var(--ij-font-size-sm);
+}
+
+.demo-note {
+  margin-top: var(--ij-spacing-md);
+  font-size: var(--ij-font-size-sm);
+  color: var(--ij-color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.demo-note a {
+  color: var(--ij-color-primary);
+  font-weight: var(--ij-font-weight-semibold);
+}
+
+.demo-error {
+  color: var(--ij-color-error);
+}
+

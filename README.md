@@ -34,6 +34,15 @@ BotLens helps developers and site owners answer this by inspecting technical sig
 
 ---
 
+## 🌐 Web demo
+
+The site can check an address without the extension. A small Vercel Function (`api/check.js`)
+fetches the page and its robots.txt once and scores them with the extension's own code. It
+stores no addresses or results, only hashed rate-limit counters in Turso. The extension itself
+has no backend.
+
+---
+
 ## 🏗️ Technical Stack
 
 - **Manifest V3**: modern Chrome extension architecture

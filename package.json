@@ -12,5 +12,10 @@
   },
   "devDependencies": {
     "eslint": "^8.56.0"
+  },
+  "dependencies": {
+    "@libsql/client": "0.18.0",
+    "linkedom": "0.18.13",
+    "undici": "8.11.2"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "echo 'API only: the site is on GitHub Pages, the extension on the Web Store'",
+  "installCommand": "npm ci --omit=dev",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- api lib content.js popup.js package.json package-lock.json vercel.json",
+  "functions": {
+    "api/check.js": {
+      "maxDuration": 25,
+      "memory": 512,
+      "includeFiles": "{content.js,popup.js,lib/**}"
+    }
+  }
+}

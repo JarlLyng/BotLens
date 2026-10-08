@@ -17,7 +17,9 @@
     {
       "files": [
         "scripts/**/*.js",
-        "test/**/*.js"
+        "test/**/*.js",
+        "lib/**/*.js",
+        "api/**/*.js"
       ],
       "env": {
         "node": true,

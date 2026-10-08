@@ -1,0 +1,10 @@
+# Vercel deploys only the web demo's endpoint (#28). Everything else in this repo
+# is the extension (Web Store) or the site (GitHub Pages).
+/*
+!/api
+!/lib
+!/content.js
+!/popup.js
+!/package.json
+!/package-lock.json
+!/vercel.json

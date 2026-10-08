@@ -166,6 +166,7 @@
     ]
   }
   </script>
+  <script defer src="demo.js"></script>
   <script type="module"
     src="https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@v1.13.0/dist/components/ij-footer.js"
     integrity="sha384-k6rHBD7DQwolVi361Zgb8yp7A44UtH4ZxMCxrqpFY+6MH9k9KsKipOMuiFXA+91v" crossorigin="anonymous"></script>
@@ -229,6 +230,19 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- Web demo (#28). Hidden until data-api names the deployed endpoint. -->
+    <section id="try" class="demo" data-api="" hidden aria-labelledby="demo-title">
+      <div class="section-eyebrow">Try it</div>
+      <h2 id="demo-title">Check a site without installing anything</h2>
+      <p class="demo-lead">Enter an address. The check runs once on our server, and the address you enter is not stored. It covers robots.txt, meta tags and page structure; the extension adds JavaScript rendering and the full details.</p>
+      <form class="demo-form" novalidate>
+        <label for="demo-url" class="visually-hidden">Web address</label>
+        <input id="demo-url" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com" required>
+        <button type="submit" class="btn-primary" data-umami-event="demo-check">Check</button>
+      </form>
+      <div class="demo-result" aria-live="polite"></div>
     </section>
 
     <section id="features" class="features">

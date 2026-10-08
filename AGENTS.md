@@ -66,13 +66,32 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
   AI-generated. Reported only, not scored (#21).
 
 ### Features that do NOT exist (common hallucination targets)
-- **No** account, login, cloud sync, or backend of any kind.
+- **No** account, login or cloud sync, and **no backend for the extension**. The only server
+  code is the site's optional web demo (below), which the extension never calls.
 - **No** multi-page / whole-site crawl. It scores the single active page only.
 - **No** historical tracking, dashboards, or saved reports.
 - **No** telemetry from the extension (the marketing *site* has Umami; the extension does not).
 - **No** claims about which AI companies read llms.txt. BotLens reports whether the file
   exists and nothing more; the site's FAQ cites what Google says about it.
 - **No** Firefox/Safari build yet (Manifest V3, Chromium browsers only).
+
+## Web demo (#28)
+
+A form on the site (`#try`) sends one address to `POST /api/check`, a Vercel Function in this
+repo (IAMJARL team on Vercel). It fetches that page and its robots.txt once and scores them with
+the extension's own `content.js` and `popup.js` (`lib/analyze.js`), so the two cannot drift. The
+score is partial: no JavaScript runs server-side.
+
+- `lib/safe-fetch.js`: public http(s) on ports 80/443 only; every resolved address is checked at
+  connect time (no private, loopback, link-local or metadata ranges, no DNS rebinding);
+  redirects re-checked; time and size limits.
+- `lib/rate-limit.js`: Turso holds only counters, 10 checks per visitor per hour and 1000 per
+  day overall. Visitor keys are an HMAC of the IP with a daily salt; no IP, URL or score is
+  stored. The URL travels in the POST body so it stays out of request logs.
+- Vercel environment: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `DEMO_RATE_SECRET`. Without them
+  the endpoint answers 503.
+- The form stays hidden until `data-api` on `#try` in `website/index.html` names the endpoint.
+- Changing the extractor or the scoring changes the demo too; `test/demo.test.js` covers it.
 
 ## Requirements
 - Any Chromium browser supporting Manifest V3 (Chrome, Edge, Brave, Arc, Opera, Vivaldi).
