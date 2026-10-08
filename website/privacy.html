@@ -30,7 +30,7 @@
 
   <main style="max-width: 720px; margin: 0 auto; padding: var(--ij-spacing-xxl) var(--ij-spacing-lg); line-height: 1.6;">
     <h1>Privacy Policy</h1>
-    <p><em>Last updated: 3 October 2026</em></p>
+    <p><em>Last updated: 8 October 2026</em></p>
 
     <h2>Short version</h2>
     <p>The <strong>BotLens Chrome extension</strong> collects no data. Everything happens locally in your browser. This <strong>marketing website</strong> uses a self-hosted, privacy-friendly analytics tool (Umami) to count anonymous page views. No cookies, no personal data.</p>
@@ -60,6 +60,15 @@
       <li><strong>activeTab / scripting</strong>: needed to read the page you are currently viewing when you click the BotLens icon.</li>
     </ul>
     <p>That is the whole list. BotLens requests no host permissions. All of these files are fetched from inside the page you are analyzing, from that page's own site, so the extension needs no access to any other site.</p>
+
+    <h2>The web demo</h2>
+    <p>The "Try it" form on the home page checks a site without the extension. When you submit an address, it is sent once to a small server function (hosted on Vercel), which fetches that page and its <code>robots.txt</code>, scores them with the same code as the extension, and sends the result back.</p>
+    <ul>
+      <li>The address you enter and the result are <strong>not stored or logged</strong>.</li>
+      <li>To stop abuse, the demo counts checks: at most 10 per visitor per hour. The counter is kept in a database (Turso) under a one-way hash of your IP address that changes every day, so the IP address itself is never stored. Counters are deleted after two days.</li>
+      <li>The site you check sees one ordinary request from <code>BotLensDemo</code>, the same way it would see any crawler.</li>
+    </ul>
+    <p>The extension does not use this server. It runs entirely in your browser, as described above.</p>
 
     <h2>This website (botlens.iamjarl.com)</h2>
 

@@ -90,7 +90,9 @@ score is partial: no JavaScript runs server-side.
   stored. The URL travels in the POST body so it stays out of request logs.
 - Vercel environment: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `DEMO_RATE_SECRET`. Without them
   the endpoint answers 503.
-- The form stays hidden until `data-api` on `#try` in `website/index.html` names the endpoint.
+- Production: `https://botlens-demo-nu.vercel.app/api/check` (Vercel project `botlens-demo`, IAMJARL
+  team; Turso database `botlens-demo`). `data-api` on `#try` in `website/index.html` names it;
+  empty, the form stays hidden.
 - Changing the extractor or the scoring changes the demo too; `test/demo.test.js` covers it.
 
 ## Requirements
