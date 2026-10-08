@@ -20,3 +20,6 @@ CLAUDE.local.md
 .mcp.json
 GEMINI.md
 .github/copilot-instructions.md
+
+# Vercel CLI link for the web demo (#28); project settings live in Vercel.
+.vercel/
