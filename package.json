@@ -17,5 +17,8 @@
     "@libsql/client": "0.18.0",
     "linkedom": "0.18.13",
     "undici": "8.11.2"
+  },
+  "engines": {
+    "node": ">=22.19.0"
   }
 }
