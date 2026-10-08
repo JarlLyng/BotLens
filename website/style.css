@@ -588,3 +588,11 @@ ij-footer:not(:defined) p {
   font-size: var(--ij-font-size-sm);
   color: var(--ij-color-text-tertiary);
 }
+
+/* Display face (#47): Outfit, the web-tools family's face, for the headings and the
+   wordmark. --ij-font-display comes from the identity sheet; if it or the font fails
+   to load, the stack falls back to system-ui. Body copy stays in --ij-font-ui. */
+h1, h2, h3, .logo span {
+  font-family: var(--ij-font-display, system-ui, sans-serif);
+}
+

@@ -21,6 +21,7 @@ FILES=(
   content.js
   styles.css
   tokens.css
+  identity.css
 )
 
 for f in "${FILES[@]}"; do
@@ -39,6 +40,10 @@ node -e "
   [ -f "$icon" ] || { echo "Manifest references missing icon: $icon" >&2; exit 1; }
   cp "$icon" "${OUT_DIR}/${NAME}/$icon"
 done
+
+# The bundled display face and its licence (#47).
+mkdir -p "${OUT_DIR}/${NAME}/fonts"
+cp fonts/outfit-latin-wght-normal.woff2 fonts/LICENSE-outfit.txt "${OUT_DIR}/${NAME}/fonts/"
 
 # Validate the manifest version matches what we expect
 node -e "

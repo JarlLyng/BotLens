@@ -1,0 +1,20 @@
+/* IAMJARL identity for BotLens — generated, do not edit */
+/* design system v1.18.1, family: web-tools */
+/* Display face: Outfit (OFL-1.1). Self-host it — see design.md. */
+/* Primary is unchanged and still the brand thread; the accent is what this site may lean on. */
+
+:root {
+  --ij-color-accent-family: #217370;
+  --ij-color-accent-family-rgb: 33, 115, 112;
+  --ij-font-display: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --ij-color-accent-family: #35B6B2;
+    --ij-color-accent-family-rgb: 53, 182, 178;
+  }
+}
+
+.light { --ij-color-accent-family: #217370; --ij-color-accent-family-rgb: 33, 115, 112; }
+.dark { --ij-color-accent-family: #35B6B2; --ij-color-accent-family-rgb: 53, 182, 178; }

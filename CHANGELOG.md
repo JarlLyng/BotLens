@@ -4,6 +4,15 @@ All notable changes to BotLens are documented here. This project follows [Semant
 
 ## [Unreleased]
 
+### Changed (merged, ships with the next release)
+- The popup's wordmark and verdict are set in Outfit, the display face of the IAMJARL
+  web-tools family, bundled with the extension (OFL-1.1). Body text is unchanged
+  ([#47](https://github.com/JarlLyng/BotLens/issues/47))
+- Design tokens updated from iamjarl-design v1.13.0 to v1.18.1. For the popup only the font
+  stacks change: `--ij-font-ui` now lists fallbacks after `system-ui`
+  ([#48](https://github.com/JarlLyng/BotLens/issues/48))
+- The package grows from 28 KB to 64 KB, almost all of it the 32 KB font file.
+
 ### Planned
 - Detect design-token drift automatically ([#30](https://github.com/JarlLyng/BotLens/issues/30))
 

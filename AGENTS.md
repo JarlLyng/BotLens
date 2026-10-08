@@ -93,8 +93,15 @@ bug reports, feature requests, and general (public-safe) marketing tasks.
   `scripts/cws.js`.
 
 ## Conventions
-- Uses [`iamjarl-design`](https://github.com/JarlLyng/iamjarl-design) tokens via `tokens.css`,
-  with no hardcoded colors/spacing/radius/type.
+- Uses [`iamjarl-design`](https://github.com/JarlLyng/iamjarl-design) v1.18.1 tokens via
+  `tokens.css` (copied to `website/tokens.css`), with no hardcoded colors/spacing/radius/type.
+  Refresh both copies from `dist/css/tokens.css` of a release, and check the release notes for
+  renamed tokens first.
+- Display face: Outfit (OFL-1.1) for the popup's wordmark and verdict, and the site's headings
+  and wordmark, through `--ij-font-display` from the identity sheet (#47). The extension
+  bundles `identity.css` and `fonts/outfit-latin-wght-normal.woff2`; the site loads
+  `dist/fonts/outfit.css` and `dist/identity/botlens.css` from jsDelivr, pinned with SRI.
+  Body copy stays in `--ij-font-ui`.
 - **No remote code**: Manifest V3 forbids it and Web Store review rejects it. All scripts
   and icons are bundled; icons are inline SVG.
 - The site's FAQ exists twice: the visible `<details class="faq-item">` list and the
