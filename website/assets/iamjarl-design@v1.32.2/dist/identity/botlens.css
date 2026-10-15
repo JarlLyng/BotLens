@@ -1,0 +1,42 @@
+/* IAMJARL identity for BotLens: generated, do not edit */
+/* design system v1.32.2. Follows the visitor's light or dark setting. */
+/* Display face: Outfit (OFL-1.1). Self-host it; see design.md. */
+
+:root {
+  --ij-color-accent: #217370;
+  --ij-color-accent-rgb: 33, 115, 112;
+  --ij-color-on-accent: #FFFFFF;
+  --ij-color-accent-text: #217370;
+  --ij-color-accent-family: #217370;
+  --ij-color-accent-family-rgb: 33, 115, 112;
+  --ij-font-display: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --ij-color-accent: #35B6B2;
+    --ij-color-accent-rgb: 53, 182, 178;
+    --ij-color-on-accent: #000000;
+    --ij-color-accent-text: #35B6B2;
+    --ij-color-accent-family: #35B6B2;
+    --ij-color-accent-family-rgb: 53, 182, 178;
+  }
+}
+
+.light {
+  --ij-color-accent: #217370;
+  --ij-color-accent-rgb: 33, 115, 112;
+  --ij-color-on-accent: #FFFFFF;
+  --ij-color-accent-text: #217370;
+  --ij-color-accent-family: #217370;
+  --ij-color-accent-family-rgb: 33, 115, 112;
+}
+
+.dark {
+  --ij-color-accent: #35B6B2;
+  --ij-color-accent-rgb: 53, 182, 178;
+  --ij-color-on-accent: #000000;
+  --ij-color-accent-text: #35B6B2;
+  --ij-color-accent-family: #35B6B2;
+  --ij-color-accent-family-rgb: 53, 182, 178;
+}
