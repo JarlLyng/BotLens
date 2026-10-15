@@ -120,9 +120,13 @@ score is partial: no JavaScript runs server-side.
   renamed tokens first.
 - Display face: Outfit (OFL-1.1) for the popup's wordmark and verdict, and the site's headings
   and wordmark, through `--ij-font-display` from the identity sheet (#47). The extension
-  bundles `identity.css` and `fonts/outfit-latin-wght-normal.woff2`; the site loads
-  `dist/fonts/outfit.css` and `dist/identity/botlens.css` from jsDelivr, pinned with SRI.
-  Body copy stays in `--ij-font-ui`.
+  bundles `identity.css` and `fonts/outfit-latin-wght-normal.woff2`. Body copy stays in
+  `--ij-font-ui`.
+- The site serves the design system from its own origin, never jsDelivr (#54, iamjarl-design's
+  rule since 2026-10-15): `website/assets/iamjarl-design@vX.Y.Z/` holds `ij-footer.js`, the
+  Outfit and identity sheets and the font, copied from the release tag and checked against its
+  `dist/sri.json`; the tags keep `integrity`. A bump is a new folder and changed links, never a
+  file edited in place.
 - **No remote code**: Manifest V3 forbids it and Web Store review rejects it. All scripts
   and icons are bundled; icons are inline SVG.
 - The site's FAQ exists twice: the visible `<details class="faq-item">` list and the
