@@ -124,14 +124,22 @@ body {
   gap: 60px;
 }
 
+/* On a phone the mockup's 320px plus its padding and border was wider than the
+   column, and a plain 1fr track grew to fit it: 3px of sideways scroll at 375px
+   (#50). minmax(0, 1fr) keeps the track inside the page; border-box and
+   max-width keep the mockup inside the track. */
 @media (max-width: 768px) {
   .hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     margin: 40px auto;
   }
   .hero-preview {
     display: flex;
     justify-content: center;
+  }
+  .extension-mockup {
+    box-sizing: border-box;
+    max-width: 100%;
   }
 }
 
@@ -178,6 +186,16 @@ body {
 .btn-hero:hover {
   transform: scale(1.02);
   background: var(--ij-color-primary-hover);
+}
+
+/* A phone cannot install the extension, so there the hero's action is the web
+   demo instead (#50). demo.js unhides the link only when the demo is on; while
+   it stays hidden, phones keep the install button. */
+.hero-try { display: none; }
+
+@media (max-width: 768px) {
+  .hero-try:not([hidden]) { display: block; }
+  .hero-try:not([hidden]) + .btn-hero { display: none; }
 }
 
 .free-label {
