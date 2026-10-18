@@ -5,6 +5,9 @@
   const api = section && section.dataset.api;
   if (!api) return;
   section.hidden = false;
+  // The hero's phone-only link to the demo (#50) shows only when the demo does.
+  const heroLink = document.querySelector('.hero-try');
+  if (heroLink) heroLink.hidden = false;
 
   const form = section.querySelector('form');
   const input = form.querySelector('input');
