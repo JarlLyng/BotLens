@@ -18,7 +18,7 @@ Can AI read your website?
   <img src="website/og-image.png" alt="Can AI read your website? BotLens scoring a page 92 out of 100 on robots.txt, semantic HTML and JS rendering." width="640">
 </p>
 
-BotLens is a Chrome extension that checks whether AI crawlers can read and understand the page you have open. It scores the page from 0 to 100 on its robots.txt rules for 24 AI bots, GPTBot, ClaudeBot, PerplexityBot and Google-Extended among them, on its meta tags and HTML structure, and on whether the content only appears once JavaScript runs. It is for developers and site owners who want to see a page the way those crawlers do. The check runs in your browser: it fetches robots.txt and a few other files from the site you are on, and sends nothing anywhere else.
+BotLens is a Chrome extension that checks whether AI crawlers can read and understand the page you have open, and scores it from 0 to 100. It looks at the site's robots.txt rules for 24 AI bots, GPTBot and ClaudeBot among them, the page's meta tags and HTML structure, and whether its content needs JavaScript to appear. It is for developers and site owners. It runs in your browser, and its only requests go to the site you are checking.
 
 ## For developers
 
