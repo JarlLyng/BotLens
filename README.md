@@ -27,7 +27,7 @@ BotLens is a Chrome extension that checks whether AI crawlers can read and under
     <source media="(prefers-color-scheme: dark)" srcset="https://madebyhuman.iamjarl.com/badges/co-created-white.svg">
     <img src="https://madebyhuman.iamjarl.com/badges/co-created-black.svg" alt="Co-created with AI" width="120" height="40"></picture></a>
   <a href="https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml"><img src="https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml/badge.svg" alt="Lint"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/JarlLyng/BotLens" alt="MIT License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
 </p>
 
 ### The goal
