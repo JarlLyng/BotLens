@@ -1,78 +1,81 @@
-# BotLens 🕵️‍♂️🤖
+<img src="icons/icon128.png" alt="" width="80" height="80">
 
-![BotLens: Can AI read your website? A page scored 92 out of 100.](website/og-image.png)
+# BotLens
 
-[![Lint](https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml/badge.svg)](https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](https://developer.chrome.com/docs/extensions/mv3/intro/)
-[![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-live-brightgreen.svg)](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)
-[![Co-created with AI](https://img.shields.io/badge/Co--created_with-AI-8A2BE2.svg)](https://madebyhuman.iamjarl.com)
+Can AI read your website?
 
-**BotLens** is a Chrome extension that analyzes whether a website can be read and understood by AI systems, including GPTBot, ClaudeBot, Perplexity, Google-Extended, and 15+ other LLM crawlers. It produces an actionable 0-100 readability score and a technical breakdown of how bots see your content.
+<!-- IAMJARL README store block for BotLens (en). Generated from apps.json, v1.34.0. Do not edit. -->
+<p>
+  <a href="https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl?utm_source=github"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.34.0/badges/chrome-web-store-border.png">
+    <img src="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.34.0/badges/chrome-web-store.png" alt="Available in the Chrome Web Store" width="192" height="58">
+  </picture></a>
+  <br>
+  Free · <a href="https://botlens.iamjarl.com">botlens.iamjarl.com</a>
+</p>
 
-**Homepage:** [botlens.iamjarl.com](https://botlens.iamjarl.com) · **Privacy:** [botlens.iamjarl.com/privacy.html](https://botlens.iamjarl.com/privacy.html)
+<p>
+  <img src="website/og-image.png" alt="Can AI read your website? BotLens scoring a page 92 out of 100 on robots.txt, semantic HTML and JS rendering." width="640">
+</p>
 
----
+BotLens is a Chrome extension that checks whether AI crawlers can read and understand the page you have open. It scores the page from 0 to 100 on its robots.txt rules for 24 AI bots, GPTBot, ClaudeBot, PerplexityBot and Google-Extended among them, on its meta tags and HTML structure, and on whether the content only appears once JavaScript runs. It is for developers and site owners who want to see a page the way those crawlers do. The check runs in your browser: it fetches robots.txt and a few other files from the site you are on, and sends nothing anywhere else.
 
-## 🎯 The Goal
+## For developers
 
-As the web becomes increasingly AI-native, a new question arises: **"Can AI read this?"**
+<p>
+  <a href="https://madebyhuman.iamjarl.com"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://madebyhuman.iamjarl.com/badges/co-created-white.svg">
+    <img src="https://madebyhuman.iamjarl.com/badges/co-created-black.svg" alt="Co-created with AI" width="120" height="40"></picture></a>
+  <a href="https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml"><img src="https://github.com/JarlLyng/BotLens/actions/workflows/lint.yml/badge.svg" alt="Lint"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/JarlLyng/BotLens" alt="MIT License"></a>
+</p>
 
-BotLens helps developers and site owners answer this by inspecting technical signals (like `robots.txt` directives, meta tags, semantic HTML, structured data, and JavaScript rendering) that determine whether systems like GPTBot and ClaudeBot can effectively interpret a page.
+### The goal
 
----
+More and more of the web is read by AI systems, which raises a question for anyone who runs a site: can AI read this page?
 
-## 🧩 Key Features
+BotLens answers it by inspecting the technical signals that decide whether systems like GPTBot and ClaudeBot can interpret a page: `robots.txt` directives, meta tags, semantic HTML, structured data and JavaScript rendering.
 
-- **AI Readability Score**: Weighted 0-100 score across four signal categories.
-- **robots.txt Analysis**: full spec support for Allow/Disallow precedence, wildcards (`*`) and end-of-path anchors (`$`), checked against 20+ AI user-agents such as `GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended` and `Bytespider`.
-- **Meta Directive Detection**: `noindex`, `nofollow`, `noai`, `noimageai`, and bot-specific meta tags.
-- **Semantic Structure Check**: Heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD and its schema types, `<html lang>`, and Open Graph, Twitter Card and canonical tags.
-- **JS Rendering Detection**: Compares initial HTML to rendered DOM to catch SPA shells that hide content from crawlers.
-- **Details panel**: every issue and the data behind the score, such as each blocked bot and every meta directive, plus the sitemap, `llms.txt`, `llms-full.txt`, and content provenance (generator meta, schema.org `digitalSourceType`, IPTC image metadata).
-- **Privacy-first**: 100% local. No accounts, no telemetry, no external servers.
+### What it checks
 
----
+- **AI readability score:** 0 to 100. It starts at 100 and loses points in three categories: robots.txt and meta directives (up to 50), content structure, and JS rendering (up to 20).
+- **robots.txt:** multiple user-agent groups, Allow/Disallow precedence by longest match, `*` wildcards and `$` end-of-path anchors, checked against 24 AI user-agents such as `GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended` and `Bytespider`.
+- **Meta directives:** `noindex`, `nofollow`, `none`, the `noai` and `noimageai` AI-training opt-outs, and bot-specific meta tags.
+- **Content structure:** heading hierarchy, HTML5 landmarks, image alt-text coverage, JSON-LD and its schema types, `<html lang>`, and Open Graph, Twitter Card and canonical tags.
+- **JS rendering:** compares the page's served HTML to the rendered DOM to catch SPA shells that give crawlers a near-empty page.
+- **Details panel:** every issue and the data behind the score, such as each blocked bot and every meta directive, plus the sitemap, `llms.txt`, `llms-full.txt`, and content provenance (generator meta, schema.org `digitalSourceType`, IPTC image metadata). These extras are reported, not scored.
+- **Local:** no account, no telemetry, no server. Every request the extension makes goes to the site you are checking.
 
-## 🌐 Web demo
+### Web demo
 
 The site can check an address without the extension. A small Vercel Function (`api/check.js`)
 fetches the page and its robots.txt once and scores them with the extension's own code. It
 stores no addresses or results, only hashed rate-limit counters in Turso. The extension itself
 has no backend.
 
----
+### Technical stack
 
-## 🏗️ Technical Stack
+- **Manifest V3:** the current Chrome extension platform
+- **Vanilla JavaScript:** no frameworks, no build step to load unpacked
+- **Design tokens:** [iamjarl-design](https://github.com/JarlLyng/iamjarl-design), bundled in [`tokens.css`](tokens.css)
+- **Icons:** inline SVG, with nothing loaded from a CDN
+- **Website:** GitHub Pages, deployed automatically from [`website/`](website/)
 
-- **Manifest V3**: modern Chrome extension architecture
-- **Vanilla JavaScript**: no frameworks, no build step required to load unpacked
-- **Design tokens**: [IAMJARL Design Tokens](https://github.com/JarlLyng/iamjarl-design)
-- **Icons**: inline SVG (no external CDN dependencies)
-- **Marketing site**: GitHub Pages, deployed automatically from [`website/`](website/)
-
----
-
-## 🚀 Getting Started
-
-### Install (for users)
-
-**[⬇️ Add BotLens to Chrome](https://chromewebstore.google.com/detail/botlens/lpopnolnbpkmealenachikdfkfeaoecl)**. It installs in one click and works on Chrome, Edge, Brave, and other Chromium browsers.
-
-Or install from source:
-
-1. Clone this repository.
-2. Open Chrome and navigate to `chrome://extensions/`.
-3. Enable **Developer Mode** (top right).
-4. Click **Load unpacked** and select the project folder.
-
-### Development
+### Build and run
 
 ```bash
 npm install          # install dev dependencies
-npm run lint         # ESLint check (also runs in CI)
+npm run lint         # ESLint (also runs in CI)
+npm test             # parser and scoring tests (also runs in CI)
 npm run build        # produce dist/botlens-<version>.zip for the Web Store
 ```
+
+Load it unpacked in any Chromium browser (Chrome, Edge, Brave and others):
+
+1. Clone this repository.
+2. Open `chrome://extensions/`.
+3. Turn on **Developer mode** (top right).
+4. Click **Load unpacked** and select the project folder.
 
 Coding conventions:
 
@@ -100,41 +103,22 @@ Publishing is keyless. GitHub's OIDC token is exchanged for a short-lived Google
 `CWS_SERVICE_ACCOUNT`. The manual devconsole upload remains a valid fallback if the API flow
 ever breaks.
 
----
+### Roadmap
 
-## 🗺️ Roadmap
+Tracked in [GitHub issues](https://github.com/JarlLyng/BotLens/issues), among them CMS, framework, hosting and analytics detection under the `v3` label, and a Safari and Firefox port ([#25](https://github.com/JarlLyng/BotLens/issues/25)).
 
-Tracked in [GitHub issues](https://github.com/JarlLyng/BotLens/issues). High-level:
-
-- **v2**: AI content transparency signals ([#21](https://github.com/JarlLyng/BotLens/issues/21))
-- **v3**: Modular detection engine, CMS/framework/hosting/analytics detection
-
----
-
-## 🤝 Contributing
+### Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Bug reports, feature requests, and pull requests are all welcome. Issues use structured templates.
 
----
-
-## 💬 Feedback and support
+### Feedback and support
 
 Email [support@iamjarl.com](mailto:support@iamjarl.com), or use **Send feedback** at the bottom of the popup. Bug reports and feature requests are also welcome as [GitHub issues](https://github.com/JarlLyng/BotLens/issues).
 
----
-
-## 🔒 Security
+### Security
 
 See [SECURITY.md](SECURITY.md). Please **do not** open public issues for vulnerabilities. Use GitHub's [Private Vulnerability Reporting](https://github.com/JarlLyng/BotLens/security/advisories/new).
 
----
+### License
 
-## 🧑‍💻 Built By
-
-BotLens is created and maintained by **[iamjarl](https://iamjarl.com)**, a Danish enkeltmandsvirksomhed building tools at the intersection of human experience and AI infrastructure.
-
----
-
-## 📄 License
-
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). BotLens is made and maintained by Jarl at [IAMJARL](https://iamjarl.com).
