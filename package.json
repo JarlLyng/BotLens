@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@libsql/client": "0.18.0",
-    "linkedom": "0.18.13",
+    "linkedom": "0.18.14",
     "undici": "8.12.3"
   },
   "engines": {
