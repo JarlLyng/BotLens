@@ -1,0 +1,19 @@
+# Dependabot version updates (#51). Security updates are not delayed; version
+# updates wait 7 days, by which time a malicious release is usually caught and
+# pulled (hub PROJECT_STANDARDS §4). Every update still goes through CI.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
