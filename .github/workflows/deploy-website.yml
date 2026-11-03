@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Pushes go straight to main, and the Lint workflow runs alongside this one
       # without blocking it. So the check also lives here, before the upload: a
