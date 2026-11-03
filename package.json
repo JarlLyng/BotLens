@@ -11,7 +11,9 @@
     "fix:faq": "node scripts/check-faq-jsonld.js --write"
   },
   "devDependencies": {
-    "eslint": "^8.56.0"
+    "@eslint/js": "10.0.1",
+    "eslint": "10.13.0",
+    "globals": "17.13.0"
   },
   "dependencies": {
     "@libsql/client": "0.18.0",
