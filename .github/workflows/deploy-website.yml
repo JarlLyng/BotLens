@@ -30,7 +30,7 @@ jobs:
       # mismatch fails the deploy and the live site keeps its last consistent
       # version. The script has no dependencies, so no npm install is needed.
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
