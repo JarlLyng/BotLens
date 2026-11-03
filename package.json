@@ -1,6 +1,6 @@
 {
   "name": "botlens",
-  "version": "1.0.0",
+  "version": "1.4.1",
   "description": "Analyze if a website is readable by AI",
   "private": true,
   "scripts": {

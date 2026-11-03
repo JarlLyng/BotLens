@@ -2,8 +2,6 @@ node_modules/
 .DS_Store
 *.log
 /dist/
-website/tokens.css
-# We ignore tokens.css in website because it's copied from root
 
 # Agent tooling stays local (hub PROJECT_STANDARDS §8, 2026-09-19): the repo is
 # indifferent to which AI is used. AGENTS.md is the one agent-context file.

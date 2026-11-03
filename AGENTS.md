@@ -105,7 +105,7 @@ score is partial: no JavaScript runs server-side.
 - `npm test`: parser and scoring tests against the shipped `popup.js` (CI; gates publishing).
 - `npm run build`: produces `dist/botlens-<version>.zip` for the Web Store.
 - `npm run check:faq` / `npm run fix:faq`: check, or regenerate, the FAQPage JSON-LD.
-- **Release:** bump `version` in `manifest.json` + update `CHANGELOG.md`, then
+- **Release:** bump `version` in `manifest.json` and `package.json`, update `CHANGELOG.md`, then
   `git tag vX.Y.Z && git push origin vX.Y.Z` → GitHub Actions lints, builds, uploads, and
   publishes through Chrome Web Store API V2 (see `.github/workflows/publish.yml`).
   Authentication is keyless: GitHub's OIDC token is exchanged for a short-lived Google

@@ -47,6 +47,9 @@ In scope:
 
 - The Chrome extension code (`popup.js`, `content.js`, `manifest.json`, and everything it ships)
 - The marketing website (`website/`) if it exposes user data or credentials
+- The web demo's server side: `api/check.js` (a Vercel Function), `lib/safe-fetch.js` (which
+  fetches the address a visitor enters, so SSRF, DNS rebinding and redirect tricks count),
+  `lib/analyze.js`, and the rate-limit counters it keeps in Turso (`lib/rate-limit.js`)
 
 Out of scope:
 
@@ -56,4 +59,4 @@ Out of scope:
 
 ## Privacy note
 
-BotLens collects no user data. It runs entirely in the browser. See the [privacy policy](https://botlens.iamjarl.com/privacy.html) for details.
+The extension collects no user data and runs entirely in the browser. The site's optional web demo fetches the address a visitor enters once, on a server, and stores neither the address nor the result; it keeps only hashed rate-limit counters. See the [privacy policy](https://botlens.iamjarl.com/privacy.html) for details.
